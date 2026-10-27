@@ -1,0 +1,7 @@
+tools/
+docs/
+.DS_Store
+*.log
+CLAUDE.md
+client-docs/
+.claude/

@@ -1,0 +1,339 @@
+<!--
+  Sample 2 — Toys listing page (one template for all toys and every category).
+  URLs: toys.html (all toys) · toys.html?cat=<slug> (e.g. ?cat=soft-toys). Filters live in the URL too:
+  &age=0-2,3-5 · &price=budget|under|premium · &stock=1 · &new=1 · &popular=1 · &promise=1 (Price Promise, Shop mode) · &sort=featured|price-asc|price-desc|newest · &q=…
+  Categories are the client's exact list (brief §13 "Decisions 26 Oct (2)", C1). Layout follows the usual UK toy-store
+  listing pattern (category chips, filter sidebar / mobile bottom sheet, sort + count, product grid); own design and copy.
+  Works in Shop mode (retail price, add to cart) and Business mode (?mode=business: MOQ + wholesale tier prices).
+  Data: products.js (ALL DUMMY). Shared behaviour: site.js. Listing behaviour: toys.js.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>All toys | JIVORA</title>
+  <meta name="description" content="Browse JIVORA toys by category, age and price — Action Figures, Sensory Toys, Puzzles, Soft Toys and more.">
+  <meta name="theme-color" content="#0B1B3F">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fredoka:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <!-- Event settings (one place for all pages) -->
+  <script src="./event-config.js"></script>
+  <!-- Mode + region are set before first paint so the page never flashes the wrong interface -->
+  <script>
+    (function () {
+      var d = document.documentElement, mode = null, region = null;
+      d.classList.add("js");
+      try { mode = new URLSearchParams(window.location.search).get("mode"); } catch (e) {}
+      if (mode !== "business" && mode !== "shop") {
+        try { mode = window.localStorage.getItem("jivora-s2-mode"); } catch (e) {}
+      }
+      try { region = window.localStorage.getItem("jivora-s2-region"); } catch (e) {}
+      d.setAttribute("data-mode", mode === "business" ? "business" : "shop");
+      d.setAttribute("data-region", region === "UK" ? "UK" : "IN");
+    })();
+  </script>
+  <script src="./products.js" defer></script>
+  <script src="./site.js" defer></script>
+  <script src="./toys.js" defer></script>
+</head>
+<body class="page-listing">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== ANNOUNCEMENT BAR (pre-launch, no date) ===== -->
+  <div class="announcement">
+    <p class="announcement__text">
+      <span class="announcement__dot" aria-hidden="true"></span>
+      <span data-for="shop">Pre-launch — toys go live first. Orders open soon.</span>
+      <span data-for="business">Pre-launch — business enquiries are open. Orders open soon.</span>
+      <a class="announcement__link" href="index.html#event" data-go-mode="shop" data-for="shop" data-event-link>Get <span data-coupon>£22.50</span> off</a>
+      <a class="announcement__link" href="index.html?mode=business#enquire" data-go-mode="business" data-for="business">Talk to us</a>
+    </p>
+  </div>
+
+  <!-- ===== USP BAR (true claims only; marquee on phones) ===== -->
+  <div class="usp" aria-label="Why shop with JIVORA">
+    <div class="usp__track">
+      <ul class="usp__list">
+        <li class="usp__item usp__item--offer" data-event-link><a class="usp__link" href="index.html#event" data-go-mode="shop"><span class="usp__icon tone-pink" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3 9h18M12 9v11M12 9c-1.5-3-5-3.5-5-1.2C7 9 9.5 9 12 9zm0 0c1.5-3 5-3.5 5-1.2C17 9 14.5 9 12 9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>Register for <span data-coupon>£22.50</span> off</a></li>
+        <li class="usp__item"><span class="usp__icon tone-green" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.4-3 8.2-7 9.5-4-1.3-7-5.1-7-9.5V6l7-3z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4L15.5 9.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Verified sellers only</li>
+        <li class="usp__item"><span class="usp__icon tone-yellow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M4 12.5V5a1 1 0 0 1 1-1h7.5L20 11.5 12.5 19 4 12.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><circle cx="8.5" cy="8.5" r="1.6" fill="currentColor"/></svg></span>Age-labelled toys</li>
+        <li class="usp__item"><span class="usp__icon tone-sky" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.5 5.3 3.5 8.5s-1.1 6.1-3.5 8.5c-2.4-2.4-3.5-5.3-3.5-8.5S9.6 5.9 12 3.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>India &amp; UK</li>
+        <li class="usp__item"><span class="usp__icon tone-pink" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M4 11h16M12 7v13M12 7c-1.5-3-5-3.5-5-1.2C7 7 9.5 7 12 7zm0 0c1.5-3 5-3.5 5-1.2C17 7 14.5 7 12 7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>Orders open soon</li>
+      </ul>
+      <ul class="usp__list usp__list--clone" aria-hidden="true"></ul>
+    </div>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <button class="icon-btn header__menu" type="button" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+
+      <a class="logo" href="index.html" data-mode-link aria-label="JIVORA home">
+        <span class="logo__word">JIVORA</span>
+      </a>
+
+      <form class="search" role="search" action="toys.html" data-search>
+        <label class="visually-hidden" for="search-input">Search toys</label>
+        <input class="search__input" id="search-input" name="q" type="search" placeholder="Search toys — try “wooden”, “plush”, “RC”" autocomplete="off">
+        <button class="search__btn" type="submit" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </form>
+
+      <div class="mode-toggle" role="group" aria-label="Choose interface">
+        <span class="mode-toggle__thumb" aria-hidden="true"></span>
+        <button class="mode-toggle__btn" type="button" data-set-mode="shop" aria-pressed="true">Shop</button>
+        <button class="mode-toggle__btn" type="button" data-set-mode="business" aria-pressed="false">For Business</button>
+      </div>
+
+      <div class="header__actions">
+        <label class="visually-hidden" for="region">Region and currency</label>
+        <select class="region" id="region" data-region-select>
+          <option value="IN">India ₹</option>
+          <option value="UK">UK £</option>
+        </select>
+        <button class="icon-btn" type="button" data-open-sheet="wishlist" data-for="shop" aria-label="Wishlist, 0 items">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <span class="count" data-count="wishlist" aria-hidden="true">0</span>
+        </button>
+        <button class="icon-btn" type="button" data-open-sheet="cart" data-for="shop" aria-label="Cart, 0 items">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 4.5h2.2l2.2 11h10.4l2-8H7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.5" fill="currentColor"/><circle cx="17" cy="19.5" r="1.5" fill="currentColor"/></svg>
+          <span class="count" data-count="cart" aria-hidden="true">0</span>
+        </button>
+        <button class="rfq-btn" type="button" data-open-sheet="rfq" data-for="business" aria-label="RFQ list, 0 products">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="rfq-btn__label">RFQ list</span>
+          <span class="count" data-count="rfq" aria-hidden="true">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Category / business navigation strip -->
+    <nav class="catnav" aria-label="Main">
+      <div class="container catnav__inner">
+        <div class="mode-toggle mode-toggle--mini" role="group" aria-label="Choose interface">
+          <span class="mode-toggle__thumb" aria-hidden="true"></span>
+          <button class="mode-toggle__btn" type="button" data-set-mode="shop" aria-pressed="true">Shop</button>
+          <button class="mode-toggle__btn" type="button" data-set-mode="business" aria-pressed="false">Business</button>
+        </div>
+        <!-- "Toys" mega-menu: 10 client categories (filled by site.js from products.js) -->
+        <div class="megamenu" data-for="shop" data-megamenu>
+          <button class="catnav__link megamenu__btn" type="button" aria-expanded="false" aria-controls="megamenu-panel" data-megamenu-toggle>Toys</button>
+          <div class="megamenu__panel" id="megamenu-panel" data-megamenu-panel></div>
+        </div>
+        <ul class="catnav__list" data-for="shop">
+          <li data-event-link><a class="catnav__link catnav__link--offer" href="index.html#event" data-go-mode="shop">Get <span data-coupon>£22.50</span> off<span class="visually-hidden"> — register for the pre-launch offer</span></a></li>
+          <li><a class="catnav__link" href="toys.html" data-mode-link data-catnav="">All toys</a></li>
+          <li><a class="catnav__link" href="toys.html?age=0-2" data-mode-link data-catnav="age=0-2">0–2 yrs</a></li>
+          <li><a class="catnav__link" href="toys.html?age=3-5" data-mode-link data-catnav="age=3-5">3–5 yrs</a></li>
+          <li><a class="catnav__link" href="toys.html?age=6-8" data-mode-link data-catnav="age=6-8">6–8 yrs</a></li>
+          <li><a class="catnav__link" href="toys.html?age=9%2B" data-mode-link data-catnav="age=9+">9+ yrs</a></li>
+          <li><a class="catnav__link" href="toys.html?popular=1" data-mode-link data-catnav="popular=1">Popular picks</a></li>
+          <li><a class="catnav__link" href="toys.html?price=under" data-mode-link data-catnav="price=under" data-under-label>Under ₹999</a></li>
+          <li class="catnav__sep" aria-hidden="true"></li>
+          <li><button class="catnav__link" type="button" data-soon="fmcg">FMCG <span class="soon-pill">Soon</span></button></li>
+          <li><button class="catnav__link" type="button" data-soon="accessories">Accessories <span class="soon-pill">Soon</span></button></li>
+          <li><button class="catnav__link" type="button" data-soon="apparel">Apparel <span class="soon-pill">Soon</span></button></li>
+        </ul>
+        <ul class="catnav__list" data-for="business">
+          <li><a class="catnav__link" href="index.html?mode=business#start" data-go-mode="business">Start your business</a></li>
+          <li><a class="catnav__link" href="index.html?mode=business#plans" data-go-mode="business">Support plans</a></li>
+          <li><a class="catnav__link" href="toys.html?mode=business" data-go-mode="business">Wholesale catalogue</a></li>
+          <li><a class="catnav__link" href="index.html?mode=business#trust" data-go-mode="business">Why Jivora</a></li>
+          <li><a class="catnav__link" href="index.html?mode=business#enquire" data-go-mode="business">Become a supplier</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MOBILE DRAWER ===== -->
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer__overlay" data-close-drawer></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu" tabindex="-1">
+      <div class="drawer__head">
+        <span class="drawer__title">Menu</span>
+        <button class="icon-btn" type="button" data-close-drawer aria-label="Close menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="drawer__body">
+        <label class="drawer__label" for="drawer-region">Region &amp; currency</label>
+        <select class="region region--block" id="drawer-region" data-region-select>
+          <option value="IN">India ₹</option>
+          <option value="UK">UK £</option>
+        </select>
+        <p class="drawer__label">Interface</p>
+        <div class="mode-toggle mode-toggle--block" role="group" aria-label="Choose interface">
+          <span class="mode-toggle__thumb" aria-hidden="true"></span>
+          <button class="mode-toggle__btn" type="button" data-set-mode="shop" aria-pressed="true">Shop</button>
+          <button class="mode-toggle__btn" type="button" data-set-mode="business" aria-pressed="false">For Business</button>
+        </div>
+        <ul class="drawer__list" data-for="shop">
+          <li data-event-link><a class="drawer__offer" href="index.html#event" data-go-mode="shop">Register for <span data-coupon>£22.50</span> off</a></li>
+          <li><a href="index.html#popular" data-mode-link>Popular picks</a></li>
+          <li><a href="toys.html?price=under" data-mode-link data-under-label>Under ₹999</a></li>
+        </ul>
+        <p class="drawer__label" data-for="shop">Shop by age</p>
+        <ul class="drawer__list" data-for="shop" data-drawer-ages></ul>
+        <p class="drawer__label" data-for="shop">Toys by category</p>
+        <ul class="drawer__list" data-for="shop" data-drawer-cats></ul>
+        <ul class="drawer__list" data-for="business">
+          <li><a href="index.html?mode=business#start" data-go-mode="business">Start your business</a></li>
+          <li><a href="index.html?mode=business#plans" data-go-mode="business">Support plans</a></li>
+          <li><a href="toys.html?mode=business" data-go-mode="business">Wholesale catalogue</a></li>
+          <li><a href="index.html?mode=business#enquire" data-go-mode="business">Become a supplier</a></li>
+        </ul>
+        <p class="drawer__label">Coming soon</p>
+        <ul class="drawer__list drawer__list--soon">
+          <li><button type="button" data-soon="fmcg">FMCG <span class="soon-pill">Soon</span></button></li>
+          <li><button type="button" data-soon="accessories">Accessories <span class="soon-pill">Soon</span></button></li>
+          <li><button type="button" data-soon="apparel">Apparel <span class="soon-pill">Soon</span></button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- ===== BREADCRUMB + TITLE ===== -->
+    <nav class="container crumbs" aria-label="Breadcrumb"><ol data-crumbs></ol></nav>
+
+    <section class="container listing" aria-labelledby="listing-title">
+      <div class="listing__head">
+        <h1 class="listing__title" id="listing-title" data-listing-title>All toys</h1>
+        <p class="listing__sub" data-listing-sub></p>
+      </div>
+
+      <!-- ===== CATEGORY CHIPS (round photo + name; active one highlighted) ===== -->
+      <ul class="bubbles listing__cats" data-listing-cats aria-label="Toy categories"></ul>
+
+      <div class="listing__layout">
+        <!-- ===== FILTERS: sidebar from 1024px, bottom sheet below ===== -->
+        <div class="filters-overlay" data-filters-close></div>
+        <aside class="filters" id="filters" aria-labelledby="filters-title" tabindex="-1">
+          <div class="filters__head">
+            <h2 class="filters__title" id="filters-title">Filters</h2>
+            <button class="link-btn filters__clear-top" type="button" data-clear-filters>Clear all</button>
+            <button class="icon-btn filters__x" type="button" data-filters-close aria-label="Close filters"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+          </div>
+          <form class="filters__body" data-filters></form>
+          <div class="filters__foot">
+            <button class="btn btn--ghost" type="button" data-clear-filters>Clear</button>
+            <button class="btn btn--primary" type="button" data-filters-close data-filters-show>Show toys</button>
+          </div>
+        </aside>
+
+        <!-- ===== RESULTS ===== -->
+        <div class="listing__main">
+          <div class="listing__bar">
+            <button class="btn btn--ghost btn--sm listing__filter-btn" type="button" data-filters-open aria-controls="filters" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg> Filters <span class="count is-empty" data-filter-count aria-hidden="true">0</span></button>
+            <p class="listing__count" data-results-count aria-live="polite"></p>
+            <div class="listing__sort">
+              <label for="listing-sort">Sort by</label>
+              <select class="select" id="listing-sort" data-listing-sort>
+                <option value="featured">Featured</option>
+                <option value="price-asc">Price: low to high</option>
+                <option value="price-desc">Price: high to low</option>
+                <option value="newest">Newest</option>
+              </select>
+            </div>
+          </div>
+          <div class="active-filters" data-active-filters></div>
+          <div class="grid listing__grid" data-listing-grid></div>
+          <div class="listing__empty" data-listing-empty hidden>
+            <p class="listing__empty-title">No toys match these filters.</p>
+            <p>Try another age or price, or clear the filters to see every toy.</p>
+            <button class="btn btn--primary" type="button" data-clear-filters>Clear filters</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <noscript>
+      <section class="container not-found">
+        <h1 class="not-found__title">Turn on JavaScript to browse toys</h1>
+        <p><a class="btn btn--primary" href="index.html">Back to the home page</a></p>
+      </section>
+    </noscript>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a class="logo" href="index.html" data-mode-link aria-label="JIVORA home">
+          <span class="logo__word">JIVORA</span>
+        </a>
+        <p>An ethical marketplace for India and the UK. Pre-launch preview — orders open soon.</p>
+        <ul class="social" aria-label="Jivora on social media">
+          <li><a class="social__link social__link--ig" href="https://www.instagram.com/toyandjoyindore/" target="_blank" rel="noopener" aria-label="Instagram @toyandjoyindore (opens in a new tab)"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></a></li>
+          <li><span class="social__link social__link--yt" role="img" tabindex="0" aria-label="YouTube — coming soon" data-tip="Coming soon"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 9.2v5.6l4.8-2.8L10 9.2z" fill="currentColor"/></svg></span></li>
+        </ul>
+      </div>
+      <nav class="footer__col" aria-label="Shop">
+        <h2 class="footer__heading">Shop</h2>
+        <ul>
+          <li><a href="toys.html" data-go-mode="shop">All toys</a></li>
+          <li><button class="link-btn" type="button" data-soon="fmcg">FMCG — soon</button></li>
+          <li><button class="link-btn" type="button" data-soon="accessories">Accessories — soon</button></li>
+          <li><button class="link-btn" type="button" data-soon="apparel">Apparel — soon</button></li>
+        </ul>
+      </nav>
+      <nav class="footer__col" aria-label="For Business">
+        <h2 class="footer__heading">For Business</h2>
+        <ul>
+          <li data-for="shop"><a href="index.html?mode=business" data-go-mode="business">Jivora for Business</a></li>
+          <li data-for="business"><a href="index.html?mode=business#start" data-go-mode="business">Start your business</a></li>
+          <li data-for="business"><a href="index.html?mode=business#plans" data-go-mode="business">Support plans</a></li>
+          <li data-for="business"><a href="toys.html?mode=business" data-go-mode="business">Wholesale catalogue</a></li>
+          <li data-for="business"><a href="index.html?mode=business#enquire" data-go-mode="business">Become a supplier</a></li>
+        </ul>
+      </nav>
+      <div class="footer__col">
+        <h2 class="footer__heading">Company</h2>
+        <ul>
+          <li><span>[About]</span></li>
+          <li><span>[Email]</span></li>
+          <li><span>[Phone]</span></li>
+          <li><span>[Address]</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      <p class="footer__legal"><a href="terms.html">Terms</a> · <a href="privacy.html">Privacy Policy</a> · <a href="privacy.html#storage">Cookies &amp; storage</a></p>
+      <p>© 2026 [Company name] · Company no. [Company reg. no.] · Registered address: [Registered address]</p>
+      <p>Photos: Pexels and Unsplash.</p>
+    </div>
+  </footer>
+
+  <!-- ===== SHEET: cart / wishlist / RFQ list (filled by site.js) ===== -->
+  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+    <div class="sheet__head">
+      <h2 class="sheet__title" id="sheet-title">Cart</h2>
+      <button class="icon-btn" type="button" data-close-sheet aria-label="Close">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="sheet__body" data-sheet-body></div>
+  </dialog>
+
+  <!-- ===== QUICK VIEW DIALOG (filled by site.js) ===== -->
+  <dialog class="qv" id="qv" aria-labelledby="qv-title">
+    <div data-qv-body></div>
+  </dialog>
+
+  <!-- ===== COMING SOON DIALOG (filled by site.js) ===== -->
+  <dialog class="soon" id="soon" aria-labelledby="soon-title">
+    <div data-soon-body></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
