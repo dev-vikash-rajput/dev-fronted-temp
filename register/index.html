@@ -1,0 +1,188 @@
+<!--
+  JIVORA — short registration landing page for the QR code: https://jivora.co.uk/register/
+  Only the pre-launch event (same markup, timer and form as the homepage #event section) with a slim header and footer.
+  Timer logic is unchanged: event-config.js + site.js + event.js (before = countdown, during = form, after = "offer ended").
+  ?preview=event / ?preview=after work here too. Shared files live one level up (../) inside the site.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Register &amp; get £22.50 off | JIVORA</title>
+  <meta name="description" content="Register for the JIVORA Diwali pre-launch on Sunday 1 November 2026 and get £22.50 off your first order.">
+  <meta name="theme-color" content="#0B1B3F">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fredoka:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../event-config.js"></script>
+  <!-- The event lives in the shop interface; region is remembered like on the other pages -->
+  <script>
+    (function () {
+      var d = document.documentElement, region = null;
+      d.classList.add("js");
+      try { region = window.localStorage.getItem("jivora-s2-region"); } catch (e) {}
+      d.setAttribute("data-mode", "shop");
+      d.setAttribute("data-region", region === "UK" ? "UK" : "IN");
+    })();
+  </script>
+  <script src="../products.js" defer></script>
+  <script src="../site.js" defer></script>
+  <script src="../event.js" defer></script>
+</head>
+<body class="page-register" data-page="register/">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== SLIM HEADER ===== -->
+  <header class="reg-head">
+    <div class="container reg-head__inner">
+      <a class="logo" href="../index.html" aria-label="JIVORA home">
+        <span class="logo__word">JIVORA</span>
+      </a>
+      <a class="btn btn--sm btn--ghost" href="../index.html">Visit the store</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="block event-block" id="event" data-for="shop" aria-labelledby="event-title">
+      <div class="container">
+        <div class="event" data-event data-phase="before">
+          <p class="preview-badge" data-preview-badge hidden>Preview</p>
+          <div class="event__intro">
+            <p class="event__stickers"><span class="sticker sticker--yellow">Pre-launch event</span><span class="sticker sticker--pink" data-phase-show="during" hidden>Live now</span></p>
+            <h1 class="event__title" id="event-title">Register &amp; get <span class="event__amount" data-coupon>£22.50</span> off</h1>
+            <p class="event__text" data-event-text>Register on event day and <span data-coupon>£22.50</span> is added to your JIVORA account when orders open.</p>
+
+            <div class="event__clock" data-phase-hide="after">
+              <p class="event__clock-label" data-timer-label>Event starts in</p>
+              <div class="timer" data-timer aria-hidden="true">
+                <span class="timer__unit" data-unit="d"><span class="timer__num" data-num="d">00</span><span class="timer__lbl">days</span></span>
+                <span class="timer__unit" data-unit="h"><span class="timer__num" data-num="h">00</span><span class="timer__lbl">hrs</span></span>
+                <span class="timer__unit" data-unit="m"><span class="timer__num" data-num="m">00</span><span class="timer__lbl">mins</span></span>
+                <span class="timer__unit" data-unit="s"><span class="timer__num" data-num="s">00</span><span class="timer__lbl">secs</span></span>
+              </div>
+            </div>
+            <p class="event__ended" data-phase-show="after" hidden>This offer has ended</p>
+            <p class="event__when" data-event-when></p>
+
+            <ul class="event__points" data-phase-hide="after">
+              <li><span data-coupon>£22.50</span> added to your JIVORA account at launch</li>
+              <li>One registration per email</li>
+              <li>Takes about a minute</li>
+            </ul>
+            <p class="event__links"><a href="../terms.html#offer">Offer terms</a><span aria-hidden="true"> · </span><a href="../privacy.html">Privacy Policy</a></p>
+          </div>
+
+          <div class="event__panel">
+            <!-- Safety: shown when FORM_ENDPOINT is empty and the page is NOT on localhost (site.js) -->
+            <p class="preview-banner" data-preview-banner role="note" hidden>Preview — registrations are not saved yet</p>
+            <p class="demo-flag" data-demo-flag hidden>Demo mode — not saved</p>
+
+            <!-- Before / after the event: message only (no forms) -->
+            <div class="event__msg" data-phase-hide="during">
+              <p class="event__msg-icon" aria-hidden="true" data-msg-icon>⏳</p>
+              <h3 class="event__msg-title" data-msg-title>Registration opens on 1 Nov — come back to claim <span data-coupon>£22.50</span> off</h3>
+              <p class="event__msg-text" data-msg-text></p>
+            </div>
+
+            <!-- During the event: 2-step registration -->
+            <form class="reg" data-reg-form data-phase-show="during" hidden novalidate>
+              <div class="reg__progress">
+                <p class="reg__step-label" data-reg-label>Step 1 of 2 · Your details</p>
+                <span class="reg__bar" aria-hidden="true"><span class="reg__bar-fill" data-reg-bar></span></span>
+              </div>
+
+              <fieldset class="reg__step" data-reg-step="1">
+                <legend class="visually-hidden">Your details</legend>
+                <div class="field">
+                  <label for="reg-name">Full name</label>
+                  <input class="input" id="reg-name" name="name" type="text" autocomplete="name" maxlength="80" required aria-describedby="reg-name-err">
+                  <p class="field__error" id="reg-name-err" hidden></p>
+                </div>
+                <div class="field">
+                  <label for="reg-email">Email</label>
+                  <input class="input" id="reg-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="120" required aria-describedby="reg-email-err">
+                  <p class="field__error" id="reg-email-err" hidden></p>
+                </div>
+                <fieldset class="field">
+                  <legend class="field__legend">Country</legend>
+                  <div class="seg-radio">
+                    <input type="radio" id="reg-country-uk" name="country" value="UK" aria-describedby="reg-country-err"><label for="reg-country-uk">UK</label>
+                    <input type="radio" id="reg-country-in" name="country" value="India" aria-describedby="reg-country-err"><label for="reg-country-in">India</label>
+                  </div>
+                  <p class="field__error" id="reg-country-err" hidden></p>
+                </fieldset>
+                <div class="reg__row">
+                  <div class="field">
+                    <label for="reg-mobile">Mobile <span class="field__opt">(optional)</span></label>
+                    <input class="input" id="reg-mobile" name="mobile" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" aria-describedby="reg-mobile-err">
+                    <p class="field__error" id="reg-mobile-err" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="reg-city">City <span class="field__opt">(optional)</span></label>
+                    <input class="input" id="reg-city" name="city" type="text" autocomplete="address-level2" maxlength="60">
+                  </div>
+                </div>
+                <button class="btn btn--primary btn--block" type="button" data-reg-next>Continue</button>
+              </fieldset>
+
+              <fieldset class="reg__step" data-reg-step="2" hidden>
+                <legend class="visually-hidden">Toys you like</legend>
+                <fieldset class="field">
+                  <legend class="field__legend">Toy categories you like <span class="field__opt">(pick one or more)</span></legend>
+                  <div class="pick-chips" data-reg-cats></div>
+                  <p class="field__error" id="reg-cats-err" hidden></p>
+                </fieldset>
+                <div class="consent">
+                  <input type="checkbox" id="reg-terms" name="consentTerms" required aria-describedby="reg-terms-err">
+                  <label for="reg-terms">I agree to the <a href="../terms.html" target="_blank" rel="noopener">Terms</a> and <a href="../privacy.html" target="_blank" rel="noopener">Privacy Policy</a></label>
+                  <p class="field__error" id="reg-terms-err" hidden></p>
+                </div>
+                <div class="consent">
+                  <input type="checkbox" id="reg-news" name="consentMarketing">
+                  <label for="reg-news">Send me launch offers and news <span class="field__opt">(optional)</span></label>
+                </div>
+                <!-- Honeypot: invisible to people and screen readers, not focusable, never autofilled; bots fill it in -->
+                <div class="hp" aria-hidden="true"><label for="reg-hp">Leave this field empty</label><input id="reg-hp" type="text" name="hp_check" value="" tabindex="-1" autocomplete="off" data-lpignore="true" data-1p-ignore data-honeypot></div>
+                <div class="reg__actions">
+                  <button class="btn btn--ghost" type="button" data-reg-back>Back</button>
+                  <button class="btn btn--primary reg__submit" type="submit" data-reg-submit>Register &amp; claim <span data-coupon>£22.50</span></button>
+                </div>
+              </fieldset>
+              <p class="form-msg reg__msg" role="status" aria-live="polite" data-reg-msg></p>
+            </form>
+
+            <!-- Success -->
+            <div class="reg-done" data-reg-done hidden tabindex="-1" aria-labelledby="reg-done-title">
+              <p class="reg-done__icon" aria-hidden="true">🎉</p>
+              <h3 class="reg-done__title" id="reg-done-title">You're in!</h3>
+              <p class="reg-done__text"><strong data-coupon>£22.50</strong> will be added to your account at launch.</p>
+              <div class="reg-done__code" data-reg-code hidden>
+                <span class="reg-done__code-label">Your code</span>
+                <strong class="reg-done__code-value" data-reg-code-value></strong>
+                <button class="btn btn--sm btn--ghost" type="button" data-reg-copy>Copy</button>
+              </div>
+              <p class="reg-done__linked" data-reg-linked hidden></p>
+              <p class="demo-flag demo-flag--inline" data-reg-demo hidden>Demo mode — not saved</p>
+              <button class="link-btn" type="button" data-reg-again>Register another email</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== SLIM FOOTER ===== -->
+  <footer class="reg-foot">
+    <div class="container reg-foot__inner">
+      <p class="footer__legal"><a href="../terms.html#offer">Offer terms</a> · <a href="../privacy.html">Privacy Policy</a> · <a href="../index.html">jivora.co.uk</a></p>
+      <p>© 2026 [Company name] · Pre-launch preview — orders open soon.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

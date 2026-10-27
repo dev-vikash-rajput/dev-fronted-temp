@@ -230,7 +230,7 @@
       hp: value("hp_check"),              // honeypot, must be empty
       preview: !!J.previewMode,
       submittedAt: new Date().toISOString(),
-      page: "index.html"
+      page: document.body.getAttribute("data-page") || "index.html"
     };
   }
 

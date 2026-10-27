@@ -5097,6 +5097,36 @@ fieldset.field {
   .legal__toc a:hover { border-color: var(--blue-2); }
 }
 
+/* ===== REGISTER PAGE (register/index.html — short QR landing: slim header + event + slim footer) ===== */
+.page-register main {
+  padding-bottom: var(--block-y);
+}
+
+.reg-head {
+  background: rgba(11, 27, 63, 0.94);
+  border-bottom: 1px solid var(--line);
+}
+
+.reg-head__inner,
+.reg-foot__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  padding-block: 14px;
+}
+
+.reg-foot {
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-size: var(--fs-13);
+}
+
+.reg-foot a {
+  color: var(--muted);
+}
+
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
   html {
