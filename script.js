@@ -2,7 +2,7 @@
    Shop: "Shop by category" (chip tabs filter 10 coloured category bubbles → toys.html?cat=), "Shop by age" tiles,
    segment tiles (live + blurred "coming soon"), Hot Picks grid (brief §14 E-3), popular-picks / under-price rails, Gift Finder quiz, toy grid (age chips, sort, search) and the Instagram tiles.
    Business: wholesale toys row (search turns it into a grid) and the launch-journey timeline.
-   Re-renders when the interface mode or region changes. Shared state and cards come from site.js (window.Jivora). */
+   Re-renders when the interface mode changes. Shared state and cards come from site.js (window.Jivora). */
 (function () {
   "use strict";
 
@@ -186,10 +186,7 @@
     kid: [{ label: "3–5 years", r: [36, 71] }, { label: "6–8 years", r: [72, 107] }],
     teen: [{ label: "9–12 years", r: [108, 155] }, { label: "13+ years", r: [156, 216] }]
   };
-  var GIFT_BUDGET = {
-    IN: [{ label: "Under ₹500", max: 500 }, { label: "₹500–₹1,000", min: 500, max: 1000 }, { label: "₹1,000+", min: 1000 }, { label: "Any budget" }],
-    UK: [{ label: "Under £8", max: 8 }, { label: "£8–£15", min: 8, max: 15 }, { label: "£15+", min: 15 }, { label: "Any budget" }]
-  };
+  var GIFT_BUDGET = [{ label: "Under £8", max: 8 }, { label: "£8–£15", min: 8, max: 15 }, { label: "£15+", min: 15 }, { label: "Any budget" }];
   var gift = { step: 0, who: null, age: null, budget: null };
   var giftPanel = document.querySelector("[data-gift]");
   var giftResults = document.querySelector("[data-gift-results]");
@@ -203,7 +200,7 @@
 
   function giftMatches() {
     var range = GIFT_AGES[GIFT_WHO[gift.who].id][gift.age].r;
-    var budget = GIFT_BUDGET[J.state.region][gift.budget];
+    var budget = GIFT_BUDGET[gift.budget];
     var byAge = J.products.filter(function (p) { return p.ages[0] <= range[1] && p.ages[1] >= range[0]; });
     var inBudget = byAge.filter(function (p) {
       var price = J.priceOf(p);
@@ -221,7 +218,7 @@
       html = '<p class="gift__q" id="gift-q">How old?</p>' + giftChips(GIFT_AGES[GIFT_WHO[gift.who].id], "age");
     } else {
       html = '<p class="gift__q" id="gift-q">' + (gift.step === 2 ? "What’s your budget?" : "Your picks") + "</p>" +
-        giftChips(GIFT_BUDGET[J.state.region], "budget");
+        giftChips(GIFT_BUDGET, "budget");
     }
     var back = gift.step > 0 ? '<button class="link-btn gift__back" type="button" data-gift-back>Back</button>' : "";
     var restart = gift.step > 0 ? '<button class="btn btn--sm btn--dark" type="button" data-gift-restart>Start over</button>' : "";
@@ -250,7 +247,7 @@
     var m = giftMatches();
     var who = GIFT_WHO[gift.who].label.toLowerCase();
     var age = GIFT_AGES[GIFT_WHO[gift.who].id][gift.age].label;
-    var budget = GIFT_BUDGET[J.state.region][gift.budget].label;
+    var budget = GIFT_BUDGET[gift.budget].label;
     var items = m.exact.length ? m.exact : m.close;
     var head = m.exact.length
       ? m.exact.length + " gift idea" + (m.exact.length === 1 ? "" : "s") + " for a " + who + " (" + age + "), " + budget.toLowerCase()
@@ -403,9 +400,9 @@
   });
   window.addEventListener("resize", updateRails);
 
-  // ===== Re-render on mode / region / cross-tab changes =====
+  // ===== Re-render on mode / cross-tab changes =====
   J.onChange(function (what) {
-    if (what === "mode" || what === "region" || what === "sync") render();
+    if (what === "mode" || what === "sync") render();
   });
 
   syncFilterUI();

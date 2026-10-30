@@ -462,6 +462,17 @@ html[data-mode="business"] [data-for="shop"] {
   letter-spacing: 0.06em;
 }
 
+/* Client 29 Oct: extra space between "I" and "V". Fredoka's kerning pulls the V under the I ("JVORA"), so kerning is off
+   for the name and the wordmark adds a small gap (the name stays JIVORA; role="img" + aria-label read it as one word) */
+.logo__word,
+.brand-name {
+  font-kerning: none;
+}
+
+.logo__gap {
+  margin-left: 0.08em;
+}
+
 .search {
   position: relative;
   display: flex;
@@ -506,20 +517,6 @@ html[data-mode="business"] [data-for="shop"] {
   align-items: center;
   justify-content: flex-end;
   gap: 2px;
-}
-
-.region {
-  min-height: 44px;
-  max-width: 104px;
-  padding: 0 28px 0 12px;
-  border: 1.5px solid var(--line-2);
-  border-radius: var(--r-pill);
-  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23AEBBDA' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center;
-  font-size: var(--fs-16);
-  font-weight: 600;
-  -webkit-appearance: none;
-  appearance: none;
-  margin-right: 4px;
 }
 
 .rfq-btn {
@@ -599,12 +596,6 @@ html[data-mode="business"] .mode-toggle__btn[aria-pressed="true"] {
 
 .mode-toggle--block {
   margin-bottom: var(--s-4);
-}
-
-.region--block {
-  width: 100%;
-  max-width: none;
-  margin: 0;
 }
 
 /* Category / business nav strip — scrolls sideways inside itself on small screens */
@@ -728,9 +719,8 @@ html[data-mode="business"] .mode-toggle__btn[aria-pressed="true"] {
   animation: pulse 2.4s ease-in-out infinite;
 }
 
-/* Below 1024px the full toggle and the region select live in the drawer / catnav pill */
-.header__inner > .mode-toggle,
-.header__actions > .region {
+/* Below 1024px the full toggle lives in the drawer / catnav pill */
+.header__inner > .mode-toggle {
   display: none;
 }
 
@@ -766,10 +756,6 @@ html[data-mode="business"] .mode-toggle__btn[aria-pressed="true"] {
   .header__inner > .mode-toggle {
     display: grid;
     width: 260px;
-  }
-
-  .header__actions > .region {
-    display: block;
   }
 
   .search {
@@ -4290,7 +4276,7 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
   line-height: 1.05;
 }
 
-.event__amount {
+.event__highlight {
   display: inline-block;
   padding: 0 10px;
   border-radius: 14px;
@@ -4434,10 +4420,6 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
   line-height: 1.2;
 }
 
-.event__msg-title [data-coupon] {
-  color: var(--toy-yellow);
-}
-
 .event__msg-text {
   color: var(--muted);
   font-size: var(--fs-14);
@@ -4460,7 +4442,7 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
   text-transform: uppercase;
 }
 
-.event[data-phase="after"] .event__amount {
+.event[data-phase="after"] .event__highlight {
   background: var(--surface-3);
   color: var(--text);
 }

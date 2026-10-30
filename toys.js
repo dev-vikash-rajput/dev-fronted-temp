@@ -11,11 +11,8 @@
   var esc = J.escapeHTML;
 
   var SORTS = ["featured", "price-asc", "price-desc", "newest"];
-  // Price ranges use the retail price; labels and limits follow the region (no conversion rate, D14)
-  var PRICES = {
-    IN: [{ id: "budget", label: "Under ₹500", max: 500 }, { id: "under", label: "Under ₹999", max: 999 }, { id: "premium", label: "₹1,000 and above", min: 1000 }],
-    UK: [{ id: "budget", label: "Under £7", max: 7 }, { id: "under", label: "Under £10", max: 10 }, { id: "premium", label: "£10 and above", min: 10 }]
-  };
+  // Price ranges use the retail price in £
+  var PRICES = [{ id: "budget", label: "Under £7", max: 7 }, { id: "under", label: "Under £10", max: 10 }, { id: "premium", label: "£10 and above", min: 10 }];
   var ALL_IMAGE = "kids-stacking-blocks.jpg";
 
   var els = {
@@ -54,7 +51,7 @@
       return ageIds.indexOf(a) !== -1 && arr.indexOf(a) === i;
     });
     var price = params.get("price") || "";
-    next.price = PRICES.IN.some(function (p) { return p.id === price; }) ? price : "";
+    next.price = PRICES.some(function (p) { return p.id === price; }) ? price : "";
     next.stock = params.get("stock") === "1";
     next.fresh = params.get("new") === "1";
     next.popular = params.get("popular") === "1";
@@ -91,7 +88,7 @@
 
   // ===== Filtering + sorting =====
   function priceRange(id) {
-    return PRICES[J.state.region].filter(function (p) { return p.id === id; })[0];
+    return PRICES.filter(function (p) { return p.id === id; })[0];
   }
 
   function inPrice(p, range) {
@@ -199,7 +196,7 @@
       return option("checkbox", "age", a.id, a.label, state.ages.indexOf(a.id) !== -1, countBy("age", function (p) { return J.inAge(p, a.id); }));
     }).join("");
     var priceOpts = option("radio", "price", "", "Any price", !state.price, null) +
-      PRICES[J.state.region].map(function (r) {
+      PRICES.map(function (r) {
         return option("radio", "price", r.id, r.label, state.price === r.id, countBy("price", function (p) { return inPrice(p, r); }));
       }).join("");
     var showOpts = option("checkbox", "stock", "1", "In stock", state.stock, countBy("stock", J.inStock)) +
@@ -402,7 +399,7 @@
   });
 
   J.onChange(function (what) {
-    if (what === "mode" || what === "region" || what === "sync") update(false);
+    if (what === "mode" || what === "sync") update(false);
   });
 
   state = readUrl(window.location.search);

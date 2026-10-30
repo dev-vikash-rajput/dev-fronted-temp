@@ -1,10 +1,11 @@
-/* Sample 2 — homepage pre-launch event "Register & get £22.50 off" (brief §14 E-1, E-9 – E-11).
+/* Sample 2 — pre-launch IFB Diwali Event "Your JIVORA Gift Coupon" (brief §14 E-1, E-9 – E-11; §15 Decisions 29 Oct).
+   Only for IFB Diwali Event participants; the coupon value is never shown on the site.
    Phase (before / during / after) and the countdown come from event-config.js via site.js (J.eventInfo, UK time).
    The timer counts to the fixed start / end moments, so it never resets on refresh or for a new visitor, and switches
    phase on its own when a boundary passes. Fake urgency is avoided: no "only X left", no restarting timers.
    Before / after the event the panel shows a message only — there are no reminder / notify forms.
-   Form: 2 steps — required full name, email, country; optional mobile, city → required toy categories (≥1) and
-   Terms/Privacy consent, optional marketing consent; honeypot; client-side validation; POST to FORM_ENDPOINT as
+   Form: 2 steps — required full name, email, country; optional mobile, city → required toy categories (≥1),
+   "I am attending the IFB Diwali Event" (sent as ifb_participant) and Terms/Privacy consent, optional marketing consent; honeypot; client-side validation; POST to FORM_ENDPOINT as
    text/plain JSON (J.sendForm). Empty endpoint = "Demo mode — not saved".
    ?preview=event / ?preview=after (J.previewMode): simulated state + "Preview" badge; a submit is only sent when
    FORM_ENDPOINT is set, otherwise it shows "Preview — not saved". With ?preview=event&testkey=… the key goes along as
@@ -37,20 +38,21 @@
   var COPY = {
     before: {
       label: "Event starts in",
-      text: function () { return 'Register on event day and <span data-coupon></span> is added to your JIVORA account when orders open.'; },
+      // Client wording (29 Oct) — update the date here if EVENT_START moves
+      text: function () { return "Exclusive for IFB Diwali Event participants. Register on 1 November to receive your Gift Coupon, redeemable when JIVORA officially launches."; },
       icon: "⏳",
-      title: function (info) { return "Registration opens on " + opensOn(info) + ' — come back to claim <span data-coupon></span> off'; },
+      title: function (info) { return "Registration opens on " + opensOn(info) + " — come back to claim your Gift Coupon"; },
       body: "The form opens here when the countdown ends."
     },
     during: {
-      label: "Offer ends in",
-      text: function () { return 'Registration is open. Sign up today and <span data-coupon></span> is added to your JIVORA account at launch.'; }
+      label: "Registration closes in",
+      text: function () { return "Exclusive for IFB Diwali Event participants. Register today to receive your Gift Coupon, redeemable when JIVORA officially launches."; }
     },
     after: {
-      text: function () { return "Thanks to everyone who registered. The store opens soon."; },
+      text: function () { return "Thanks to everyone at the IFB Diwali Event who registered. The store opens soon."; },
       icon: "🎈",
-      title: function () { return "This offer has ended"; },
-      body: "Registered? Your credit is added to your account at launch."
+      title: function () { return "Registration has closed"; },
+      body: "Registered? Your JIVORA Gift Coupon will be shared with you before launch."
     }
   };
 
@@ -59,32 +61,26 @@
     phase = info.phase;
     box.setAttribute("data-phase", phase);
     var copy = COPY[phase];
-    box.querySelector("[data-event-text]").innerHTML = copy.text(info);
+    box.querySelector("[data-event-text]").textContent = copy.text(info);
     if (copy.label) box.querySelector("[data-timer-label]").textContent = copy.label;
     if (copy.title) {
       box.querySelector("[data-msg-icon]").textContent = copy.icon;
-      box.querySelector("[data-msg-title]").innerHTML = copy.title(info);
+      box.querySelector("[data-msg-title]").textContent = copy.title(info);
       box.querySelector("[data-msg-text]").textContent = copy.body;
     }
     box.querySelectorAll("[data-phase-show]").forEach(function (el) { el.hidden = el.getAttribute("data-phase-show") !== phase; });
     box.querySelectorAll("[data-phase-hide]").forEach(function (el) { el.hidden = el.getAttribute("data-phase-hide") === phase; });
-    // The form only exists during the event; a finished registration keeps its success panel until the offer ends
+    // The form only exists during the event; a finished registration keeps its success panel until registration closes
     if (phase !== "during") {
       done.hidden = true;
     } else if (!done.hidden) {
       form.hidden = true;
     }
     var when = box.querySelector("[data-event-when]");
-    when.textContent = phase === "before"
-      ? J.ukStartLabel(info.start) + " (UK time)"
-      : phase === "during"
-        ? "Ends " + J.ukEndLabel(info.end) + " (UK time)"
-        : "Ended " + J.ukDateOnly(info.end) + " (UK time)";
-    fillCoupon();
-  }
-
-  function fillCoupon() {
-    box.querySelectorAll("[data-coupon]").forEach(function (el) { el.textContent = J.couponLabel(); });
+    // "Sunday 1 November 2026 · 00:00–23:59 (UK time)" before and during; "Ended Sunday 1 November 2026 (UK time)" after
+    when.textContent = phase === "after"
+      ? "Ended " + J.ukLongDate(info.end) + " (UK time)"
+      : J.ukWindowLabel(info.start, info.end) + " (UK time)";
   }
 
   function renderClock(info) {
@@ -179,9 +175,11 @@
   function validateStep2() {
     var cats = checkedValues("categories").length > 0;
     var okCats = setError(null, "reg-cats-err", cats ? "" : "Pick at least one toy category.");
+    var ifb = form.elements.ifbParticipant.checked;
+    var okIfb = setError(form.elements.ifbParticipant, "reg-ifb-err", ifb ? "" : "The Gift Coupon is only for IFB Diwali Event participants. Please confirm you are attending.");
     var terms = form.elements.consentTerms.checked;
     var okTerms = setError(form.elements.consentTerms, "reg-terms-err", terms ? "" : "Please agree to the Terms and Privacy Policy to register.");
-    return okCats && okTerms;
+    return okCats && okIfb && okTerms;
   }
 
   function focusFirstError() {
@@ -201,8 +199,8 @@
     if (step === 1) validateStep1(); else validateStep2();
   });
   form.addEventListener("change", function (e) {
-    if (e.target.name === "categories" || e.target.name === "consentTerms" || e.target.name === "country") {
-      var errId = { categories: "reg-cats-err", consentTerms: "reg-terms-err", country: "reg-country-err" }[e.target.name];
+    var errId = { categories: "reg-cats-err", ifbParticipant: "reg-ifb-err", consentTerms: "reg-terms-err", country: "reg-country-err" }[e.target.name];
+    if (errId) {
       if (!document.getElementById(errId).hidden) { if (step === 1) validateStep1(); else validateStep2(); }
     }
   });
@@ -223,10 +221,9 @@
       country: checkedValues("country")[0] || "",
       city: value("city"),
       categories: checkedValues("categories"),
+      ifb_participant: form.elements.ifbParticipant.checked,
       consentTerms: form.elements.consentTerms.checked,
       consentMarketing: form.elements.consentMarketing.checked,
-      region: J.state.region,
-      coupon: J.couponLabel(),
       hp: value("hp_check"),              // honeypot, must be empty
       preview: !!J.previewMode,
       submittedAt: new Date().toISOString(),
@@ -235,8 +232,8 @@
   }
 
   var ERRORS = {
-    duplicate: "This email is already registered — your offer is already linked to it.",
-    closed: "Registration is closed — the offer window has ended.",
+    duplicate: "This email is already registered — one Gift Coupon per person and email.",
+    closed: "Registration is closed — the IFB Diwali Event registration window has ended.",
     invalid: "Some details look wrong. Please check the form and try again."
   };
 
@@ -291,16 +288,17 @@
     var code = res && typeof res.code === "string" && /^JIV-[A-Z0-9]{6}$/.test(res.code) ? res.code : "";
     done.querySelector("[data-reg-code]").hidden = !code;
     done.querySelector("[data-reg-code-value]").textContent = code;
+    // With a code from the Apps Script the code is the message; otherwise the coupon is shared before launch
+    done.querySelector("[data-reg-text]").hidden = !!code;
     var linked = done.querySelector("[data-reg-linked]");
     linked.hidden = !!code;
-    linked.textContent = code ? "" : "Your offer is linked to " + email + ". Sign up with this email at launch and it's applied automatically.";
+    linked.textContent = code ? "" : "We'll send it to " + email + ".";
     var flag = done.querySelector("[data-reg-demo]");
     flag.textContent = res && res.test ? "Test entry — saved in the Test tab"
       : res && res.previewOnly ? "Preview — not saved" : "Demo mode — not saved";
     flag.hidden = !(res && (res.demo || res.previewOnly || res.test));
     form.hidden = true;
     done.hidden = false;
-    fillCoupon();
     done.focus();
     if (!silent) confetti();
   }
@@ -349,9 +347,9 @@
   }
 
   // ===== Init =====
+  // UK is pre-selected (prices are in £ only); India stays one tap away
   function preselectCountry() {
-    var id = J.state.region === "UK" ? "reg-country-uk" : "reg-country-in";
-    document.getElementById(id).checked = true;
+    document.getElementById("reg-country-uk").checked = true;
   }
 
   // Small "Demo mode" flag on localhost; away from localhost the bigger preview banner (site.js) replaces it
@@ -361,8 +359,4 @@
   showStep(1, false);
   update();
   tick = setInterval(update, 1000);
-
-  J.onChange(function (what) {
-    if (what === "region") fillCoupon();
-  });
 })();

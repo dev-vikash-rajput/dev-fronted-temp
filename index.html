@@ -5,7 +5,7 @@
   product rows and rails, no full-screen "slide" sections (client: "presentation jaisa lag raha hai").
 
   Implements brief items (project brief §11 "Decisions 26 Oct"):
-    D1  Markets India + UK only (no EU, no €)          D2  Region dropdown India ₹ / UK £
+    D1  Markets India + UK only (no EU, no €)          D2  (removed 29 Oct — £ prices only, no region dropdown)
     D3  Client's segments: Toys, FMCG, Accessories, Apparel (no Footwear)
     D4  Pre-launch: only Toys live; other 3 = "Coming soon" (no notify forms since 27 Oct, brief §14 E-9)
     D5  Dark theme kept, presentation feel removed     D6  Two interfaces: "Shop" | "For Business" (?mode=business)
@@ -15,8 +15,8 @@
     D9  Ethical marketplace block, no ratings or testimonials
     D10 Temporary Pexels / Unsplash toy photos (assets/toys/CREDITS.md)
     D11 Pre-launch announcement, demo cart with "Orders opening soon", no date shown
-    D12 Default region India ₹, choice saved     D13 "Sold by Jivora" / "Verified partner seller", no sourcing country
-    D14 Separate ₹ and £ prices and wholesale tiers (no conversion rate)
+    D12 (removed 29 Oct)                          D13 "Sold by Jivora" / "Verified partner seller", no sourcing country
+    D14 (29 Oct) All retail prices and wholesale tiers in £ only
 
   Playful shop mode 27 Oct (brief §13, C6 — reference truetoys.co.uk, ideas only): Fredoka headings in Shop mode, toy palette
     accents, USP bar, warm gradient hero with stickers, "Shop by category" (chip tabs + coloured bubbles), "Shop by age" tiles.
@@ -24,12 +24,14 @@
     category listing page toys.html?cat=<slug>, "Follow us on Instagram" (@toyandjoyindore, opens in a new tab),
     Instagram + YouTube icons in the footer.
 
-  Decisions 27 Oct (brief §14, E-1 – E-4): pre-launch event "Register & get £22.50 off" (event-config.js; honest UK-time
+  Decisions 27 Oct (brief §14, E-1 – E-4): pre-launch registration event (event-config.js; honest UK-time
     countdown before / during / after, 2-step registration form → Google Apps Script, confetti + code on success, "Demo mode —
     not saved" while FORM_ENDPOINT is empty, "Preview — registrations are not saved yet" banner off localhost, ?preview=event /
-    ?preview=after review links; no notify / reminder forms anywhere; event.js), header / USP / drawer "Register for £22.50 off" links, "Hot Picks 🔥"
+    ?preview=after review links; no notify / reminder forms anywhere; event.js), header / USP / drawer event links, "Hot Picks 🔥"
     (products.js hot: true — editorial, no sales claim), "Shop & Save" Price Promise banner + card badges (priceMatch: true),
     terms.html + privacy.html, legal footer placeholders, pre-launch noindex (event-config.js NOINDEX).
+  Decisions 29 Oct (brief §15): the event is the IFB Diwali Event "Your JIVORA Gift Coupon" (no amount shown, required
+    "I am attending the IFB Diwali Event" checkbox), £ prices only (no region dropdown), JI–VORA wordmark spacing (.logo__gap).
 
   Data: products.js (all dummy). Shared behaviour: site.js. Homepage behaviour: script.js. Listing page: toys.js.
   Enhancements 26 Oct (brief §12, E1–E8): story bubbles, Gift Finder, photo crossfade + quick view + heart pop,
@@ -55,10 +57,10 @@
   <link rel="stylesheet" href="./style.css">
   <!-- Event settings (one place for all pages) -->
   <script src="./event-config.js"></script>
-  <!-- Mode + region are set before first paint so the page never flashes the wrong interface -->
+  <!-- Mode is set before first paint so the page never flashes the wrong interface -->
   <script>
     (function () {
-      var d = document.documentElement, mode = null, region = null;
+      var d = document.documentElement, mode = null;
       d.classList.add("js");
       try {
         var params = new URLSearchParams(window.location.search);
@@ -69,9 +71,7 @@
       if (mode !== "business" && mode !== "shop") {
         try { mode = window.localStorage.getItem("jivora-s2-mode"); } catch (e) {}
       }
-      try { region = window.localStorage.getItem("jivora-s2-region"); } catch (e) {}
       d.setAttribute("data-mode", mode === "business" ? "business" : "shop");
-      d.setAttribute("data-region", region === "UK" ? "UK" : "IN");
     })();
   </script>
   <script src="./products.js" defer></script>
@@ -88,7 +88,7 @@
       <span class="announcement__dot" aria-hidden="true"></span>
       <span data-for="shop">Pre-launch — toys go live first. Orders open soon.</span>
       <span data-for="business">Pre-launch — business enquiries are open. Orders open soon.</span>
-      <a class="announcement__link" href="#event" data-for="shop" data-event-link>Get <span data-coupon>£22.50</span> off</a>
+      <a class="announcement__link" href="#event" data-for="shop" data-event-link>IFB Diwali: claim your Gift Coupon</a>
       <a class="announcement__link" href="#enquire" data-for="business">Talk to us</a>
     </p>
   </div>
@@ -97,7 +97,7 @@
   <div class="usp" aria-label="Why shop with JIVORA">
     <div class="usp__track">
       <ul class="usp__list">
-        <li class="usp__item usp__item--offer" data-event-link><a class="usp__link" href="#event"><span class="usp__icon tone-pink" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3 9h18M12 9v11M12 9c-1.5-3-5-3.5-5-1.2C7 9 9.5 9 12 9zm0 0c1.5-3 5-3.5 5-1.2C17 9 14.5 9 12 9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>Register for <span data-coupon>£22.50</span> off</a></li>
+        <li class="usp__item usp__item--offer" data-event-link><a class="usp__link" href="#event"><span class="usp__icon tone-pink" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3 9h18M12 9v11M12 9c-1.5-3-5-3.5-5-1.2C7 9 9.5 9 12 9zm0 0c1.5-3 5-3.5 5-1.2C17 9 14.5 9 12 9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>IFB Diwali: claim your Gift Coupon</a></li>
         <li class="usp__item"><span class="usp__icon tone-green" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.4-3 8.2-7 9.5-4-1.3-7-5.1-7-9.5V6l7-3z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4L15.5 9.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Verified sellers only</li>
         <li class="usp__item"><span class="usp__icon tone-yellow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M4 12.5V5a1 1 0 0 1 1-1h7.5L20 11.5 12.5 19 4 12.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><circle cx="8.5" cy="8.5" r="1.6" fill="currentColor"/></svg></span>Age-labelled toys</li>
         <li class="usp__item"><span class="usp__icon tone-sky" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.5 5.3 3.5 8.5s-1.1 6.1-3.5 8.5c-2.4-2.4-3.5-5.3-3.5-8.5S9.6 5.9 12 3.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>India &amp; UK</li>
@@ -115,7 +115,7 @@
       </button>
 
       <a class="logo" href="index.html" data-mode-link aria-label="JIVORA home">
-        <span class="logo__word">JIVORA</span>
+        <span class="logo__word" role="img" aria-label="JIVORA">JI<span class="logo__gap">VORA</span></span>
       </a>
 
       <form class="search" role="search" action="index.html" data-search>
@@ -133,11 +133,6 @@
       </div>
 
       <div class="header__actions">
-        <label class="visually-hidden" for="region">Region and currency</label>
-        <select class="region" id="region" data-region-select>
-          <option value="IN">India ₹</option>
-          <option value="UK">UK £</option>
-        </select>
         <button class="icon-btn" type="button" data-open-sheet="wishlist" data-for="shop" aria-label="Wishlist, 0 items">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
           <span class="count" data-count="wishlist" aria-hidden="true">0</span>
@@ -168,14 +163,14 @@
           <div class="megamenu__panel" id="megamenu-panel" data-megamenu-panel></div>
         </div>
         <ul class="catnav__list" data-for="shop">
-          <li data-event-link><a class="catnav__link catnav__link--offer" href="#event">Get <span data-coupon>£22.50</span> off<span class="visually-hidden"> — register for the pre-launch offer</span></a></li>
+          <li data-event-link><a class="catnav__link catnav__link--offer" href="#event">IFB Diwali: claim your Gift Coupon</a></li>
           <li><a class="catnav__link" href="toys.html" data-mode-link data-catnav="">All toys</a></li>
           <li><a class="catnav__link" href="toys.html?age=0-2" data-mode-link data-catnav="age=0-2">0–2 yrs</a></li>
           <li><a class="catnav__link" href="toys.html?age=3-5" data-mode-link data-catnav="age=3-5">3–5 yrs</a></li>
           <li><a class="catnav__link" href="toys.html?age=6-8" data-mode-link data-catnav="age=6-8">6–8 yrs</a></li>
           <li><a class="catnav__link" href="toys.html?age=9%2B" data-mode-link data-catnav="age=9+">9+ yrs</a></li>
           <li><a class="catnav__link" href="toys.html?popular=1" data-mode-link data-catnav="popular=1">Popular picks</a></li>
-          <li><a class="catnav__link" href="toys.html?price=under" data-mode-link data-catnav="price=under" data-under-label>Under ₹999</a></li>
+          <li><a class="catnav__link" href="toys.html?price=under" data-mode-link data-catnav="price=under" data-under-label>Under £10</a></li>
           <li class="catnav__sep" aria-hidden="true"></li>
           <li><button class="catnav__link" type="button" data-soon="fmcg">FMCG <span class="soon-pill">Soon</span></button></li>
           <li><button class="catnav__link" type="button" data-soon="accessories">Accessories <span class="soon-pill">Soon</span></button></li>
@@ -203,11 +198,6 @@
         </button>
       </div>
       <div class="drawer__body">
-        <label class="drawer__label" for="drawer-region">Region &amp; currency</label>
-        <select class="region region--block" id="drawer-region" data-region-select>
-          <option value="IN">India ₹</option>
-          <option value="UK">UK £</option>
-        </select>
         <p class="drawer__label">Interface</p>
         <div class="mode-toggle mode-toggle--block" role="group" aria-label="Choose interface">
           <span class="mode-toggle__thumb" aria-hidden="true"></span>
@@ -215,9 +205,9 @@
           <button class="mode-toggle__btn" type="button" data-set-mode="business" aria-pressed="false">For Business</button>
         </div>
         <ul class="drawer__list" data-for="shop">
-          <li data-event-link><a class="drawer__offer" href="index.html#event" data-go-mode="shop">Register for <span data-coupon>£22.50</span> off</a></li>
+          <li data-event-link><a class="drawer__offer" href="index.html#event" data-go-mode="shop">IFB Diwali: claim your Gift Coupon</a></li>
           <li><a href="#popular" data-mode-link>Popular picks</a></li>
-          <li><a href="toys.html?price=under" data-mode-link data-under-label>Under ₹999</a></li>
+          <li><a href="toys.html?price=under" data-mode-link data-under-label>Under £10</a></li>
         </ul>
         <p class="drawer__label" data-for="shop">Shop by age</p>
         <ul class="drawer__list" data-for="shop" data-drawer-ages></ul>
@@ -252,11 +242,11 @@
             <span class="sticker sticker--pink">Pre-launch!</span>
             <span class="sticker sticker--sky">Toys first</span>
           </p>
-          <h1 class="promo__title" id="shop-title">The JIVORA toy store is opening.</h1>
+          <h1 class="promo__title" id="shop-title">The <span class="brand-name">JIVORA</span> toy store is opening.</h1>
           <p class="promo__text">Wooden classics, cuddly plush, puzzles and outdoor fun — age-labelled and from verified sellers only. Browse now, orders open soon.</p>
           <div class="promo__ctas">
             <a class="btn btn--dark" href="toys.html" data-mode-link>Shop all toys</a>
-            <a class="btn btn--line-dark" href="#event" data-event-link>Get <span data-coupon>£22.50</span> off</a>
+            <a class="btn btn--line-dark" href="#event" data-event-link>IFB Diwali: claim your Gift Coupon</a>
           </div>
         </div>
         <div class="fun-hero__media">
@@ -269,7 +259,7 @@
       </div>
       <a class="promo__side promo__side--a" href="toys.html?price=under" data-mode-link>
         <img src="assets/toys/rainbow-xylophone.jpg" alt="" width="800" height="533" loading="lazy">
-        <span class="promo__side-text"><span class="promo__side-kicker">Pocket-money picks</span><span class="promo__side-title" data-under-label>Under ₹999</span></span>
+        <span class="promo__side-text"><span class="promo__side-kicker">Pocket-money picks</span><span class="promo__side-title" data-under-label>Under £10</span></span>
       </a>
       <a class="promo__side promo__side--b" href="#popular">
         <img src="assets/toys/teddy-bear.jpg" alt="" width="533" height="800" loading="lazy">
@@ -277,9 +267,9 @@
       </a>
     </section>
 
-    <!-- ===== PRE-LAUNCH EVENT: "Register & get £22.50 off" (brief §14 E-1, E-9 – E-11) =====
+    <!-- ===== PRE-LAUNCH EVENT: IFB Diwali Event "Your JIVORA Gift Coupon" (brief §14 E-1, E-9 – E-11, Decisions 29 Oct) =====
          Phase comes from event-config.js (UK time): before = countdown to start + "Registration opens on 1 Nov" message;
-         during = countdown to end + registration form; after = "This offer has ended". No reminder / notify forms.
+         during = countdown to end + registration form; after = "Registration has closed". The coupon value is never shown. No reminder / notify forms.
          The countdown counts to fixed moments, so it never resets on refresh or for a new visitor.
          ?preview=event shows the "during" state (form open) and ?preview=after the ended state, with a "Preview" badge
          — for client review only; without the parameter the real dates decide. Filled and switched by event.js. -->
@@ -288,9 +278,9 @@
         <div class="event" data-event data-phase="before">
           <p class="preview-badge" data-preview-badge hidden>Preview</p>
           <div class="event__intro">
-            <p class="event__stickers"><span class="sticker sticker--yellow">Pre-launch event</span><span class="sticker sticker--pink" data-phase-show="during" hidden>Live now</span></p>
-            <h2 class="event__title" id="event-title">Register &amp; get <span class="event__amount" data-coupon>£22.50</span> off</h2>
-            <p class="event__text" data-event-text>Register on event day and <span data-coupon>£22.50</span> is added to your JIVORA account when orders open.</p>
+            <p class="event__stickers"><span class="sticker sticker--yellow">IFB Diwali Event</span><span class="sticker sticker--pink" data-phase-show="during" hidden>Live now</span></p>
+            <h2 class="event__title" id="event-title">Your <span class="brand-name">JIVORA</span> <span class="event__highlight">Gift Coupon</span></h2>
+            <p class="event__text" data-event-text>Exclusive for IFB Diwali Event participants. Register on 1 November to receive your Gift Coupon, redeemable when JIVORA officially launches.</p>
 
             <div class="event__clock" data-phase-hide="after">
               <p class="event__clock-label" data-timer-label>Event starts in</p>
@@ -301,15 +291,15 @@
                 <span class="timer__unit" data-unit="s"><span class="timer__num" data-num="s">00</span><span class="timer__lbl">secs</span></span>
               </div>
             </div>
-            <p class="event__ended" data-phase-show="after" hidden>This offer has ended</p>
+            <p class="event__ended" data-phase-show="after" hidden>Registration has closed</p>
             <p class="event__when" data-event-when></p>
 
             <ul class="event__points" data-phase-hide="after">
-              <li><span data-coupon>£22.50</span> added to your JIVORA account at launch</li>
-              <li>One registration per email</li>
+              <li>For IFB Diwali Event participants</li>
+              <li>One Gift Coupon per person and email</li>
               <li>Takes about a minute</li>
             </ul>
-            <p class="event__links"><a href="terms.html#offer">Offer terms</a><span aria-hidden="true"> · </span><a href="privacy.html">Privacy Policy</a></p>
+            <p class="event__links"><a href="terms.html#offer">Gift Coupon terms</a><span aria-hidden="true"> · </span><a href="privacy.html">Privacy Policy</a></p>
           </div>
 
           <div class="event__panel">
@@ -320,7 +310,7 @@
             <!-- Before / after the event: message only (no forms) -->
             <div class="event__msg" data-phase-hide="during">
               <p class="event__msg-icon" aria-hidden="true" data-msg-icon>⏳</p>
-              <h3 class="event__msg-title" data-msg-title>Registration opens on 1 Nov — come back to claim <span data-coupon>£22.50</span> off</h3>
+              <h3 class="event__msg-title" data-msg-title>Registration opens on 1 Nov — come back to claim your Gift Coupon</h3>
               <p class="event__msg-text" data-msg-text></p>
             </div>
 
@@ -373,6 +363,11 @@
                   <p class="field__error" id="reg-cats-err" hidden></p>
                 </fieldset>
                 <div class="consent">
+                  <input type="checkbox" id="reg-ifb" name="ifbParticipant" required aria-describedby="reg-ifb-err">
+                  <label for="reg-ifb">I am attending the IFB Diwali Event</label>
+                  <p class="field__error" id="reg-ifb-err" hidden></p>
+                </div>
+                <div class="consent">
                   <input type="checkbox" id="reg-terms" name="consentTerms" required aria-describedby="reg-terms-err">
                   <label for="reg-terms">I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a></label>
                   <p class="field__error" id="reg-terms-err" hidden></p>
@@ -385,7 +380,7 @@
                 <div class="hp" aria-hidden="true"><label for="reg-hp">Leave this field empty</label><input id="reg-hp" type="text" name="hp_check" value="" tabindex="-1" autocomplete="off" data-lpignore="true" data-1p-ignore data-honeypot></div>
                 <div class="reg__actions">
                   <button class="btn btn--ghost" type="button" data-reg-back>Back</button>
-                  <button class="btn btn--primary reg__submit" type="submit" data-reg-submit>Register &amp; claim <span data-coupon>£22.50</span></button>
+                  <button class="btn btn--primary reg__submit" type="submit" data-reg-submit>Claim my Gift Coupon</button>
                 </div>
               </fieldset>
               <p class="form-msg reg__msg" role="status" aria-live="polite" data-reg-msg></p>
@@ -394,10 +389,10 @@
             <!-- Success -->
             <div class="reg-done" data-reg-done hidden tabindex="-1" aria-labelledby="reg-done-title">
               <p class="reg-done__icon" aria-hidden="true">🎉</p>
-              <h3 class="reg-done__title" id="reg-done-title">You're in!</h3>
-              <p class="reg-done__text"><strong data-coupon>£22.50</strong> will be added to your account at launch.</p>
+              <h3 class="reg-done__title" id="reg-done-title">You're registered!</h3>
+              <p class="reg-done__text" data-reg-text>Your JIVORA Gift Coupon will be shared with you before launch.</p>
               <div class="reg-done__code" data-reg-code hidden>
-                <span class="reg-done__code-label">Your code</span>
+                <span class="reg-done__code-label">Your coupon code:</span>
                 <strong class="reg-done__code-value" data-reg-code-value></strong>
                 <button class="btn btn--sm btn--ghost" type="button" data-reg-copy>Copy</button>
               </div>
@@ -546,11 +541,11 @@
       </div>
     </section>
 
-    <!-- ===== UNDER ₹999 / £10 RAIL ===== -->
+    <!-- ===== UNDER £10 RAIL ===== -->
     <section class="block" id="under" data-for="shop" aria-labelledby="under-title">
       <div class="container">
         <div class="block__head">
-          <h2 class="block__title" id="under-title" data-under-label>Under ₹999</h2>
+          <h2 class="block__title" id="under-title" data-under-label>Under £10</h2>
           <div class="block__tools">
             <a class="block__link" href="toys.html?price=under" data-mode-link>View all</a>
             <div class="rail-nav" data-rail-nav="under">
@@ -755,7 +750,7 @@
     <div class="container footer__inner">
       <div class="footer__brand">
         <a class="logo" href="index.html" data-mode-link aria-label="JIVORA home">
-          <span class="logo__word">JIVORA</span>
+          <span class="logo__word" role="img" aria-label="JIVORA">JI<span class="logo__gap">VORA</span></span>
         </a>
         <p>An ethical marketplace for India and the UK. Pre-launch preview — orders open soon.</p>
         <ul class="social" aria-label="Jivora on social media">

@@ -1,17 +1,17 @@
 /* Sample 2 — shared behaviour for index.html, toys.html and product.html:
-   interface mode (Shop / For Business), region (India ₹ / UK £), cart, wishlist and RFQ list, product cards,
+   interface mode (Shop / For Business), cart, wishlist and RFQ list, product cards,
    "Toys" mega-menu + drawer category list, cart / wishlist / RFQ sheet, "coming soon" dialog, mobile drawer,
-   toast and small scroll reveals, plus the pre-launch event helpers (UK-time phase, coupon label, header links) and the
+   toast and small scroll reveals, plus the pre-launch event helpers (UK-time phase, header links) and the
    form sender used by the event registration form (POST to JIVORA_EVENT.FORM_ENDPOINT, brief §14) and the
    ?preview=event / ?preview=after review mode.
    State lives in localStorage (wrapped in try/catch, falls back to memory) so all pages stay in sync.
+   All prices are in £ (Decisions 29 Oct — no region / currency switch).
    Front-end only — forms and checkout do not send or charge anything. */
 (function () {
   "use strict";
 
   var root = document.documentElement;
-  var KEYS = { mode: "jivora-s2-mode", region: "jivora-s2-region", cart: "jivora-s2-cart", wish: "jivora-s2-wish", rfq: "jivora-s2-rfq" };
-  var CURRENCY = { IN: "INR", UK: "GBP" };
+  var KEYS = { mode: "jivora-s2-mode", cart: "jivora-s2-cart", wish: "jivora-s2-wish", rfq: "jivora-s2-rfq" };
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var products = window.JIVORA_PRODUCTS || [];
   var segments = window.JIVORA_SEGMENTS || [];
@@ -48,7 +48,6 @@
 
   var state = {
     mode: root.getAttribute("data-mode") === "business" ? "business" : "shop",
-    region: root.getAttribute("data-region") === "UK" ? "UK" : "IN",
     cart: asMap(load(KEYS.cart, {})),   // { productId: quantity }
     rfq: asMap(load(KEYS.rfq, {})),     // { productId: quantity }
     wish: load(KEYS.wish, [])           // [productId]
@@ -76,22 +75,16 @@
     return null;
   }
 
-  function currency() {
-    return CURRENCY[state.region];
-  }
-
-  function money(value, cur) {
-    cur = cur || currency();
-    if (cur === "INR") return "₹" + Math.round(value).toLocaleString("en-IN");
+  function money(value) {
     return "£" + value.toFixed(2);
   }
 
   function priceOf(product) {
-    return product.price[currency()];
+    return product.price.GBP;
   }
 
   function tiersOf(product) {
-    return product.wholesale.tiers[currency()];
+    return product.wholesale.tiers.GBP;
   }
 
   function tierFor(product, qty) {
@@ -102,16 +95,16 @@
   }
 
   function leadOf(product) {
-    return product.wholesale.lead[state.region];
+    return product.wholesale.lead.UK;
   }
 
   function sellerLabel(product) {
     return product.seller === "partner" ? "Verified partner seller" : "Sold by Jivora";
   }
 
-  // "Under ₹999" in India, "Under £10" in the UK (D14)
+  // "Under £10" rail / filter
   function underLimit() {
-    return state.region === "UK" ? { value: 10, label: "Under £10" } : { value: 999, label: "Under ₹999" };
+    return { value: 10, label: "Under £10" };
   }
 
   function imagePath(file) {
@@ -200,7 +193,8 @@
     return PREVIEW === "event" ? key : "";
   })();
 
-  // phase: "before" | "during" | "after" | "off" (no or broken config)
+  // phase: "before" | "during" | "after" | "off" (no or broken config). EVENT_END is inclusive to the second:
+  // with "23:59:59" registration is still open at 23:59:59.999 and closes at 00:00:00 the next day.
   function eventInfo(now) {
     var start = EVENT ? ukTime(EVENT.EVENT_START) : NaN;
     var end = EVENT ? ukTime(EVENT.EVENT_END) : NaN;
@@ -212,16 +206,7 @@
       var shift = PREVIEW === "event" ? previewFrom - start : previewFrom - end - 1000;
       return { phase: PREVIEW === "event" && t < previewFrom + length ? "during" : "after", start: start, end: end, now: t - shift, preview: true };
     }
-    return { phase: t < start ? "before" : t < end ? "during" : "after", start: start, end: end, now: t };
-  }
-
-  // "£22.50" — or the ₹ amount for India shoppers once the client sets COUPON_AMOUNT_INR
-  function couponLabel() {
-    if (!EVENT) return "";
-    if (state.region === "IN" && typeof EVENT.COUPON_AMOUNT_INR === "number") {
-      return "₹" + EVENT.COUPON_AMOUNT_INR.toLocaleString("en-IN", { maximumFractionDigits: 0 });
-    }
-    return "£" + Number(EVENT.COUPON_AMOUNT_GBP || 0).toFixed(2);
+    return { phase: t < start ? "before" : t < end + 1000 ? "during" : "after", start: start, end: end, now: t };
   }
 
   // UK-time labels: date "Sun, 1 Nov 2026", time "11:59 pm" (midnight -> "midnight")
@@ -260,21 +245,45 @@
     return ukParts(ms).date;
   }
 
-  // Header / USP / drawer links: amount follows the config + region; hidden once the offer has ended
+  // Long UK-time parts: date "Sunday 1 November 2026", time "00:00" (24-hour)
+  function ukLong(ms) {
+    var parts = {};
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone: (EVENT && EVENT.TIMEZONE) || "Europe/London",
+      weekday: "long", day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).formatToParts(new Date(ms)).forEach(function (p) { parts[p.type] = p.value; });
+    return { date: parts.weekday + " " + parts.day + " " + parts.month + " " + parts.year, time: parts.hour + ":" + parts.minute };
+  }
+
+  // "Sunday 1 November 2026 · 00:00–23:59" (client wording 29 Oct); falls back to the short labels on very old browsers
+  function ukWindowLabel(start, end) {
+    try {
+      var s = ukLong(start), e = ukLong(end);
+      return s.date === e.date ? s.date + " · " + s.time + "–" + e.time : s.date + " " + s.time + " – " + e.date + " " + e.time;
+    } catch (err) {
+      return ukStartLabel(start) + " – " + ukEndLabel(end, start);
+    }
+  }
+
+  function ukLongDate(ms) {
+    try { return ukLong(ms).date; } catch (err) { return ukDateOnly(ms); }
+  }
+
+  // Header / USP / drawer "Gift Coupon" links: hidden once registration has closed (the coupon value is never shown)
   var eventTimer;
   function syncEventLinks() {
     var info = eventInfo();
-    document.querySelectorAll("[data-coupon]").forEach(function (el) { el.textContent = couponLabel(); });
     // Event dates written out in UK time (terms.html)
     if (info.phase !== "off") {
       document.querySelectorAll("[data-event-start]").forEach(function (el) { el.textContent = ukStartLabel(info.start); });
       document.querySelectorAll("[data-event-end]").forEach(function (el) { el.textContent = ukEndLabel(info.end, info.start); });
+      document.querySelectorAll("[data-event-window]").forEach(function (el) { el.textContent = ukWindowLabel(info.start, info.end); });
     }
     document.querySelectorAll("[data-event-link]").forEach(function (el) {
       el.hidden = info.phase === "after" || info.phase === "off";
     });
     clearTimeout(eventTimer);
-    var next = info.phase === "before" ? info.start : info.phase === "during" ? info.end : 0;
+    var next = info.phase === "before" ? info.start : info.phase === "during" ? info.end + 1000 : 0;
     if (next) eventTimer = setTimeout(syncEventLinks, Math.min(next - Date.now() + 250, 2147483000));
   }
 
@@ -513,22 +522,6 @@
     }
   }
 
-  // ===== Region (India ₹ / UK £) =====
-  function syncRegion() {
-    document.querySelectorAll("[data-region-select]").forEach(function (s) { s.value = state.region; });
-    document.querySelectorAll("[data-under-label]").forEach(function (el) { el.textContent = underLimit().label; });
-    renderCategoryMenus();
-    syncEventLinks();
-  }
-
-  function setRegion(region) {
-    state.region = region === "UK" ? "UK" : "IN";
-    root.setAttribute("data-region", state.region);
-    save(KEYS.region, state.region, true);
-    syncRegion();
-    emit("region");
-  }
-
   // ===== Cart / wishlist / RFQ =====
   function addToCart(id, qty) {
     state.cart[id] = (state.cart[id] || 0) + (qty || 1);
@@ -732,7 +725,7 @@
     }).join("");
     return '<ul class="lines">' + lines + "</ul>" +
       '<div class="sheet__total"><span>Indicative total (ex-tax)</span><strong data-rfq-total>' + money(total) + "</strong></div>" +
-      '<p class="sheet__hint">Final prices come in the quote. Delivery terms: ' + escapeHTML((trade[state.region] || { incoterms: [] }).incoterms.join(" · ")) + ".</p>" +
+      '<p class="sheet__hint">Final prices come in the quote. Delivery terms: ' + escapeHTML((trade.incoterms || []).join(" · ")) + ".</p>" +
       '<button class="btn btn--primary btn--block" type="button" data-send-rfq>Request quote for ' + ids.length + " product" + (ids.length === 1 ? "" : "s") + "</button>" +
       '<p class="form-msg" role="status" aria-live="polite" data-rfq-msg></p>';
   }
@@ -1085,10 +1078,6 @@
   }
 
   document.addEventListener("change", function (e) {
-    if (e.target.matches("[data-region-select]")) {
-      setRegion(e.target.value);
-      toast(state.region === "UK" ? "Showing UK prices in £" : "Showing India prices in ₹");
-    }
     if (e.target.matches("[data-rfq-qty]")) {
       var id = e.target.getAttribute("data-rfq-qty");
       var p = byId(id);
@@ -1142,7 +1131,7 @@
   // ===== Init =====
   clean();
   setMode(state.mode, true);   // saves ?mode=business from the URL and syncs toggles + links
-  syncRegion();   // also fills the coupon labels + event links
+  syncEventLinks();   // header / USP / drawer event links + event dates
   document.querySelectorAll("[data-preview-banner]").forEach(function (el) { el.hidden = !isLivePreview(); });
   updateHeader();
 
@@ -1164,10 +1153,11 @@
     hasPriceMatch: hasPriceMatch,
     eventConfig: EVENT,
     eventInfo: eventInfo,
-    couponLabel: couponLabel,
     ukStartLabel: ukStartLabel,
     ukEndLabel: ukEndLabel,
     ukDateOnly: ukDateOnly,
+    ukWindowLabel: ukWindowLabel,
+    ukLongDate: ukLongDate,
     formEndpoint: formEndpoint,
     previewMode: PREVIEW,
     testKey: function () { return TEST_KEY; },

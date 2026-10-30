@@ -1,7 +1,7 @@
 /* Sample 2 — product page: renders one toy from products.js by ?id=<id>.
    Shop mode: gallery, name, price, age, description, highlights, add to cart, wishlist, related toys.
    Business mode adds wholesale tiers, MOQ, lead time, packaging, Incoterms, compliance note, seller card and a
-   quote request form (front-end only). Re-renders when the interface mode or region changes. All content is DUMMY. */
+   quote request form (front-end only). Re-renders when the interface mode changes. All content is DUMMY. */
 (function () {
   "use strict";
 
@@ -100,7 +100,6 @@
   }
 
   function tradeSection() {
-    var trade = J.trade[J.state.region];
     var tiers = J.tiersOf(product);
     var rows = tiers.map(function (t, i) {
       var next = tiers[i + 1];
@@ -113,7 +112,7 @@
 
     return '<section class="block block--tight" id="trade" aria-labelledby="trade-title"><div class="container">' +
       '<div class="block__head"><h2 class="block__title block__title--sm" id="trade-title">Trade details</h2>' +
-      '<p class="block__note">' + (J.state.region === "UK" ? "UK prices in £, ex-VAT." : "India prices in ₹, ex-GST.") + " Indicative — confirmed in your quote.</p></div>" +
+      '<p class="block__note">UK prices in £, ex-VAT. Indicative — confirmed in your quote.</p></div>' +
       '<div class="trade">' +
         '<div class="panel"><h3 class="panel__title">Wholesale price tiers</h3>' +
           '<div class="table-scroll"><table class="tiers"><thead><tr><th scope="col">Quantity</th><th scope="col">Price / pc</th></tr></thead><tbody>' + rows + "</tbody></table></div></div>" +
@@ -122,7 +121,7 @@
           "<div><dt>Carton</dt><dd>" + esc(product.wholesale.carton) + "</dd></div>" +
           "<div><dt>Lead time</dt><dd>" + esc(J.leadOf(product)) + "</dd></div>" +
           "<div><dt>Packaging</dt><dd>" + esc(product.wholesale.packaging) + "</dd></div></dl></div>" +
-        '<div class="panel"><h3 class="panel__title">Delivery terms (Incoterms)</h3>' + list(trade.incoterms) +
+        '<div class="panel"><h3 class="panel__title">Delivery terms (Incoterms)</h3>' + list(J.trade.incoterms) +
           '<h3 class="panel__title panel__title--gap">Compliance</h3><p class="panel__text">Compliance documents available on request</p></div>' +
         '<div class="panel panel--seller"><p class="eyebrow">Seller</p><h3 class="panel__title">' + J.icons.shield + " " + seller.name + "</h3>" +
           '<p class="panel__text">' + seller.text + "</p>" +
@@ -297,7 +296,7 @@
 
   // Business RFQ button lives outside the card grid, so refresh it on changes
   J.onChange(function (what) {
-    if (what === "mode" || what === "region" || what === "sync") { render(); return; }
+    if (what === "mode" || what === "sync") { render(); return; }
     var b = root.querySelector("[data-pdp-rfq]");
     if (b && what === "rfq") {
       var on = J.inRfq(product.id);

@@ -1,6 +1,7 @@
 <!--
   Template — client/legal review required.
-  Sample 2 — Privacy Policy (brief §14 "Decisions 27 Oct", E-4): basic UK GDPR-friendly template — what data the
+  Sample 2 — Privacy Policy (brief §14 "Decisions 27 Oct", E-4; §15 "Decisions 29 Oct": IFB Diwali Event Gift Coupon form,
+  "I am attending the IFB Diwali Event" field): basic UK GDPR-friendly template — what data the
   pre-launch registration form collects, why (lawful basis), where it is stored (Google Sheets via Apps Script), how long,
   user rights (ICO), children, browser storage. Company details are [bracketed] placeholders (brief Open Question 24).
   Shared behaviour: site.js.
@@ -21,18 +22,16 @@
   <link rel="stylesheet" href="./style.css">
   <!-- Event settings (one place for all pages) -->
   <script src="./event-config.js"></script>
-  <!-- Mode + region are set before first paint so the page never flashes the wrong interface -->
+  <!-- Mode is set before first paint so the page never flashes the wrong interface -->
   <script>
     (function () {
-      var d = document.documentElement, mode = null, region = null;
+      var d = document.documentElement, mode = null;
       d.classList.add("js");
       try { mode = new URLSearchParams(window.location.search).get("mode"); } catch (e) {}
       if (mode !== "business" && mode !== "shop") {
         try { mode = window.localStorage.getItem("jivora-s2-mode"); } catch (e) {}
       }
-      try { region = window.localStorage.getItem("jivora-s2-region"); } catch (e) {}
       d.setAttribute("data-mode", mode === "business" ? "business" : "shop");
-      d.setAttribute("data-region", region === "UK" ? "UK" : "IN");
     })();
   </script>
   <script src="./products.js" defer></script>
@@ -47,7 +46,7 @@
       <span class="announcement__dot" aria-hidden="true"></span>
       <span data-for="shop">Pre-launch — toys go live first. Orders open soon.</span>
       <span data-for="business">Pre-launch — business enquiries are open. Orders open soon.</span>
-      <a class="announcement__link" href="index.html#event" data-go-mode="shop" data-for="shop" data-event-link>Get <span data-coupon>£22.50</span> off</a>
+      <a class="announcement__link" href="index.html#event" data-go-mode="shop" data-for="shop" data-event-link>IFB Diwali: claim your Gift Coupon</a>
       <a class="announcement__link" href="index.html?mode=business#enquire" data-go-mode="business" data-for="business">Talk to us</a>
     </p>
   </div>
@@ -56,7 +55,7 @@
   <div class="usp" aria-label="Why shop with JIVORA">
     <div class="usp__track">
       <ul class="usp__list">
-        <li class="usp__item usp__item--offer" data-event-link><a class="usp__link" href="index.html#event" data-go-mode="shop"><span class="usp__icon tone-pink" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3 9h18M12 9v11M12 9c-1.5-3-5-3.5-5-1.2C7 9 9.5 9 12 9zm0 0c1.5-3 5-3.5 5-1.2C17 9 14.5 9 12 9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>Register for <span data-coupon>£22.50</span> off</a></li>
+        <li class="usp__item usp__item--offer" data-event-link><a class="usp__link" href="index.html#event" data-go-mode="shop"><span class="usp__icon tone-pink" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3 9h18M12 9v11M12 9c-1.5-3-5-3.5-5-1.2C7 9 9.5 9 12 9zm0 0c1.5-3 5-3.5 5-1.2C17 9 14.5 9 12 9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>IFB Diwali: claim your Gift Coupon</a></li>
         <li class="usp__item"><span class="usp__icon tone-green" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.4-3 8.2-7 9.5-4-1.3-7-5.1-7-9.5V6l7-3z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4L15.5 9.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Verified sellers only</li>
         <li class="usp__item"><span class="usp__icon tone-yellow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M4 12.5V5a1 1 0 0 1 1-1h7.5L20 11.5 12.5 19 4 12.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><circle cx="8.5" cy="8.5" r="1.6" fill="currentColor"/></svg></span>Age-labelled toys</li>
         <li class="usp__item"><span class="usp__icon tone-sky" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.5 5.3 3.5 8.5s-1.1 6.1-3.5 8.5c-2.4-2.4-3.5-5.3-3.5-8.5S9.6 5.9 12 3.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>India &amp; UK</li>
@@ -74,7 +73,7 @@
       </button>
 
       <a class="logo" href="index.html" data-mode-link aria-label="JIVORA home">
-        <span class="logo__word">JIVORA</span>
+        <span class="logo__word" role="img" aria-label="JIVORA">JI<span class="logo__gap">VORA</span></span>
       </a>
 
       <form class="search" role="search" action="toys.html" data-search>
@@ -92,11 +91,6 @@
       </div>
 
       <div class="header__actions">
-        <label class="visually-hidden" for="region">Region and currency</label>
-        <select class="region" id="region" data-region-select>
-          <option value="IN">India ₹</option>
-          <option value="UK">UK £</option>
-        </select>
         <button class="icon-btn" type="button" data-open-sheet="wishlist" data-for="shop" aria-label="Wishlist, 0 items">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
           <span class="count" data-count="wishlist" aria-hidden="true">0</span>
@@ -127,14 +121,14 @@
           <div class="megamenu__panel" id="megamenu-panel" data-megamenu-panel></div>
         </div>
         <ul class="catnav__list" data-for="shop">
-          <li data-event-link><a class="catnav__link catnav__link--offer" href="index.html#event" data-go-mode="shop">Get <span data-coupon>£22.50</span> off<span class="visually-hidden"> — register for the pre-launch offer</span></a></li>
+          <li data-event-link><a class="catnav__link catnav__link--offer" href="index.html#event" data-go-mode="shop">IFB Diwali: claim your Gift Coupon</a></li>
           <li><a class="catnav__link" href="toys.html" data-mode-link data-catnav="">All toys</a></li>
           <li><a class="catnav__link" href="toys.html?age=0-2" data-mode-link data-catnav="age=0-2">0–2 yrs</a></li>
           <li><a class="catnav__link" href="toys.html?age=3-5" data-mode-link data-catnav="age=3-5">3–5 yrs</a></li>
           <li><a class="catnav__link" href="toys.html?age=6-8" data-mode-link data-catnav="age=6-8">6–8 yrs</a></li>
           <li><a class="catnav__link" href="toys.html?age=9%2B" data-mode-link data-catnav="age=9+">9+ yrs</a></li>
           <li><a class="catnav__link" href="toys.html?popular=1" data-mode-link data-catnav="popular=1">Popular picks</a></li>
-          <li><a class="catnav__link" href="toys.html?price=under" data-mode-link data-catnav="price=under" data-under-label>Under ₹999</a></li>
+          <li><a class="catnav__link" href="toys.html?price=under" data-mode-link data-catnav="price=under" data-under-label>Under £10</a></li>
           <li class="catnav__sep" aria-hidden="true"></li>
           <li><button class="catnav__link" type="button" data-soon="fmcg">FMCG <span class="soon-pill">Soon</span></button></li>
           <li><button class="catnav__link" type="button" data-soon="accessories">Accessories <span class="soon-pill">Soon</span></button></li>
@@ -162,11 +156,6 @@
         </button>
       </div>
       <div class="drawer__body">
-        <label class="drawer__label" for="drawer-region">Region &amp; currency</label>
-        <select class="region region--block" id="drawer-region" data-region-select>
-          <option value="IN">India ₹</option>
-          <option value="UK">UK £</option>
-        </select>
         <p class="drawer__label">Interface</p>
         <div class="mode-toggle mode-toggle--block" role="group" aria-label="Choose interface">
           <span class="mode-toggle__thumb" aria-hidden="true"></span>
@@ -174,9 +163,9 @@
           <button class="mode-toggle__btn" type="button" data-set-mode="business" aria-pressed="false">For Business</button>
         </div>
         <ul class="drawer__list" data-for="shop">
-          <li data-event-link><a class="drawer__offer" href="index.html#event" data-go-mode="shop">Register for <span data-coupon>£22.50</span> off</a></li>
+          <li data-event-link><a class="drawer__offer" href="index.html#event" data-go-mode="shop">IFB Diwali: claim your Gift Coupon</a></li>
           <li><a href="index.html#popular" data-mode-link>Popular picks</a></li>
-          <li><a href="toys.html?price=under" data-mode-link data-under-label>Under ₹999</a></li>
+          <li><a href="toys.html?price=under" data-mode-link data-under-label>Under £10</a></li>
         </ul>
         <p class="drawer__label" data-for="shop">Shop by age</p>
         <ul class="drawer__list" data-for="shop" data-drawer-ages></ul>
@@ -222,12 +211,13 @@
 
       <section class="legal__section" id="data" aria-labelledby="data-title">
         <h2 id="data-title">2. What we collect</h2>
-        <h3>Pre-launch registration form</h3>
+        <h3>IFB Diwali Event — Gift Coupon registration form</h3>
         <ul>
           <li>Full name, email address and country (UK or India)</li>
           <li>If you give them: your mobile number and city</li>
           <li>The toy categories you like</li>
-          <li>Whether you agreed to receive launch offers and news, the date and time you registered and the offer code we create for you</li>
+          <li>Your confirmation that you are attending the IFB Diwali Event (the Gift Coupon is only for event participants)</li>
+          <li>Whether you agreed to receive launch offers and news, the date and time you registered and the coupon code we create for you</li>
         </ul>
         <p>This is the only form on the website that sends personal data to us.</p>
         <h3>Things we don't collect</h3>
@@ -243,9 +233,9 @@
           <table class="legal__table">
             <thead><tr><th scope="col">Purpose</th><th scope="col">Lawful basis</th></tr></thead>
             <tbody>
-              <tr><td>Register you for the pre-launch offer and add the credit to your account at launch</td><td>Taking steps at your request before a contract</td></tr>
+              <tr><td>Register you for the IFB Diwali Event Gift Coupon, check that you are an event participant and share your Gift Coupon with you before launch</td><td>Taking steps at your request before a contract</td></tr>
               <tr><td>Send launch offers and news — only if you ticked the optional box</td><td>Consent (unsubscribe link in every email)</td></tr>
-              <tr><td>Stop duplicate or automated sign-ups</td><td>Legitimate interests (keeping the offer fair)</td></tr>
+              <tr><td>Stop duplicate or automated sign-ups</td><td>Legitimate interests (keeping the Gift Coupon fair)</td></tr>
               <tr><td>Understand which toy categories people are interested in, using combined numbers</td><td>Legitimate interests</td></tr>
             </tbody>
           </table>
@@ -267,7 +257,7 @@
       <section class="legal__section" id="how-long" aria-labelledby="how-long-title">
         <h2 id="how-long-title">5. How long we keep it</h2>
         <ul>
-          <li>Registration details: until the offer credit expires, then deleted within [__ days].</li>
+          <li>Registration details: until the Gift Coupon expires, then deleted within [__ days].</li>
           <li>Marketing consent: until you unsubscribe.</li>
         </ul>
       </section>
@@ -294,7 +284,6 @@
         <h2 id="storage-title">8. Cookies and browser storage</h2>
         <p>We don't set advertising or analytics cookies. To remember your choices, this website saves a few small items in your own browser's local storage. They never leave your device and are not sent to us:</p>
         <ul>
-          <li>Region and currency (India ₹ / UK £)</li>
           <li>Interface (Shop / For Business)</li>
           <li>Cart, wishlist and RFQ list</li>
         </ul>
@@ -318,7 +307,7 @@
     <div class="container footer__inner">
       <div class="footer__brand">
         <a class="logo" href="index.html" data-mode-link aria-label="JIVORA home">
-          <span class="logo__word">JIVORA</span>
+          <span class="logo__word" role="img" aria-label="JIVORA">JI<span class="logo__gap">VORA</span></span>
         </a>
         <p>An ethical marketplace for India and the UK. Pre-launch preview — orders open soon.</p>
         <ul class="social" aria-label="Jivora on social media">
