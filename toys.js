@@ -30,6 +30,9 @@
     active: document.querySelector("[data-active-filters]"),
     grid: document.querySelector("[data-listing-grid]"),
     empty: document.querySelector("[data-listing-empty]"),
+    more: document.querySelector("[data-listing-more]"),
+    shown: document.querySelector("[data-listing-shown]"),
+    moreBtn: document.querySelector("[data-listing-more-btn]"),
     search: document.getElementById("search-input")
   };
 
@@ -148,7 +151,7 @@
     var cat = J.categoryBySlug(state.cat);
     var business = J.state.mode === "business";
     var name = cat ? cat.name : business ? "Wholesale toys" : "All toys";
-    document.title = name + (cat ? " | Toys" : "") + " | JIVORA";
+    document.title = name + (cat ? " | Little Wonders" : "") + " | JIVORA";
     els.title.textContent = name;
     els.sub.textContent = business
       ? "Wholesale prices per piece (ex-tax), MOQ and price tiers. Add toys to your RFQ list for one quote."
@@ -157,8 +160,8 @@
     var home = "index.html" + (business ? "?mode=business" : "");
     els.crumbs.innerHTML = '<li><a href="' + home + '">Home</a></li>' +
       (cat
-        ? '<li><a href="' + J.categoryUrl("") + '">' + (business ? "Wholesale toys" : "Toys") + '</a></li><li aria-current="page">' + esc(cat.name) + "</li>"
-        : '<li aria-current="page">' + (business ? "Wholesale toys" : "Toys") + "</li>");
+        ? '<li><a href="' + J.categoryUrl("") + '">' + (business ? "Wholesale toys" : "Little Wonders") + '</a></li><li aria-current="page">' + esc(cat.name) + "</li>"
+        : '<li aria-current="page">' + (business ? "Wholesale toys" : "Little Wonders") + "</li>");
   }
 
   function renderCats() {
@@ -240,17 +243,49 @@
     }).join("") + (chips.length ? '<button class="link-btn" type="button" data-clear-filters>Clear filters</button>' : "");
   }
 
+  // "See more toys" (Decisions 31 Oct): first PAGE cards, +PAGE per click; any change of filters, sort, search or mode
+  // (= a different result list) starts again at PAGE
+  var PAGE = 8;
+  var limit = PAGE;
+  var listKey = null;
+  var listItems = [];
+
+  function renderMore() {
+    var total = listItems.length;
+    var shown = Math.min(limit, total);
+    els.more.hidden = !total;
+    els.shown.textContent = "Showing " + shown + " of " + total;
+    els.moreBtn.hidden = shown >= total;
+  }
+
   function renderGrid() {
     var business = J.state.mode === "business";
-    var items = sorted(filtered(""));
+    var key = query(state) + "|" + J.state.mode;
+    if (key !== listKey) { listKey = key; limit = PAGE; }
+    listItems = sorted(filtered(""));
+    var items = listItems;
     els.grid.classList.toggle("grid--biz", business);
-    els.grid.innerHTML = items.map(business ? J.bizCard : J.shopCard).join("");
+    els.grid.innerHTML = items.slice(0, limit).map(business ? J.bizCard : J.shopCard).join("");
     els.empty.hidden = items.length > 0;
     els.grid.hidden = !items.length;
     els.count.textContent = toysLabel(items.length);
     els.showBtn.textContent = items.length ? "Show " + toysLabel(items.length) : "No toys match";
+    renderMore();
     J.observe(els.grid);
   }
+
+  els.moreBtn.addEventListener("click", function () {
+    var from = Math.min(limit, listItems.length);
+    limit += PAGE;
+    var card = J.state.mode === "business" ? J.bizCard : J.shopCard;
+    els.grid.insertAdjacentHTML("beforeend", listItems.slice(from, limit).map(card).join(""));
+    renderMore();
+    J.observe(els.grid);
+    // Keyboard / screen-reader users continue at the first new card
+    var first = els.grid.children[from];
+    var link = first && first.querySelector("a[href]");
+    if (link) link.focus();
+  });
 
   // Highlight the matching header link (All toys / age / under-price) when the view is exactly that
   function syncNav() {

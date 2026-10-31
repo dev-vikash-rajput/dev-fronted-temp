@@ -46,7 +46,7 @@
   <div class="announcement">
     <p class="announcement__text">
       <span class="announcement__dot" aria-hidden="true"></span>
-      <span data-for="shop">Pre-launch — toys go live first. Orders open soon.</span>
+      <span data-for="shop">Pre-launch — Little Wonders (toys) goes live first. Orders open soon.</span>
       <span data-for="business">Pre-launch — business enquiries are open. Orders open soon.</span>
       <a class="announcement__link" href="index.html#event" data-go-mode="shop" data-for="shop" data-event-link>IFB Diwali: claim your Gift Coupon</a>
       <a class="announcement__link" href="index.html?mode=business#enquire" data-go-mode="business" data-for="business">Talk to us</a>
@@ -117,9 +117,9 @@
           <button class="mode-toggle__btn" type="button" data-set-mode="shop" aria-pressed="true">Shop</button>
           <button class="mode-toggle__btn" type="button" data-set-mode="business" aria-pressed="false">Business</button>
         </div>
-        <!-- "Toys" mega-menu: 10 client categories (filled by site.js from products.js) -->
+        <!-- "Little Wonders" (Toys segment) mega-menu: 10 client categories (filled by site.js from products.js) -->
         <div class="megamenu" data-for="shop" data-megamenu>
-          <button class="catnav__link megamenu__btn" type="button" aria-expanded="false" aria-controls="megamenu-panel" data-megamenu-toggle>Toys</button>
+          <button class="catnav__link megamenu__btn" type="button" aria-expanded="false" aria-controls="megamenu-panel" data-megamenu-toggle>Little Wonders</button>
           <div class="megamenu__panel" id="megamenu-panel" data-megamenu-panel></div>
         </div>
         <ul class="catnav__list" data-for="shop">
@@ -132,9 +132,9 @@
           <li><a class="catnav__link" href="toys.html?popular=1" data-mode-link data-catnav="popular=1">Popular picks</a></li>
           <li><a class="catnav__link" href="toys.html?price=under" data-mode-link data-catnav="price=under" data-under-label>Under £10</a></li>
           <li class="catnav__sep" aria-hidden="true"></li>
-          <li><button class="catnav__link" type="button" data-soon="fmcg">FMCG <span class="soon-pill">Soon</span></button></li>
-          <li><button class="catnav__link" type="button" data-soon="accessories">Accessories <span class="soon-pill">Soon</span></button></li>
-          <li><button class="catnav__link" type="button" data-soon="apparel">Apparel <span class="soon-pill">Soon</span></button></li>
+          <li><button class="catnav__link" type="button" data-soon="fmcg">Daily Harvest <span class="soon-pill">Soon</span></button></li>
+          <li><button class="catnav__link" type="button" data-soon="accessories">The Style Edit <span class="soon-pill">Soon</span></button></li>
+          <li><button class="catnav__link" type="button" data-soon="apparel">Everyday Wear <span class="soon-pill">Soon</span></button></li>
         </ul>
         <ul class="catnav__list" data-for="business">
           <li><a class="catnav__link" href="index.html?mode=business#start" data-go-mode="business">Start your business</a></li>
@@ -171,7 +171,7 @@
         </ul>
         <p class="drawer__label" data-for="shop">Shop by age</p>
         <ul class="drawer__list" data-for="shop" data-drawer-ages></ul>
-        <p class="drawer__label" data-for="shop">Toys by category</p>
+        <p class="drawer__label" data-for="shop">Little Wonders · Toys &amp; Play</p>
         <ul class="drawer__list" data-for="shop" data-drawer-cats></ul>
         <ul class="drawer__list" data-for="business">
           <li><a href="index.html?mode=business#start" data-go-mode="business">Start your business</a></li>
@@ -181,9 +181,9 @@
         </ul>
         <p class="drawer__label">Coming soon</p>
         <ul class="drawer__list drawer__list--soon">
-          <li><button type="button" data-soon="fmcg">FMCG <span class="soon-pill">Soon</span></button></li>
-          <li><button type="button" data-soon="accessories">Accessories <span class="soon-pill">Soon</span></button></li>
-          <li><button type="button" data-soon="apparel">Apparel <span class="soon-pill">Soon</span></button></li>
+          <li><button type="button" data-soon="fmcg">Daily Harvest <span class="soon-pill">Soon</span></button></li>
+          <li><button type="button" data-soon="accessories">The Style Edit <span class="soon-pill">Soon</span></button></li>
+          <li><button type="button" data-soon="apparel">Everyday Wear <span class="soon-pill">Soon</span></button></li>
         </ul>
       </div>
     </div>
@@ -235,6 +235,11 @@
           </div>
           <div class="active-filters" data-active-filters></div>
           <div class="grid listing__grid" data-listing-grid></div>
+          <!-- "See more toys" (Decisions 31 Oct): 8 cards first, +8 per click, back to 8 when filters / sort change -->
+          <div class="listing__more" data-listing-more hidden>
+            <p class="listing__shown" data-listing-shown aria-live="polite"></p>
+            <button class="btn btn--primary listing__more-btn" type="button" data-listing-more-btn>See more toys</button>
+          </div>
           <div class="listing__empty" data-listing-empty hidden>
             <p class="listing__empty-title">No toys match these filters.</p>
             <p>Try another age or price, or clear the filters to see every toy.</p>
@@ -268,10 +273,10 @@
       <nav class="footer__col" aria-label="Shop">
         <h2 class="footer__heading">Shop</h2>
         <ul>
-          <li><a href="toys.html" data-go-mode="shop">All toys</a></li>
-          <li><button class="link-btn" type="button" data-soon="fmcg">FMCG — soon</button></li>
-          <li><button class="link-btn" type="button" data-soon="accessories">Accessories — soon</button></li>
-          <li><button class="link-btn" type="button" data-soon="apparel">Apparel — soon</button></li>
+          <li><a href="toys.html" data-go-mode="shop">Little Wonders — Toys &amp; Play</a></li>
+          <li><button class="link-btn" type="button" data-soon="fmcg">Daily Harvest — soon</button></li>
+          <li><button class="link-btn" type="button" data-soon="accessories">The Style Edit — soon</button></li>
+          <li><button class="link-btn" type="button" data-soon="apparel">Everyday Wear — soon</button></li>
         </ul>
       </nav>
       <nav class="footer__col" aria-label="For Business">
@@ -288,9 +293,9 @@
         <h2 class="footer__heading">Company</h2>
         <ul>
           <li><span>[About]</span></li>
-          <li><span>[Email]</span></li>
-          <li><span>[Phone]</span></li>
-          <li><span>[Address]</span></li>
+          <li><a href="mailto:info@jivora.co.uk">info@jivora.co.uk</a></li>
+          <li><a href="tel:+447818920446">+44 7818 920446</a></li>
+          <li><span>London, United Kingdom</span></li>
         </ul>
       </div>
     </div>

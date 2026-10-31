@@ -48,9 +48,13 @@ Each was checked by eye: no brand logos, no licensed characters, no store-site p
 | skipping-rope.jpg | Long Group Skipping Rope | https://www.pexels.com/photo/a-group-of-kids-playing-jumping-rope-8034585/ | RDNE Stock project | Pexels |
 | foam-glider.jpg | Foam Glider Plane | https://www.pexels.com/photo/a-boy-playing-with-a-toy-plane-4971365/ | Gustavo Fring | Pexels |
 | hero-ball-pit.jpg | Shop hero (laughing child in a ball pit) | https://www.pexels.com/photo/boy-playing-with-plastic-balls-5393654/ | Bruno Bueno | Pexels |
-| segment-fmcg.jpg | "FMCG — coming soon" tile | https://www.pexels.com/photo/clear-glass-jars-with-assorted-foods-618491/ | NEOSiAM 18+ | Pexels |
-| segment-accessories.jpg | "Accessories — coming soon" tile | https://www.pexels.com/photo/crystal-jewelry-set-on-table-15684108/ | Arif khan | Pexels |
-| segment-apparel.jpg | "Apparel — coming soon" tile | https://www.pexels.com/photo/clothes-hanging-on-the-rack-7857577/ | Kampus Production | Pexels |
+| segment-toys.jpg | "Little Wonders" segment card | https://www.pexels.com/photo/teddy-bears-sitting-on-a-white-surface-7946392/ | Karola G | Pexels |
+| segment-fmcg.jpg | "Daily Harvest" segment card (coming soon) | https://www.pexels.com/photo/whole-grain-on-bowls-7420512/ | Vie Studio | Pexels |
+| segment-accessories.jpg | "The Style Edit" segment card (coming soon) | https://www.pexels.com/photo/various-women-s-fashion-accessories-2986445/ | Harper Sunday | Pexels |
+| segment-apparel.jpg | "Everyday Wear" segment card (coming soon) | https://www.pexels.com/photo/assorted-colored-dresses-on-white-clothes-rack-3527572/ | Maryia Plashchynskaya | Pexels |
+
+Segment cards replaced 2026-10-31 (client mockup): bright, light-background photos, all cropped to 4:3 (800×600),
+no brand labels or logos.
 
 Added 2026-10-26 (second batch, for the 10 client categories): 17 photos above from toy-soldiers.jpg to foam-glider.jpg.
 Action Figures use generic, unbranded figures only (dinosaurs, robots, plain green toy soldiers) — no licensed characters.

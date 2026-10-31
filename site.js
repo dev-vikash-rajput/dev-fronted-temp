@@ -1,6 +1,6 @@
 /* Sample 2 — shared behaviour for index.html, toys.html and product.html:
    interface mode (Shop / For Business), cart, wishlist and RFQ list, product cards,
-   "Toys" mega-menu + drawer category list, cart / wishlist / RFQ sheet, "coming soon" dialog, mobile drawer,
+   "Little Wonders" (Toys) mega-menu + drawer category list, cart / wishlist / RFQ sheet, "coming soon" dialog, mobile drawer,
    toast and small scroll reveals, plus the pre-launch event helpers (UK-time phase, header links) and the
    form sender used by the event registration form (POST to JIVORA_EVENT.FORM_ENDPOINT, brief §14) and the
    ?preview=event / ?preview=after review mode.
@@ -785,7 +785,7 @@
       '<div class="soon__media"><img src="' + seg.image + '" alt="' + escapeHTML(seg.alt) + '" width="800" height="533"><span class="soon-pill soon-pill--lg">Coming soon</span></div>' +
       '<div class="soon__body">' +
         '<h2 class="soon__title" id="soon-title">' + escapeHTML(seg.name) + " is launching soon</h2>" +
-        '<p class="soon__text">' + escapeHTML(seg.blurb) + ". We're opening with Toys first — " + escapeHTML(seg.name) + " follows soon. Follow us on Instagram for launch news.</p>" +
+        '<p class="soon__text">' + escapeHTML(seg.blurb) + ". We're opening with Little Wonders (toys) first — " + escapeHTML(seg.name) + " follows soon. Follow us on Instagram for launch news.</p>" +
         '<button class="link-btn soon__close" type="button" data-close-soon>Keep browsing toys</button>' +
       "</div>" +
       '<button class="icon-btn soon__x" type="button" data-close-soon aria-label="Close">' + icons.close + "</button>";
@@ -813,7 +813,7 @@
     form.reset();
   }
 
-  // ===== "Toys" mega-menu (header) + category list in the drawer =====
+  // ===== "Little Wonders" (Toys) mega-menu (header) + category list in the drawer =====
   var chevron = '<svg class="megamenu__chev" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   function renderCategoryMenus() {

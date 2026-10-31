@@ -1121,7 +1121,8 @@ main > :last-child {
   .float--star { top: 18px; right: 22px; width: 52px; height: 52px; }
 }
 
-/* ===== SEGMENTS ===== */
+/* ===== SEGMENTS (client mockup, Decisions 31 Oct): dark navy cards, rounded clear photo on top,
+   big bold title, muted subtitle, uppercase letter-spaced CTA. 2 x 2 below 1024px, 4 columns from 1024px. ===== */
 .segments {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1131,26 +1132,26 @@ main > :last-child {
 .seg__card {
   display: flex;
   flex-direction: column;
+  gap: var(--s-25);
   width: 100%;
   height: 100%;
-  padding: 0;
-  overflow: hidden;
+  padding: var(--s-2);
   border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  background: var(--surface);
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg-2) 100%);
+  color: var(--text);
+  font: inherit;
   text-align: left;
   text-decoration: none;
-  transition: border-color 0.2s, transform 0.25s var(--ease-out);
-}
-
-.seg__card--live {
-  border-color: rgba(74, 222, 128, 0.45);
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.25s var(--ease-out), box-shadow 0.25s;
 }
 
 .seg__media {
   display: block;
-  aspect-ratio: 16 / 6;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
+  border-radius: calc(var(--r-lg) - 6px);
   background: var(--photo-bg);
 }
 
@@ -1163,36 +1164,58 @@ main > :last-child {
 
 .seg__body {
   display: grid;
-  gap: 4px;
+  gap: 2px;
   justify-items: start;
-  padding: var(--s-25) var(--s-25) var(--s-3);
+  padding: 0 var(--s-1) var(--s-2);
 }
 
 .seg__name {
   font-family: var(--font-head);
-  font-size: var(--fs-20);
+  font-size: clamp(1.0625rem, 0.9rem + 0.9vw, 1.625rem);
   font-weight: 700;
+  line-height: 1.15;
 }
 
-.seg__blurb {
+html[data-mode="shop"] .seg__name { font-family: var(--font-fun); }
+
+.seg__sub {
   color: var(--muted);
   font-size: var(--fs-13);
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
-.seg__body .soon-pill,
-.seg__body .live-pill {
-  margin-top: 4px;
+.seg__cta {
+  margin-top: var(--s-2);
+  font-size: var(--fs-12);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.seg__cta--live { color: var(--green); }
+.seg__cta--soon { color: var(--amber-2); }
+
+.seg__card:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
 }
 
 @media (hover: hover) {
-  .seg__card:hover { border-color: var(--blue-2); transform: translateY(-3px); }
+  .seg__card:hover { border-color: var(--line-2); transform: translateY(-4px); box-shadow: var(--shadow-1); }
+  .seg__card--live:hover { border-color: rgba(74, 222, 128, 0.55); }
   .seg__card:hover .seg__media img { transform: scale(1.05); }
+}
+
+@media (min-width: 640px) {
+  .segments { gap: var(--s-3); }
+  .seg__card { padding: var(--s-25); }
+  .seg__sub { font-size: var(--fs-14); }
 }
 
 @media (min-width: 1024px) {
   .segments {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-4);
   }
 }
 
@@ -2804,41 +2827,6 @@ dialog::backdrop {
   cursor: not-allowed;
 }
 
-/* --- E5 Coming-soon segments: blurred preview, sneak peek on hover --- */
-.seg__card--soon .seg__media {
-  position: relative;
-}
-
-.seg__blur {
-  filter: blur(9px) saturate(0.85);
-  transform: scale(1.12);
-}
-
-.seg__card--soon .seg__media .seg__peek {
-  position: absolute;
-  inset: 0;
-  filter: blur(2.5px);
-  opacity: 0;
-  transform: scale(1.04);
-  transition: opacity 0.45s ease;
-}
-
-.soon-pill--float {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: var(--amber);
-  color: var(--on-amber);
-}
-
-.seg__soon {
-  margin-top: 6px;
-}
-
-@media (hover: hover) {
-  .seg__card--soon:hover .seg__peek { opacity: 1; }
-}
-
 /* --- E2 Gift Finder (bright accent card) --- */
 .gift {
   display: grid;
@@ -3633,6 +3621,31 @@ a.bubble {
 }
 
 .listing__grid[hidden] {
+  display: none;
+}
+
+.listing__more {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-25);
+  margin-top: var(--s-5);
+}
+
+.listing__more[hidden] {
+  display: none;
+}
+
+.listing__shown {
+  color: var(--muted);
+  font-size: var(--fs-14);
+  font-weight: 600;
+}
+
+.listing__more-btn {
+  min-width: 220px;
+}
+
+.listing__more-btn[hidden] {
   display: none;
 }
 
@@ -4863,45 +4876,367 @@ fieldset.field {
   .hot { padding: var(--s-5) var(--s-4) var(--s-4); }
 }
 
-/* --- Shop & Save — Price Promise --- */
-.promise {
+/* "Suggest a product" (Decisions 31 Oct (2)): small sky-accent card, textbox + optional category + Submit */
+.suggest {
   display: grid;
   gap: var(--s-3);
-  align-items: center;
   padding: var(--s-4) var(--s-3);
+  border: 2px solid var(--toy-sky);
   border-radius: var(--r-lg);
-  background: var(--toy-green);
-  color: var(--on-toy);
-  box-shadow: 6px 6px 0 rgba(94, 224, 138, 0.3);
+  background:
+    radial-gradient(80% 90% at 100% 0%, rgba(92, 200, 255, 0.18), transparent 60%),
+    var(--bg-2);
 }
 
-.promise__icon {
+.suggest__intro {
+  display: flex;
+  align-items: center;
+  gap: var(--s-25);
+}
+
+.suggest__icon {
   display: grid;
+  flex: none;
   place-items: center;
-  width: 56px;
-  height: 56px;
-  border: 2.5px solid var(--on-toy);
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: var(--toy-yellow);
+  background: var(--toy-sky);
+  color: var(--on-toy);
   transform: rotate(-8deg);
 }
 
-.promise__kicker {
+.suggest__title {
   font-family: var(--font-fun);
-  font-size: var(--fs-14);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: clamp(1.375rem, 1.1rem + 1vw, 1.75rem);
+  line-height: 1.15;
 }
 
+.suggest__sub {
+  color: var(--muted);
+  font-size: var(--fs-14);
+}
+
+.suggest__form {
+  display: grid;
+  gap: var(--s-25);
+}
+
+.suggest__form .field label {
+  color: var(--text);
+  font-size: var(--fs-14);
+}
+
+.suggest__opt {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.suggest__input {
+  min-height: 72px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: inherit;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+.suggest__select {
+  width: 100%;
+  padding-right: 36px;
+  color: var(--text);
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23AEBBDA' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.suggest__input[aria-invalid="true"] {
+  border-color: var(--red);
+}
+
+.suggest__btn {
+  justify-self: start;
+  min-width: 140px;
+}
+
+@media (min-width: 768px) {
+  .suggest {
+    grid-template-columns: minmax(220px, 1fr) 2fr;
+    align-items: start;
+    gap: var(--s-4);
+    padding: var(--s-4);
+  }
+
+  .suggest__form {
+    grid-template-columns: 1fr minmax(180px, 240px);
+    align-items: start;
+  }
+
+  .suggest__banner,
+  .suggest__text,
+  .suggest__msg { grid-column: 1 / -1; }
+}
+
+/* Hot Picks slider (Decisions 31 Oct): 2 cards < 640px, 3 at 640–1023px, 4 from 1024px; swipe + scroll-snap */
+.hot__head {
+  flex-wrap: wrap;
+}
+
+.hot__nav {
+  display: flex;
+  gap: var(--s-2);
+}
+
+.hot__arrow {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 2px solid var(--toy-orange);
+  border-radius: 50%;
+  background: var(--toy-orange);
+  color: var(--on-toy);
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-out), opacity 0.2s, background-color 0.2s;
+}
+
+.hot__arrow svg { width: 18px; height: 18px; }
+
+.hot__arrow:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.hot__arrow:disabled {
+  background: transparent;
+  color: var(--toy-orange);
+  opacity: 0.4;
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .hot__arrow:not(:disabled):hover { transform: scale(1.08); }
+}
+
+.hot__track {
+  --hot-cols: 2;
+  --hot-gap: var(--s-25);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--hot-cols) - 1) * var(--hot-gap)) / var(--hot-cols));
+  gap: var(--hot-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 4px 2px 6px;
+  margin: -4px -2px 0;
+}
+
+.hot__track::-webkit-scrollbar { display: none; }
+
+.hot__track > * {
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+.hot__track:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+  border-radius: var(--r-md);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hot__track { scroll-behavior: smooth; }
+}
+
+.hot__progress {
+  position: relative;
+  height: 6px;
+  margin-top: var(--s-3);
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.hot__progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--toy-yellow), var(--toy-orange));
+  transition: left 0.15s linear, width 0.2s;
+}
+
+@media (min-width: 640px) {
+  .hot__track { --hot-cols: 3; --hot-gap: var(--s-3); }
+  .hot__arrow { width: 44px; height: 44px; }
+  .hot__arrow svg { width: 20px; height: 20px; }
+}
+
+@media (min-width: 1024px) {
+  .hot__track { --hot-cols: 4; }
+}
+
+/* --- Shop & Save — Price Promise (Decisions 31 Oct: client's main USP — big, playful green section
+   under the Gift Coupon: heading, 3 steps, care line, CTA, terms note). Navy text on green = 10.3:1. --- */
+.promise {
+  position: relative;
+  display: grid;
+  gap: var(--s-4);
+  padding: var(--s-5) var(--s-3) var(--s-4);
+  overflow: hidden;
+  border: 3px solid var(--on-toy);
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.45), transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(255, 210, 63, 0.45), transparent 45%),
+    var(--toy-green);
+  color: var(--on-toy);
+  box-shadow: 8px 8px 0 rgba(94, 224, 138, 0.35);
+}
+
+.promise__deco {
+  position: absolute;
+  pointer-events: none;
+}
+
+.promise__deco .d-yellow { fill: var(--toy-yellow); stroke: var(--on-toy); stroke-width: 2.5; }
+.promise__deco .d-line { stroke: var(--on-toy); }
+.promise__deco .d-white { fill: #fff; stroke: var(--on-toy); stroke-width: 1.4; }
+
+.promise__deco--coin {
+  top: 14px;
+  right: 12px;
+  width: 52px;
+  height: 52px;
+  transform: rotate(14deg);
+}
+
+.promise__deco--spark {
+  bottom: 18px;
+  right: 18px;
+  width: 30px;
+  height: 30px;
+}
+
+.promise__head {
+  display: grid;
+  gap: var(--s-2);
+  justify-items: start;
+  max-width: 780px;
+  padding-right: 48px;
+}
+
+.promise__badge {
+  padding: 4px 12px;
+  border: 2px solid var(--on-toy);
+  border-radius: var(--r-pill);
+  background: var(--toy-yellow);
+  font-family: var(--font-fun);
+  font-size: var(--fs-13);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform: rotate(-3deg);
+}
+
+html[data-mode="shop"] .promise__title,
 .promise__title {
   font-family: var(--font-fun);
-  font-size: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
-  line-height: 1.2;
+  font-size: clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-shadow: 3px 3px 0 rgba(255, 255, 255, 0.55);
+}
+
+.promise__lead {
+  font-family: var(--font-fun);
+  font-size: clamp(1.125rem, 0.95rem + 0.9vw, 1.625rem);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.promise__steps {
+  display: grid;
+  gap: var(--s-25);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.promise__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: var(--s-25);
+  align-items: center;
+  padding: var(--s-25) var(--s-3);
+  border: 2.5px solid var(--on-toy);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 4px 4px 0 var(--on-toy);
+}
+
+.promise__step-icon {
+  grid-row: 1 / 3;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 2.5px solid var(--on-toy);
+  border-radius: 50%;
+  background: var(--tone);
+  color: var(--on-toy);
+}
+
+.promise__step:nth-child(2) .promise__step-icon { transform: rotate(-8deg); }
+
+.promise__step-num {
+  align-self: end;
+  font-size: var(--fs-12);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.promise__step-text {
+  align-self: start;
+  font-family: var(--font-fun);
+  font-size: var(--fs-20);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.promise__foot {
+  display: grid;
+  gap: var(--s-25);
+  justify-items: start;
+}
+
+.promise__care {
+  font-family: var(--font-fun);
+  font-size: var(--fs-20);
+  font-weight: 600;
+}
+
+.promise__cta {
+  min-height: 52px;
+  padding-inline: var(--s-4);
+  font-size: var(--fs-16);
+  white-space: normal;
+  text-align: center;
 }
 
 .promise__small {
-  margin-top: 6px;
   font-size: var(--fs-14);
 }
 
@@ -4911,18 +5246,54 @@ fieldset.field {
   text-underline-offset: 3px;
 }
 
-.promise__cta {
-  justify-self: start;
-  white-space: normal;
-  text-align: center;
+@media (hover: hover) {
+  .promise__step { transition: transform 0.25s var(--ease-out); }
+  .promise__step:hover { transform: translate(-2px, -3px) rotate(-0.6deg); }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .promise {
-    grid-template-columns: auto 1fr auto;
-    gap: var(--s-4);
-    padding: var(--s-4) var(--s-5);
+    padding: var(--s-6) var(--s-5) var(--s-5);
   }
+
+  .promise__deco--coin { top: 24px; right: 28px; width: 72px; height: 72px; }
+  .promise__deco--spark { width: 40px; height: 40px; top: 112px; right: 44px; bottom: auto; }
+
+  .promise__steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-5);
+  }
+
+  .promise__step {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    justify-items: start;
+    row-gap: 6px;
+    padding: var(--s-3);
+  }
+
+  .promise__step-icon { grid-row: auto; margin-bottom: 4px; }
+
+  /* Arrow between steps */
+  .promise__step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: calc(-1 * var(--s-5) + 6px);
+    width: 20px;
+    height: 20px;
+    border-top: 3.5px solid var(--on-toy);
+    border-right: 3.5px solid var(--on-toy);
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  .promise__foot {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: var(--s-4);
+  }
+
+  .promise__cta { grid-column: 2; grid-row: 1 / 3; }
 }
 
 /* Price Promise tag on product cards, quick view and product page */

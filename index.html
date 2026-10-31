@@ -6,7 +6,8 @@
 
   Implements brief items (project brief §11 "Decisions 26 Oct"):
     D1  Markets India + UK only (no EU, no €)          D2  (removed 29 Oct — £ prices only, no region dropdown)
-    D3  Client's segments: Toys, FMCG, Accessories, Apparel (no Footwear)
+    D3  Client's segments: Toys, FMCG, Accessories, Apparel (no Footwear) — shown as Little Wonders, Daily Harvest,
+        The Style Edit, Everyday Wear (Decisions 31 Oct)
     D4  Pre-launch: only Toys live; other 3 = "Coming soon" (no notify forms since 27 Oct, brief §14 E-9)
     D5  Dark theme kept, presentation feel removed     D6  Two interfaces: "Shop" | "For Business" (?mode=business)
     D7  Shopper mode: photo, name, price, age, short description, add to cart (demo), wishlist, trust message
@@ -38,7 +39,7 @@
   cart bounce + confetti, blurred coming-soon previews, trust strip, business launch-journey timeline.
   Motion: small card fade-ups, toggle slide, drawer/sheet slides, confetti, timeline draw — transform/opacity only,
   off under prefers-reduced-motion.
-  Bracket placeholders (client-only info): [Email] [Phone] [Address] [Company name] [Company reg. no.]
+  Bracket placeholders (client-only info): [Company name] [Company reg. no.]
   [Registered address] [About]; JIVORA text wordmark only (no logo file in the client docs).
 -->
 <!DOCTYPE html>
@@ -86,7 +87,7 @@
   <div class="announcement">
     <p class="announcement__text">
       <span class="announcement__dot" aria-hidden="true"></span>
-      <span data-for="shop">Pre-launch — toys go live first. Orders open soon.</span>
+      <span data-for="shop">Pre-launch — Little Wonders (toys) goes live first. Orders open soon.</span>
       <span data-for="business">Pre-launch — business enquiries are open. Orders open soon.</span>
       <a class="announcement__link" href="#event" data-for="shop" data-event-link>IFB Diwali: claim your Gift Coupon</a>
       <a class="announcement__link" href="#enquire" data-for="business">Talk to us</a>
@@ -157,9 +158,9 @@
           <button class="mode-toggle__btn" type="button" data-set-mode="shop" aria-pressed="true">Shop</button>
           <button class="mode-toggle__btn" type="button" data-set-mode="business" aria-pressed="false">Business</button>
         </div>
-        <!-- "Toys" mega-menu: 10 client categories (filled by site.js from products.js) -->
+        <!-- "Little Wonders" (Toys segment) mega-menu: 10 client categories (filled by site.js from products.js) -->
         <div class="megamenu" data-for="shop" data-megamenu>
-          <button class="catnav__link megamenu__btn" type="button" aria-expanded="false" aria-controls="megamenu-panel" data-megamenu-toggle>Toys</button>
+          <button class="catnav__link megamenu__btn" type="button" aria-expanded="false" aria-controls="megamenu-panel" data-megamenu-toggle>Little Wonders</button>
           <div class="megamenu__panel" id="megamenu-panel" data-megamenu-panel></div>
         </div>
         <ul class="catnav__list" data-for="shop">
@@ -172,9 +173,9 @@
           <li><a class="catnav__link" href="toys.html?popular=1" data-mode-link data-catnav="popular=1">Popular picks</a></li>
           <li><a class="catnav__link" href="toys.html?price=under" data-mode-link data-catnav="price=under" data-under-label>Under £10</a></li>
           <li class="catnav__sep" aria-hidden="true"></li>
-          <li><button class="catnav__link" type="button" data-soon="fmcg">FMCG <span class="soon-pill">Soon</span></button></li>
-          <li><button class="catnav__link" type="button" data-soon="accessories">Accessories <span class="soon-pill">Soon</span></button></li>
-          <li><button class="catnav__link" type="button" data-soon="apparel">Apparel <span class="soon-pill">Soon</span></button></li>
+          <li><button class="catnav__link" type="button" data-soon="fmcg">Daily Harvest <span class="soon-pill">Soon</span></button></li>
+          <li><button class="catnav__link" type="button" data-soon="accessories">The Style Edit <span class="soon-pill">Soon</span></button></li>
+          <li><button class="catnav__link" type="button" data-soon="apparel">Everyday Wear <span class="soon-pill">Soon</span></button></li>
         </ul>
         <ul class="catnav__list" data-for="business">
           <li><a class="catnav__link" href="#start" data-go-mode="business">Start your business</a></li>
@@ -211,7 +212,7 @@
         </ul>
         <p class="drawer__label" data-for="shop">Shop by age</p>
         <ul class="drawer__list" data-for="shop" data-drawer-ages></ul>
-        <p class="drawer__label" data-for="shop">Toys by category</p>
+        <p class="drawer__label" data-for="shop">Little Wonders · Toys &amp; Play</p>
         <ul class="drawer__list" data-for="shop" data-drawer-cats></ul>
         <ul class="drawer__list" data-for="business">
           <li><a href="#start" data-go-mode="business">Start your business</a></li>
@@ -221,9 +222,9 @@
         </ul>
         <p class="drawer__label">Coming soon</p>
         <ul class="drawer__list drawer__list--soon">
-          <li><button type="button" data-soon="fmcg">FMCG <span class="soon-pill">Soon</span></button></li>
-          <li><button type="button" data-soon="accessories">Accessories <span class="soon-pill">Soon</span></button></li>
-          <li><button type="button" data-soon="apparel">Apparel <span class="soon-pill">Soon</span></button></li>
+          <li><button type="button" data-soon="fmcg">Daily Harvest <span class="soon-pill">Soon</span></button></li>
+          <li><button type="button" data-soon="accessories">The Style Edit <span class="soon-pill">Soon</span></button></li>
+          <li><button type="button" data-soon="apparel">Everyday Wear <span class="soon-pill">Soon</span></button></li>
         </ul>
       </div>
     </div>
@@ -405,6 +406,44 @@
       </div>
     </section>
 
+    <!-- ===== SHOP & SAVE — Price Promise (brief §14 E-2; Decisions 31 Oct: the client's main USP, big section right
+         under the Gift Coupon; products.js priceMatch: true) ===== -->
+    <section class="block" id="price-promise" data-for="shop" aria-labelledby="pp-title">
+      <div class="container">
+        <div class="promise">
+          <svg class="promise__deco promise__deco--coin" width="72" height="72" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" class="d-yellow"/><circle cx="24" cy="24" r="14" fill="none" class="d-line" stroke-width="2.5"/><path d="M28.5 18.5c-1-1.6-2.7-2.5-4.6-2.5-2.6 0-4.4 1.6-4.4 3.8 0 4.9 9 3.1 9 7.9 0 2.3-2 3.8-4.7 3.8-2 0-3.8-.9-4.8-2.6M24 13.5v3m0 15.5v3" fill="none" class="d-line" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <svg class="promise__deco promise__deco--spark" width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 7.3L22 12l-7.8 2.7L12 22l-2.2-7.3L2 12l7.8-2.7z" class="d-white"/></svg>
+          <div class="promise__head">
+            <p class="promise__badge">Our Price Promise</p>
+            <h2 class="promise__title" id="pp-title">Shop &amp; Save</h2>
+            <p class="promise__lead">Found it cheaper? We'll match the price or credit the difference on your next order.*</p>
+          </div>
+          <ol class="promise__steps">
+            <li class="promise__step">
+              <span class="promise__step-icon tone-yellow" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M10.5 7.5v6m-2-4.2c0-.9.9-1.5 2-1.5s2 .6 2 1.5-1 1.2-2 1.4-2 .5-2 1.4.9 1.5 2 1.5 2-.6 2-1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+              <span class="promise__step-num">Step 1</span>
+              <span class="promise__step-text">Find a lower price</span>
+            </li>
+            <li class="promise__step">
+              <span class="promise__step-icon tone-sky" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+              <span class="promise__step-num">Step 2</span>
+              <span class="promise__step-text">Send us the link</span>
+            </li>
+            <li class="promise__step">
+              <span class="promise__step-icon tone-pink" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M4 12.5V5a1 1 0 0 1 1-1h7.5L20 11.5 12.5 19 4 12.5z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M8 11.5l2.2 2.2 4.3-4.4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="promise__step-num">Step 3</span>
+              <span class="promise__step-text">We match it or credit you</span>
+            </li>
+          </ol>
+          <div class="promise__foot">
+            <p class="promise__care">We don't want your pockets to be affected.</p>
+            <a class="btn btn--dark promise__cta" href="toys.html?promise=1" data-mode-link>Shop Price Promise toys</a>
+            <p class="promise__small">*Selected products only. <a href="terms.html#price-promise">See terms</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== HOT PICKS 🔥 (brief §14 E-3: products.js hot: true — our pre-launch picks, not a sales claim) ===== -->
     <section class="block" id="hot" data-for="shop" aria-labelledby="hot-title">
       <div class="container">
@@ -415,24 +454,18 @@
               <h2 class="hot__title" id="hot-title">Hot Picks <span aria-hidden="true">🔥</span></h2>
               <p class="hot__sub">Toys our team can't wait to launch.</p>
             </div>
-            <a class="block__link" href="toys.html" data-mode-link>All toys</a>
+            <div class="block__tools hot__tools">
+              <a class="block__link" href="toys.html" data-mode-link>All toys</a>
+              <div class="hot__nav">
+                <button class="hot__arrow" type="button" data-hot-prev aria-controls="hot-track" aria-label="Previous Hot Picks"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button class="hot__arrow" type="button" data-hot-next aria-controls="hot-track" aria-label="Next Hot Picks"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
           </div>
-          <div class="grid hot__grid" data-list="hot"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== SHOP & SAVE — Price Promise (brief §14 E-2; products.js priceMatch: true) ===== -->
-    <section class="block block--tight" id="price-promise" data-for="shop" aria-labelledby="pp-title">
-      <div class="container">
-        <div class="promise">
-          <span class="promise__icon" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M4 12.5V5a1 1 0 0 1 1-1h7.5L20 11.5 12.5 19 4 12.5z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="8.5" cy="8.5" r="1.6" fill="currentColor"/></svg></span>
-          <div class="promise__text">
-            <p class="promise__kicker">Shop &amp; Save</p>
-            <h2 class="promise__title" id="pp-title">Found it cheaper? We'll match the price or credit the difference on your next order.*</h2>
-            <p class="promise__small">*Selected products only. <a href="terms.html#price-promise">See terms</a>.</p>
-          </div>
-          <a class="btn btn--dark promise__cta" href="toys.html?promise=1" data-mode-link>Shop Price Promise toys</a>
+          <!-- Slider (Decisions 31 Oct): 4 cards visible ≥1024px, 3 at 640–1023px, 2 below; scroll-snap + swipe,
+               arrows page by the visible count, ←/→ keys move one card when the track has focus, progress bar below -->
+          <div class="hot__track" id="hot-track" data-list="hot" data-hot-track tabindex="0" role="region" aria-roledescription="carousel" aria-label="Hot Picks — use the arrow buttons or left and right keys to see more"></div>
+          <div class="hot__progress" aria-hidden="true"><span class="hot__progress-bar" data-hot-progress></span></div>
         </div>
       </div>
     </section>
@@ -488,7 +521,7 @@
       <div class="container">
         <div class="block__head">
           <h2 class="block__title" id="seg-title">Shop by segment</h2>
-          <p class="block__note">Toys are live. More segments are on the way.</p>
+          <p class="block__note">Little Wonders is live. More segments are on the way.</p>
         </div>
         <ul class="segments" data-segments></ul>
       </div>
@@ -555,6 +588,44 @@
           </div>
         </div>
         <div class="rail" data-rail="under" data-list="under" tabindex="0" aria-label="Toys under the price limit, scrollable"></div>
+      </div>
+    </section>
+
+    <!-- ===== SUGGEST A PRODUCT (Decisions 31 Oct (2)): anonymous — no name / email / registration. POST type "suggestion"
+         to FORM_ENDPOINT → Apps Script "Suggestions" tab; empty endpoint = "Preview — not saved" (script.js) ===== -->
+    <section class="block block--tight" id="suggest" data-for="shop" aria-labelledby="suggest-title">
+      <div class="container">
+        <div class="suggest">
+          <div class="suggest__intro">
+            <span class="suggest__icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div>
+              <h2 class="suggest__title" id="suggest-title">Suggest a product</h2>
+              <p class="suggest__sub">Tell us what you'd love to see. No sign-up needed.</p>
+            </div>
+          </div>
+          <form class="suggest__form" data-suggest-form novalidate>
+            <p class="preview-banner suggest__banner" data-preview-banner role="note" hidden>Preview — suggestions are not saved yet</p>
+            <div class="field suggest__text">
+              <label for="suggest-text">What would you like to buy on <span class="brand-name">JIVORA</span>?</label>
+              <textarea class="input suggest__input" id="suggest-text" name="suggestion" rows="2" maxlength="300" required aria-describedby="suggest-text-err"></textarea>
+              <p class="field__error" id="suggest-text-err" hidden></p>
+            </div>
+            <div class="field suggest__cat">
+              <label for="suggest-cat">Category <span class="suggest__opt">(optional)</span></label>
+              <select class="input suggest__select" id="suggest-cat" name="category">
+                <option value="">Choose a category</option>
+                <option value="Little Wonders (Toys & Play)">Little Wonders · Toys &amp; Play</option>
+                <option value="Daily Harvest (Food & Groceries)">Daily Harvest · Food &amp; Groceries</option>
+                <option value="The Style Edit (Accessories)">The Style Edit · Accessories</option>
+                <option value="Everyday Wear (Fashion)">Everyday Wear · Fashion</option>
+                <option value="Something else">Something else</option>
+              </select>
+            </div>
+            <div class="hp" aria-hidden="true"><label for="suggest-hp">Leave this field empty</label><input id="suggest-hp" type="text" name="hp_check" value="" tabindex="-1" autocomplete="off" data-lpignore="true" data-1p-ignore></div>
+            <button class="btn btn--primary suggest__btn" type="submit">Submit</button>
+            <p class="form-msg suggest__msg" data-suggest-msg role="status" aria-live="polite"></p>
+          </form>
+        </div>
       </div>
     </section>
 
@@ -683,7 +754,7 @@
       <div class="container">
         <div class="block__head">
           <h2 class="block__title" id="bseg-title">Wholesale segments</h2>
-          <p class="block__note">Toys open now, more soon.</p>
+          <p class="block__note">Little Wonders (toys) is open now. Daily Harvest, The Style Edit and Everyday Wear follow soon.</p>
         </div>
         <ul class="segments" data-segments></ul>
       </div>
@@ -761,10 +832,10 @@
       <nav class="footer__col" aria-label="Shop">
         <h2 class="footer__heading">Shop</h2>
         <ul>
-          <li><a href="toys.html" data-go-mode="shop">All toys</a></li>
-          <li><button class="link-btn" type="button" data-soon="fmcg">FMCG — soon</button></li>
-          <li><button class="link-btn" type="button" data-soon="accessories">Accessories — soon</button></li>
-          <li><button class="link-btn" type="button" data-soon="apparel">Apparel — soon</button></li>
+          <li><a href="toys.html" data-go-mode="shop">Little Wonders — Toys &amp; Play</a></li>
+          <li><button class="link-btn" type="button" data-soon="fmcg">Daily Harvest — soon</button></li>
+          <li><button class="link-btn" type="button" data-soon="accessories">The Style Edit — soon</button></li>
+          <li><button class="link-btn" type="button" data-soon="apparel">Everyday Wear — soon</button></li>
         </ul>
       </nav>
       <nav class="footer__col" aria-label="For Business">
@@ -781,9 +852,9 @@
         <h2 class="footer__heading">Company</h2>
         <ul>
           <li><span>[About]</span></li>
-          <li><span>[Email]</span></li>
-          <li><span>[Phone]</span></li>
-          <li><span>[Address]</span></li>
+          <li><a href="mailto:info@jivora.co.uk">info@jivora.co.uk</a></li>
+          <li><a href="tel:+447818920446">+44 7818 920446</a></li>
+          <li><span>London, United Kingdom</span></li>
         </ul>
       </div>
     </div>

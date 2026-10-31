@@ -184,7 +184,7 @@
     root.innerHTML =
       '<nav class="container crumbs" aria-label="Breadcrumb"><ol>' +
         '<li><a href="index.html' + (business ? "?mode=business" : "") + '">Home</a></li>' +
-        '<li><a href="' + J.categoryUrl("") + '">' + (business ? "Wholesale toys" : "Toys") + "</a></li>" +
+        '<li><a href="' + J.categoryUrl("") + '">' + (business ? "Wholesale toys" : "Little Wonders") + "</a></li>" +
         (cat ? '<li><a href="' + J.categoryUrl(cat.slug) + '">' + esc(cat.name) + "</a></li>" : "") +
         '<li aria-current="page">' + esc(product.name) + "</li></ol></nav>" +
       '<section class="container pdp" aria-label="Product overview">' + gallery() + buyBox() + "</section>" +

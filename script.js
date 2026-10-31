@@ -1,6 +1,6 @@
 /* Sample 2 — homepage behaviour.
    Shop: "Shop by category" (chip tabs filter 10 coloured category bubbles → toys.html?cat=), "Shop by age" tiles,
-   segment tiles (live + blurred "coming soon"), Hot Picks grid (brief §14 E-3), popular-picks / under-price rails, Gift Finder quiz, toy grid (age chips, sort, search) and the Instagram tiles.
+   segment cards (live + "coming soon", no blur), Hot Picks slider (brief §14 E-3, Decisions 31 Oct), popular-picks / under-price rails, Gift Finder quiz, toy grid (age chips, sort, search) and the Instagram tiles.
    Business: wholesale toys row (search turns it into a grid) and the launch-journey timeline.
    Re-renders when the interface mode changes. Shared state and cards come from site.js (window.Jivora). */
 (function () {
@@ -72,23 +72,18 @@
     }).join("");
   }
 
-  // ===== Segments: live tile + blurred "coming soon" previews =====
+  // ===== Segments (client mockup, Decisions 31 Oct): navy card, clear photo, big title, subtitle, uppercase CTA.
+  // Coming-soon cards are NOT blurred — only the amber "Coming soon" label marks them; click opens the "coming soon" dialog. =====
   function renderSegments() {
     var html = J.segments.map(function (s) {
+      var inner = '<span class="seg__media"><img src="' + s.image + '" alt="" width="800" height="600" loading="lazy"></span>' +
+        '<span class="seg__body"><span class="seg__name">' + esc(s.name) + '</span><span class="seg__sub">' + esc(s.subtitle) + "</span>";
       if (s.live) {
-        return '<li class="seg" data-reveal><a class="seg__card seg__card--live" href="' + J.categoryUrl("") + '">' +
-          '<span class="seg__media"><img src="' + s.image + '" alt="" width="800" height="533" loading="lazy"></span>' +
-          '<span class="seg__body"><span class="seg__name">' + esc(s.name) + '</span><span class="seg__blurb">' + esc(s.blurb) + "</span>" +
-          '<span class="live-pill"><span class="live-pill__dot" aria-hidden="true"></span>Live · ' + J.products.length + " toys</span></span></a></li>";
+        return '<li class="seg" data-reveal><a class="seg__card seg__card--live" href="' + J.categoryUrl("") + '">' + inner +
+          '<span class="seg__cta seg__cta--live">Explore the fun <span aria-hidden="true">→</span></span></span></a></li>';
       }
-      return '<li class="seg" data-reveal><div class="seg__card seg__card--soon">' +
-        '<span class="seg__media" aria-hidden="true">' +
-          '<img class="seg__blur" src="' + s.image + '" alt="" width="800" height="533" loading="lazy">' +
-          '<img class="seg__peek" src="' + s.image + '" alt="" width="800" height="533" loading="lazy">' +
-          '<span class="soon-pill soon-pill--float">Coming soon</span></span>' +
-        '<span class="seg__body"><span class="seg__name">' + esc(s.name) + '</span><span class="seg__blurb">' + esc(s.blurb) + "</span>" +
-          '<button class="btn btn--sm btn--outline seg__soon" type="button" data-soon="' + s.id + '" aria-label="What\'s coming in ' + esc(s.name) + '">What\'s coming</button>' +
-        "</span></div></li>";
+      return '<li class="seg" data-reveal><button class="seg__card seg__card--soon" type="button" data-soon="' + s.id + '">' + inner +
+        '<span class="seg__cta seg__cta--soon">Coming soon</span></span></button></li>';
     }).join("");
     document.querySelectorAll("[data-segments]").forEach(function (ul) { ul.innerHTML = html; });
   }
@@ -156,6 +151,7 @@
     renderStatus();
     J.observe();
     updateRails();
+    updateHot();
   }
 
   // ===== Age chips (+ header nav links and promo tiles) =====
@@ -399,6 +395,102 @@
     rail.addEventListener("scroll", function () { window.requestAnimationFrame(updateRails); }, { passive: true });
   });
   window.addEventListener("resize", updateRails);
+
+  // ===== Hot Picks slider (Decisions 31 Oct): arrows page by the visible cards, disabled at the ends;
+  // ←/→ on the focused track move one card; progress bar follows the scroll; no smooth scroll under reduced motion =====
+  var hotTrack = document.querySelector("[data-hot-track]");
+  var hotPrev = document.querySelector("[data-hot-prev]");
+  var hotNext = document.querySelector("[data-hot-next]");
+  var hotBar = document.querySelector("[data-hot-progress]");
+
+  function hotStep() {
+    var card = hotTrack.firstElementChild;
+    if (!card) return hotTrack.clientWidth;
+    return card.getBoundingClientRect().width + (parseFloat(getComputedStyle(hotTrack).columnGap) || 0);
+  }
+
+  function hotScroll(cards) {
+    hotTrack.scrollBy({ left: cards * hotStep(), behavior: J.reduceMotion ? "auto" : "smooth" });
+  }
+
+  function updateHot() {
+    if (!hotTrack || !hotPrev) return;
+    var max = hotTrack.scrollWidth - hotTrack.clientWidth;
+    hotPrev.disabled = hotTrack.scrollLeft <= 2;
+    hotNext.disabled = hotTrack.scrollLeft >= max - 2;
+    if (hotBar) {
+      var total = hotTrack.scrollWidth || 1;
+      hotBar.style.width = (hotTrack.clientWidth / total * 100) + "%";
+      hotBar.style.left = (hotTrack.scrollLeft / total * 100) + "%";
+    }
+  }
+
+  if (hotTrack && hotPrev && hotNext) {
+    hotPrev.addEventListener("click", function () { hotScroll(-Math.max(1, Math.round(hotTrack.clientWidth / hotStep()))); });
+    hotNext.addEventListener("click", function () { hotScroll(Math.max(1, Math.round(hotTrack.clientWidth / hotStep()))); });
+    hotTrack.addEventListener("keydown", function (e) {
+      if (e.target !== hotTrack) return;
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        hotScroll(e.key === "ArrowRight" ? 1 : -1);
+      }
+    });
+    hotTrack.addEventListener("scroll", function () { window.requestAnimationFrame(updateHot); }, { passive: true });
+    window.addEventListener("resize", updateHot);
+  }
+
+  // ===== Suggest a product (Decisions 31 Oct (2)): anonymous, type "suggestion" → Apps Script "Suggestions" tab =====
+  var suggestForm = document.querySelector("[data-suggest-form]");
+  if (suggestForm) {
+    var suggestText = suggestForm.querySelector("#suggest-text");
+    var suggestErr = suggestForm.querySelector("#suggest-text-err");
+    var suggestMsg = suggestForm.querySelector("[data-suggest-msg]");
+    var suggestBtn = suggestForm.querySelector('button[type="submit"]');
+
+    var suggestDone = function (text, preview) {
+      suggestForm.reset();
+      suggestMsg.className = "form-msg suggest__msg is-success";
+      suggestMsg.textContent = text + (preview ? " Preview — not saved." : "");
+    };
+
+    suggestText.addEventListener("input", function () {
+      if (suggestText.getAttribute("aria-invalid") === "true" && suggestText.value.trim().length >= 3) {
+        suggestText.setAttribute("aria-invalid", "false");
+        suggestErr.hidden = true;
+      }
+    });
+
+    suggestForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var text = suggestText.value.trim();
+      if (text.length < 3) {
+        suggestText.setAttribute("aria-invalid", "true");
+        suggestErr.textContent = "Please tell us what you'd like to buy (at least 3 characters).";
+        suggestErr.hidden = false;
+        suggestText.focus();
+        return;
+      }
+      var data = {
+        type: "suggestion",
+        suggestion: text.slice(0, 300),
+        category: suggestForm.querySelector("#suggest-cat").value,
+        hp: suggestForm.querySelector('[name="hp_check"]').value   // honeypot, must be empty
+      };
+      // Honeypot filled → a bot. Pretend it worked, send nothing.
+      if (data.hp) { suggestDone("Thanks for the idea!", false); return; }
+      suggestBtn.disabled = true;
+      suggestMsg.className = "form-msg suggest__msg";
+      suggestMsg.textContent = "Sending…";
+      J.sendForm(data).then(function (res) {
+        if (res && res.ok) { suggestDone("Thanks for the idea! We read every suggestion.", !!res.demo); return; }
+        suggestMsg.className = "form-msg suggest__msg is-error";
+        suggestMsg.textContent = "Something went wrong and your suggestion wasn't saved. Please try again.";
+      }).catch(function () {
+        suggestMsg.className = "form-msg suggest__msg is-error";
+        suggestMsg.textContent = "We couldn't reach the server, so nothing was saved. Check your connection and try again.";
+      }).then(function () { suggestBtn.disabled = false; });
+    });
+  }
 
   // ===== Re-render on mode / cross-tab changes =====
   J.onChange(function (what) {
