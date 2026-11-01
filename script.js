@@ -439,7 +439,7 @@
     window.addEventListener("resize", updateHot);
   }
 
-  // ===== Suggest a product (Decisions 31 Oct (2)): anonymous, type "suggestion" → Apps Script "Suggestions" tab =====
+  // ===== Suggest a product (Decisions 31 Oct (2)): anonymous → JIVORA API SUGGEST_ENDPOINT (/api/suggestions) =====
   var suggestForm = document.querySelector("[data-suggest-form]");
   if (suggestForm) {
     var suggestText = suggestForm.querySelector("#suggest-text");
@@ -447,10 +447,10 @@
     var suggestMsg = suggestForm.querySelector("[data-suggest-msg]");
     var suggestBtn = suggestForm.querySelector('button[type="submit"]');
 
-    var suggestDone = function (text, preview) {
+    var suggestDone = function (text) {
       suggestForm.reset();
       suggestMsg.className = "form-msg suggest__msg is-success";
-      suggestMsg.textContent = text + (preview ? " Preview — not saved." : "");
+      suggestMsg.textContent = text;
     };
 
     suggestText.addEventListener("input", function () {
@@ -470,21 +470,24 @@
         suggestText.focus();
         return;
       }
-      var data = {
-        type: "suggestion",
-        suggestion: text.slice(0, 300),
+      var data = {   // the API's SuggestionIn model
+        text: text.slice(0, 300),
         category: suggestForm.querySelector("#suggest-cat").value,
         hp: suggestForm.querySelector('[name="hp_check"]').value   // honeypot, must be empty
       };
       // Honeypot filled → a bot. Pretend it worked, send nothing.
-      if (data.hp) { suggestDone("Thanks for the idea!", false); return; }
+      if (data.hp) { suggestDone("Thanks for the idea!"); return; }
       suggestBtn.disabled = true;
       suggestMsg.className = "form-msg suggest__msg";
       suggestMsg.textContent = "Sending…";
-      J.sendForm(data).then(function (res) {
-        if (res && res.ok) { suggestDone("Thanks for the idea! We read every suggestion.", !!res.demo); return; }
+      J.sendForm(data, J.suggestEndpoint()).then(function (res) {
+        if (res && res.ok) { suggestDone("Thanks for the idea! We read every suggestion."); return; }
         suggestMsg.className = "form-msg suggest__msg is-error";
-        suggestMsg.textContent = "Something went wrong and your suggestion wasn't saved. Please try again.";
+        suggestMsg.textContent = res && res.error === "rate_limited"
+          ? "Too many suggestions in a short time. Please wait a minute and try again."
+          : res && res.error === "invalid"
+            ? "Please write 3–300 characters and try again."
+            : "Something went wrong and your suggestion wasn't saved. Please try again.";
       }).catch(function () {
         suggestMsg.className = "form-msg suggest__msg is-error";
         suggestMsg.textContent = "We couldn't reach the server, so nothing was saved. Check your connection and try again.";

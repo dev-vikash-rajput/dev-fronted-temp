@@ -7,7 +7,8 @@
    new visitor. Event day: Sun 1 Nov 2026 (source: user, 27 Oct — brief Open Question 19, resolved). UK is on GMT that
    day (BST ended 25 Oct); the conversion uses the Europe/London time zone, never a hard-coded offset.
 
-   FORM_ENDPOINT: the Google Apps Script web-app URL (…/exec). Empty = "Demo mode — not saved" (nothing is sent).
+   FORM_ENDPOINT: the JIVORA API registration URL (jivora-api, JSON POST). SUGGEST_ENDPOINT: the "Suggest a product"
+   URL on the same API. Both are required: the forms always send to the API.
    COUPON_AMOUNT: null = the Gift Coupon value is NOT shown anywhere on the site (client 29 Oct: "discount nahi hai").
    Whether to show it at all is brief Open Question 26 — no page reads this value today. */
 (function () {
@@ -18,7 +19,8 @@
     EVENT_END: "2026-11-01T23:59:59",     // UK time (Europe/London)
     TIMEZONE: "Europe/London",
     COUPON_AMOUNT: null,
-    FORM_ENDPOINT: "",
+    FORM_ENDPOINT: "https://api.jivora.co.uk/api/registrations",
+    SUGGEST_ENDPOINT: "https://api.jivora.co.uk/api/suggestions",
     PRIVACY_URL: "privacy.html",
     TERMS_URL: "terms.html"
   };

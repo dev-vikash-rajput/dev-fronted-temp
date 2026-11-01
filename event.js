@@ -5,11 +5,10 @@
    phase on its own when a boundary passes. Fake urgency is avoided: no "only X left", no restarting timers.
    Before / after the event the panel shows a message only — there are no reminder / notify forms.
    Form: 2 steps — required full name, email, country; optional mobile, city → required toy categories (≥1),
-   "I am attending the IFB Diwali Event" (sent as ifb_participant) and Terms/Privacy consent, optional marketing consent; honeypot; client-side validation; POST to FORM_ENDPOINT as
-   text/plain JSON (J.sendForm). Empty endpoint = "Demo mode — not saved".
-   ?preview=event / ?preview=after (J.previewMode): simulated state + "Preview" badge; a submit is only sent when
-   FORM_ENDPOINT is set, otherwise it shows "Preview — not saved". With ?preview=event&testkey=… the key goes along as
-   `test_key` and the Apps Script saves the row in its "Test" tab (pre-event Sheet test, brief §14 E-13). */
+   "I am attending the IFB Diwali Event" (sent as ifb_participant) and Terms/Privacy consent, optional marketing consent; honeypot; client-side validation; POST to FORM_ENDPOINT (JIVORA
+   API, field names of its RegistrationIn model) as JSON (J.sendForm); the coupon code comes back in the response.
+   ?preview=event / ?preview=after (J.previewMode): simulated state + "Preview" badge. The API checks the real event
+   window itself, so a preview submit outside 1 Nov (UK time) comes back "closed" and is not saved. */
 (function () {
   "use strict";
 
@@ -22,7 +21,6 @@
   var done = box.querySelector("[data-reg-done]");
   var msg = box.querySelector("[data-reg-msg]");
   var submitBtn = box.querySelector("[data-reg-submit]");
-  var demo = !J.formEndpoint();
   var phase = null;
   var tick;
 
@@ -214,27 +212,49 @@
   // ===== Submit =====
   function payload() {
     return {
-      type: "register",
       name: value("name"),
       email: value("email").toLowerCase(),
-      mobile: value("mobile"),
       country: checkedValues("country")[0] || "",
       city: value("city"),
+      mobile: value("mobile"),
       categories: checkedValues("categories"),
       ifb_participant: form.elements.ifbParticipant.checked,
-      consentTerms: form.elements.consentTerms.checked,
-      consentMarketing: form.elements.consentMarketing.checked,
-      hp: value("hp_check"),              // honeypot, must be empty
-      preview: !!J.previewMode,
-      submittedAt: new Date().toISOString(),
-      page: document.body.getAttribute("data-page") || "index.html"
+      terms_consent: form.elements.consentTerms.checked,
+      marketing_consent: form.elements.consentMarketing.checked,
+      utm: J.utm(),
+      hp: value("hp_check")               // honeypot, must be empty
     };
+  }
+
+  // 422 from the API: details[].loc ends with the field name → [step, input name, error element, message]
+  var FIELD_ERRORS = {
+    name: [1, "name", "reg-name-err", "Please enter your full name."],
+    email: [1, "email", "reg-email-err", "Please enter a valid email, e.g. you@example.com."],
+    mobile: [1, "mobile", "reg-mobile-err", "Please enter a valid mobile number, or leave it empty."],
+    country: [1, null, "reg-country-err", "Please choose UK or India."],
+    categories: [2, null, "reg-cats-err", "Pick at least one toy category."],
+    ifb_participant: [2, "ifbParticipant", "reg-ifb-err", "The Gift Coupon is only for IFB Diwali Event participants. Please confirm you are attending."],
+    terms_consent: [2, "consentTerms", "reg-terms-err", "Please agree to the Terms and Privacy Policy to register."]
+  };
+
+  // Marks the fields the API rejected; returns the first step that has one (0 = none matched)
+  function showFieldErrors(details) {
+    var first = 0;
+    (Array.isArray(details) ? details : []).forEach(function (d) {
+      var loc = d && Array.isArray(d.loc) ? d.loc : [];
+      var f = FIELD_ERRORS[loc[1]];
+      if (!f) return;
+      setError(f[1] ? form.elements[f[1]] : null, f[2], f[3]);
+      if (!first || f[0] < first) first = f[0];
+    });
+    return first;
   }
 
   var ERRORS = {
     duplicate: "This email is already registered — one Gift Coupon per person and email.",
     closed: "Registration is closed — the IFB Diwali Event registration window has ended.",
-    invalid: "Some details look wrong. Please check the form and try again."
+    invalid: "Some details look wrong. Please check the form and try again.",
+    rate_limited: "Too many attempts from this connection. Please wait a minute and tap Register again."
   };
 
   function setBusy(busy) {
@@ -258,12 +278,8 @@
     if (!validateStep2()) { focusFirstError(); return; }
 
     var data = payload();
-    // Pre-event Sheet test: only with ?preview=event&testkey=… (never shown on the page)
-    if (J.testKey()) data.test_key = J.testKey();
     // Honeypot filled → a bot. Pretend it worked, send nothing.
     if (data.hp) { success({ ok: true }, data.email, true); return; }
-    // Preview without an endpoint: show the success screen, clearly marked, send nothing
-    if (J.previewMode && !J.formEndpoint()) { success({ ok: true, previewOnly: true }, data.email); return; }
 
     setBusy(true);
     msg.className = "form-msg reg__msg";
@@ -271,11 +287,12 @@
     J.sendForm(data).then(function (res) {
       if (res && res.ok) { success(res, data.email); return; }
       var code = res && res.error;
-      if (code === "closed" && J.previewMode) {
-        showError("Preview — not saved. The form works, but the sheet only accepts entries during the real event (UK time).");
-        return;
-      }
       if (code === "closed") update();
+      if (code === "invalid") {
+        var bad = showFieldErrors(res.details);
+        if (bad && bad !== step) showStep(bad, false);
+        if (bad) focusFirstError();
+      }
       showError(ERRORS[code] || "Something went wrong and your details weren't saved. Please try again.");
     }).catch(function () {
       showError("We couldn't reach the server, so nothing was saved. Check your connection and tap Register again.");
@@ -288,15 +305,11 @@
     var code = res && typeof res.code === "string" && /^JIV-[A-Z0-9]{6}$/.test(res.code) ? res.code : "";
     done.querySelector("[data-reg-code]").hidden = !code;
     done.querySelector("[data-reg-code-value]").textContent = code;
-    // With a code from the Apps Script the code is the message; otherwise the coupon is shared before launch
+    // With a code from the API the code is the message; otherwise the coupon is shared before launch
     done.querySelector("[data-reg-text]").hidden = !!code;
     var linked = done.querySelector("[data-reg-linked]");
     linked.hidden = !!code;
     linked.textContent = code ? "" : "We'll send it to " + email + ".";
-    var flag = done.querySelector("[data-reg-demo]");
-    flag.textContent = res && res.test ? "Test entry — saved in the Test tab"
-      : res && res.previewOnly ? "Preview — not saved" : "Demo mode — not saved";
-    flag.hidden = !(res && (res.demo || res.previewOnly || res.test));
     form.hidden = true;
     done.hidden = false;
     done.focus();
@@ -352,8 +365,6 @@
     document.getElementById("reg-country-uk").checked = true;
   }
 
-  // Small "Demo mode" flag on localhost; away from localhost the bigger preview banner (site.js) replaces it
-  box.querySelectorAll("[data-demo-flag]").forEach(function (el) { el.hidden = !demo || J.isLivePreview() || !!J.previewMode; });
   box.querySelector("[data-preview-badge]").hidden = !J.previewMode;
   preselectCountry();
   showStep(1, false);

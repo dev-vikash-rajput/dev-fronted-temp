@@ -4474,49 +4474,6 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
   }
 }
 
-/* Safety banner: empty FORM_ENDPOINT on a real (non-localhost) domain */
-.preview-banner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border: 2px solid var(--on-toy);
-  border-radius: var(--r-md);
-  background: var(--toy-yellow);
-  color: var(--on-toy);
-  font-size: var(--fs-14);
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.preview-banner::before {
-  content: "!";
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--on-toy);
-  color: var(--toy-yellow);
-  font-weight: 700;
-}
-
-/* "Demo mode — not saved" (shown only while FORM_ENDPOINT is empty) */
-.demo-flag {
-  justify-self: start;
-  padding: 4px 12px;
-  border: 1.5px dashed var(--amber-2);
-  border-radius: var(--r-pill);
-  color: var(--amber-2);
-  font-size: var(--fs-13);
-  font-weight: 700;
-}
-
-.demo-flag--inline {
-  justify-self: center;
-}
-
 /* Honeypot: out of sight and out of the tab order (not display:none, which some bots skip) */
 .hp {
   position: absolute;
@@ -4972,7 +4929,6 @@ fieldset.field {
     align-items: start;
   }
 
-  .suggest__banner,
   .suggest__text,
   .suggest__msg { grid-column: 1 / -1; }
 }

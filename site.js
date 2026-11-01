@@ -177,20 +177,23 @@
   })();
   var previewFrom = Date.now();
 
-  // Sheet test before the event (brief §14 E-13): ?preview=event&testkey=XXXX sends the key with the form, so the
-  // Apps Script skips the event-window check and writes to its "Test" tab. The key is read once, removed from the
-  // address bar straight away and never written into the page or any link.
-  var TEST_KEY = (function () {
-    var key = "";
+  // UTM tags from the landing URL (the print QR codes carry utm_source=qr …). Kept for the browser session so they
+  // still go with the registration after the visitor clicks around; sent as the API's `utm` object.
+  var UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+  var UTM = (function () {
+    var found = null;
     try {
-      var url = new URL(window.location.href);
-      key = (url.searchParams.get("testkey") || "").slice(0, 200);
-      if (url.searchParams.has("testkey")) {
-        url.searchParams.delete("testkey");
-        window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
-      }
+      var params = new URLSearchParams(window.location.search);
+      UTM_KEYS.forEach(function (k) {
+        var v = (params.get(k) || "").trim().slice(0, 200);
+        if (v) { found = found || {}; found[k] = v; }
+      });
     } catch (e) {}
-    return PREVIEW === "event" ? key : "";
+    try {
+      if (found) window.sessionStorage.setItem("jivora_utm", JSON.stringify(found));
+      else found = JSON.parse(window.sessionStorage.getItem("jivora_utm") || "null");
+    } catch (e) {}
+    return found && typeof found === "object" ? found : null;
   })();
 
   // phase: "before" | "during" | "after" | "off" (no or broken config). EVENT_END is inclusive to the second:
@@ -287,35 +290,30 @@
     if (next) eventTimer = setTimeout(syncEventLinks, Math.min(next - Date.now() + 250, 2147483000));
   }
 
-  // ===== Form sender (Google Apps Script web app, brief §14 E-1) =====
-  // text/plain keeps it a "simple" CORS request (no preflight, which Apps Script cannot answer).
+  // ===== Form sender (JIVORA API, jivora-api) =====
   function formEndpoint() {
     return EVENT && typeof EVENT.FORM_ENDPOINT === "string" ? EVENT.FORM_ENDPOINT.trim() : "";
   }
 
-  // Safety rule (brief §14): an empty endpoint must never go live silently. Away from localhost / file:// the forms
-  // carry a visible "Preview — registrations are not saved yet" banner.
-  function isLocalHost() {
-    var h = window.location.hostname;
-    return window.location.protocol === "file:" || h === "" || h === "localhost" || h === "127.0.0.1" || h === "[::1]" || h === "::1" || /\.localhost$/.test(h);
+  function suggestEndpoint() {
+    return EVENT && typeof EVENT.SUGGEST_ENDPOINT === "string" ? EVENT.SUGGEST_ENDPOINT.trim() : "";
   }
 
-  function isLivePreview() {
-    return !formEndpoint() && !isLocalHost();
-  }
-
-  function sendForm(payload) {
-    var url = formEndpoint();
-    if (!url) return Promise.resolve({ ok: true, demo: true });
-    if (!window.fetch) return Promise.reject(new Error("unsupported"));
+  // POST JSON to url (default: FORM_ENDPOINT). The API answers {ok:true, …} or, with a 4xx status,
+  // {ok:false, error:"duplicate" | "closed" | "invalid" | "rate_limited"}, which is passed on to the caller.
+  // A missing endpoint, an unreachable server or a non-JSON answer rejects.
+  function sendForm(payload, url) {
+    url = url === undefined ? formEndpoint() : url;
+    if (!url || !window.fetch) return Promise.reject(new Error(url ? "unsupported" : "no endpoint"));
     return window.fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload),
-      redirect: "follow"
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     }).then(function (res) {
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      return res.json();
+      return res.json().then(function (body) {
+        if (res.ok || (body && body.ok === false && typeof body.error === "string")) return body;
+        throw new Error("HTTP " + res.status);
+      }, function () { throw new Error("HTTP " + res.status); });
     });
   }
 
@@ -1132,7 +1130,6 @@
   clean();
   setMode(state.mode, true);   // saves ?mode=business from the URL and syncs toggles + links
   syncEventLinks();   // header / USP / drawer event links + event dates
-  document.querySelectorAll("[data-preview-banner]").forEach(function (el) { el.hidden = !isLivePreview(); });
   updateHeader();
 
   window.Jivora = {
@@ -1159,9 +1156,9 @@
     ukWindowLabel: ukWindowLabel,
     ukLongDate: ukLongDate,
     formEndpoint: formEndpoint,
+    suggestEndpoint: suggestEndpoint,
     previewMode: PREVIEW,
-    testKey: function () { return TEST_KEY; },
-    isLivePreview: isLivePreview,
+    utm: function () { return UTM; },
     sendForm: sendForm,
     toneAt: toneAt,
     ageTone: ageTone,

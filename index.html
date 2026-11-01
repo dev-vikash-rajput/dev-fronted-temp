@@ -26,8 +26,7 @@
     Instagram + YouTube icons in the footer.
 
   Decisions 27 Oct (brief §14, E-1 – E-4): pre-launch registration event (event-config.js; honest UK-time
-    countdown before / during / after, 2-step registration form → Google Apps Script, confetti + code on success, "Demo mode —
-    not saved" while FORM_ENDPOINT is empty, "Preview — registrations are not saved yet" banner off localhost, ?preview=event /
+    countdown before / during / after, 2-step registration form → JIVORA API (api.jivora.co.uk), confetti + coupon code on success, ?preview=event /
     ?preview=after review links; no notify / reminder forms anywhere; event.js), header / USP / drawer event links, "Hot Picks 🔥"
     (products.js hot: true — editorial, no sales claim), "Shop & Save" Price Promise banner + card badges (priceMatch: true),
     terms.html + privacy.html, legal footer placeholders, pre-launch noindex (event-config.js NOINDEX).
@@ -304,9 +303,6 @@
           </div>
 
           <div class="event__panel">
-            <!-- Safety: shown when FORM_ENDPOINT is empty and the page is NOT on localhost (site.js) -->
-            <p class="preview-banner" data-preview-banner role="note" hidden>Preview — registrations are not saved yet</p>
-            <p class="demo-flag" data-demo-flag hidden>Demo mode — not saved</p>
 
             <!-- Before / after the event: message only (no forms) -->
             <div class="event__msg" data-phase-hide="during">
@@ -398,7 +394,6 @@
                 <button class="btn btn--sm btn--ghost" type="button" data-reg-copy>Copy</button>
               </div>
               <p class="reg-done__linked" data-reg-linked hidden></p>
-              <p class="demo-flag demo-flag--inline" data-reg-demo hidden>Demo mode — not saved</p>
               <button class="link-btn" type="button" data-reg-again>Register another email</button>
             </div>
           </div>
@@ -591,8 +586,8 @@
       </div>
     </section>
 
-    <!-- ===== SUGGEST A PRODUCT (Decisions 31 Oct (2)): anonymous — no name / email / registration. POST type "suggestion"
-         to FORM_ENDPOINT → Apps Script "Suggestions" tab; empty endpoint = "Preview — not saved" (script.js) ===== -->
+    <!-- ===== SUGGEST A PRODUCT (Decisions 31 Oct (2)): anonymous — no name / email / registration. POST {text, category}
+         to SUGGEST_ENDPOINT → JIVORA API /api/suggestions (script.js) ===== -->
     <section class="block block--tight" id="suggest" data-for="shop" aria-labelledby="suggest-title">
       <div class="container">
         <div class="suggest">
@@ -604,7 +599,6 @@
             </div>
           </div>
           <form class="suggest__form" data-suggest-form novalidate>
-            <p class="preview-banner suggest__banner" data-preview-banner role="note" hidden>Preview — suggestions are not saved yet</p>
             <div class="field suggest__text">
               <label for="suggest-text">What would you like to buy on <span class="brand-name">JIVORA</span>?</label>
               <textarea class="input suggest__input" id="suggest-text" name="suggestion" rows="2" maxlength="300" required aria-describedby="suggest-text-err"></textarea>
