@@ -44,6 +44,10 @@
   --toy-purple: #B38CFF;
   --toy-orange: #FF9F43;
   --on-toy: #0B1B3F;
+  /* Shop & Save / Price Promise (client 1 Nov: replaces green) */
+  --promise-sky: #7DD6FF;
+  --promise-lilac: #C4A6FF;
+  --promise-pink: #FF9CCB;
   --hero-warm: linear-gradient(135deg, var(--toy-yellow) 0%, #FFB547 55%, var(--toy-orange) 100%);
   /* Instagram brand gradient (allowed for the Instagram icon only) */
   --ig-gradient: linear-gradient(45deg, #F58529 0%, #DD2A7B 50%, #8134AF 80%, #515BD4 100%);
@@ -907,12 +911,13 @@ main > :last-child {
   }
 }
 
-/* ===== SHOP HERO (warm gradient panel + side tiles) ===== */
+/* ===== SHOP HERO (warm gradient panel + side tiles). Client 1 Nov: compact — less padding, smaller type, so the
+   Gift Coupon shows sooner on phones and the hero stays well under 70vh on desktop. ===== */
 .promo {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--s-25);
-  padding-top: var(--s-3);
+  gap: var(--s-2);
+  padding-top: var(--s-2);
 }
 
 .promo__main {
@@ -934,9 +939,9 @@ main > :last-child {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: var(--s-25);
+  gap: var(--s-2);
   align-content: center;
-  padding: var(--s-4) var(--s-4) var(--s-3);
+  padding: var(--s-3) var(--s-3) var(--s-25);
 }
 
 .fun-hero__stickers {
@@ -963,11 +968,16 @@ main > :last-child {
   transform: rotate(3deg);
 }
 
+@media (max-width: 639px) {
+  .sticker { padding: 3px 11px; font-size: var(--fs-13); box-shadow: 2px 2px 0 var(--on-toy); }
+  .event-block { padding-top: var(--s-3); }
+}
+
 .sticker--pink { background: var(--toy-pink); }
 .sticker--sky { background: var(--toy-sky); }
 
 .promo__title {
-  font-size: clamp(2rem, 1.5rem + 2.2vw, 3.25rem);
+  font-size: clamp(1.625rem, 1.25rem + 1.6vw, 2.5rem);
   line-height: 1.05;
 }
 
@@ -982,6 +992,7 @@ main > :last-child {
 
 .fun-hero .promo__text {
   color: var(--on-toy);
+  font-size: var(--fs-14);
   font-weight: 500;
 }
 
@@ -990,6 +1001,12 @@ main > :last-child {
   flex-wrap: wrap;
   gap: var(--s-2);
   margin-top: var(--s-1);
+}
+
+.promo__ctas .btn {
+  min-height: 44px;
+  padding-inline: 18px;
+  font-size: var(--fs-14);
 }
 
 .btn--line-dark {
@@ -1004,7 +1021,7 @@ main > :last-child {
 
 .fun-hero__img {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 6;
   object-fit: cover;
   border: 3px solid var(--on-toy);
   border-radius: var(--r-lg);
@@ -1046,7 +1063,7 @@ main > :last-child {
   position: relative;
   display: flex;
   align-items: flex-end;
-  min-height: 150px;
+  min-height: 76px;
   overflow: hidden;
   border-radius: var(--r-lg);
   background: var(--photo-bg);
@@ -1074,7 +1091,7 @@ main > :last-child {
 
 .promo__side-text {
   display: grid;
-  padding: var(--s-25) var(--s-3);
+  padding: var(--s-2) var(--s-25);
 }
 
 .promo__side-kicker {
@@ -1097,10 +1114,14 @@ main > :last-child {
 }
 
 @media (min-width: 640px) {
+  .promo { gap: var(--s-25); }
   .fun-hero { grid-template-columns: 1.1fr 1fr; align-items: center; }
-  .fun-hero__content { padding: var(--s-5) var(--s-2) var(--s-5) var(--s-5); }
-  .fun-hero__media { padding: var(--s-4) var(--s-5) var(--s-4) var(--s-2); }
-  .fun-hero__img { aspect-ratio: 4 / 3.4; }
+  .fun-hero__content { gap: var(--s-25); padding: var(--s-4) var(--s-2) var(--s-4) var(--s-4); }
+  .fun-hero .promo__text { font-size: var(--fs-16); }
+  .fun-hero__media { padding: var(--s-3) var(--s-4) var(--s-3) var(--s-2); }
+  .fun-hero__img { aspect-ratio: 16 / 10; }
+  .promo__side { min-height: 120px; }
+  .promo__side-text { padding: var(--s-25) var(--s-3); }
   .float--rocket { left: auto; right: 46%; bottom: 14px; }
 }
 
@@ -1108,16 +1129,15 @@ main > :last-child {
   .promo {
     grid-template-columns: 2.2fr 1fr;
     grid-template-rows: 1fr 1fr;
-    padding-top: var(--s-4);
+    padding-top: var(--s-3);
   }
 
   .promo__main {
     grid-column: 1;
     grid-row: 1 / 3;
-    min-height: 400px;
   }
 
-  .fun-hero__content { padding-left: var(--s-6); }
+  .fun-hero__content { padding-left: var(--s-5); }
   .float--star { top: 18px; right: 22px; width: 52px; height: 52px; }
 }
 
@@ -1257,8 +1277,12 @@ html[data-mode="shop"] .seg__name { font-family: var(--font-fun); }
   .rail { grid-auto-columns: calc((100% - 2 * var(--s-3)) / 3.2); gap: var(--s-3); }
 }
 
+/* Client 1 Nov: every product card is the Popular picks size — 5 per row on desktop. Grids that share the row
+   with a filter sidebar (toys.html) and the bigger wholesale cards keep 4. */
 @media (min-width: 1024px) {
-  .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .grid.listing__grid,
+  .grid.grid--biz { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .rail { grid-auto-columns: calc((100% - 4 * var(--s-3)) / 5); }
   .rail-nav { display: flex; }
 }
@@ -4265,8 +4289,8 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
 .event {
   position: relative;
   display: grid;
-  gap: var(--s-4);
-  padding: var(--s-4) var(--s-3);
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-25);
   border: 2px solid var(--toy-purple);
   border-radius: var(--r-lg);
   background:
@@ -4280,12 +4304,12 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
   display: flex;
   flex-wrap: wrap;
   gap: var(--s-2);
-  margin-bottom: var(--s-25);
+  margin-bottom: var(--s-2);
 }
 
 .event__title {
   font-family: var(--font-fun);
-  font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem);
+  font-size: clamp(1.625rem, 1.25rem + 1.6vw, 2.5rem);
   line-height: 1.05;
 }
 
@@ -4300,18 +4324,19 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
 
 .event__text {
   max-width: 46ch;
-  margin-top: var(--s-25);
+  margin-top: var(--s-2);
   color: var(--muted);
+  font-size: var(--fs-14);
 }
 
 .event__clock {
-  margin-top: var(--s-4);
+  margin-top: var(--s-3);
 }
 
 .event__clock-label,
 .event__ended {
   font-family: var(--font-fun);
-  font-size: var(--fs-20);
+  font-size: var(--fs-16);
   font-weight: 600;
 }
 
@@ -4331,8 +4356,8 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
   display: grid;
   justify-items: center;
   flex: 1 1 0;
-  max-width: 92px;
-  padding: 10px 4px 8px;
+  max-width: 84px;
+  padding: 6px 4px;
   border: 2px solid var(--tone, var(--toy-sky));
   border-radius: var(--r-md);
   background: var(--bg);
@@ -4345,7 +4370,7 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
 
 .timer__num {
   font-family: var(--font-fun);
-  font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -4353,7 +4378,7 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
 }
 
 .timer__lbl {
-  margin-top: 4px;
+  margin-top: 2px;
   color: var(--muted);
   font-size: var(--fs-12);
   font-weight: 700;
@@ -4369,8 +4394,8 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
 
 .event__points {
   display: grid;
-  gap: 6px;
-  margin-top: var(--s-3);
+  gap: 4px;
+  margin-top: var(--s-25);
   font-size: var(--fs-14);
 }
 
@@ -4391,7 +4416,7 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
 }
 
 .event__links {
-  margin-top: var(--s-3);
+  margin-top: var(--s-25);
   font-size: var(--fs-14);
 }
 
@@ -4406,7 +4431,7 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
   align-content: start;
   gap: var(--s-3);
   min-width: 0;
-  padding: var(--s-4) var(--s-3);
+  padding: var(--s-3);
   border: 1px solid var(--line-2);
   border-radius: var(--r-lg);
   background: var(--bg);
@@ -4461,7 +4486,7 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
 }
 
 @media (min-width: 640px) {
-  .event { padding: var(--s-5); }
+  .event { padding: var(--s-4); }
   .event__panel { padding: var(--s-4); }
 }
 
@@ -4469,9 +4494,11 @@ html[data-mode="shop"] .card__badge--new { background: var(--toy-purple); color:
   .event {
     grid-template-columns: 1fr minmax(0, 1.05fr);
     align-items: start;
-    gap: var(--s-5);
-    padding: var(--s-5) var(--s-6);
+    gap: var(--s-4);
+    padding: var(--s-4) var(--s-5);
   }
+
+  .event__panel { padding: var(--s-3) var(--s-4); }
 }
 
 /* Honeypot: out of sight and out of the tab order (not display:none, which some bots skip) */
@@ -4794,7 +4821,7 @@ fieldset.field {
 /* --- Hot Picks 🔥 --- */
 .hot {
   position: relative;
-  padding: var(--s-4) var(--s-3) var(--s-3);
+  padding: var(--s-3) var(--s-2) var(--s-25);
   border: 2px solid var(--toy-orange);
   border-radius: var(--r-lg);
   background:
@@ -4830,7 +4857,7 @@ fieldset.field {
 }
 
 @media (min-width: 640px) {
-  .hot { padding: var(--s-5) var(--s-4) var(--s-4); }
+  .hot { padding: var(--s-4) var(--s-4) var(--s-3); }
 }
 
 /* "Suggest a product" (Decisions 31 Oct (2)): small sky-accent card, textbox + optional category + Submit */
@@ -4933,7 +4960,8 @@ fieldset.field {
   .suggest__msg { grid-column: 1 / -1; }
 }
 
-/* Hot Picks slider (Decisions 31 Oct): 2 cards < 640px, 3 at 640–1023px, 4 from 1024px; swipe + scroll-snap */
+/* Hot Picks slider (Decisions 31 Oct; client 1 Nov: 5 on desktop): 2 cards < 640px, 3 at 640–1023px, 5 from 1024px;
+   swipe + scroll-snap, the rest behind the arrows */
 .hot__head {
   flex-wrap: wrap;
 }
@@ -5034,25 +5062,25 @@ fieldset.field {
 }
 
 @media (min-width: 1024px) {
-  .hot__track { --hot-cols: 4; }
+  .hot__track { --hot-cols: 5; }
 }
 
-/* --- Shop & Save — Price Promise (Decisions 31 Oct: client's main USP — big, playful green section
-   under the Gift Coupon: heading, 3 steps, care line, CTA, terms note). Navy text on green = 10.3:1. --- */
+/* --- Shop & Save — Price Promise (Decisions 31 Oct: client's main USP — playful section under the Gift Coupon:
+   heading, 3 steps, care line, CTA, terms note). Client 1 Nov: compact, and the green became a brand sky → lilac → pink
+   gradient. Navy text on every stop ≥ 8.2:1 (sky 10.4, lilac 8.2, pink 8.8). --- */
 .promise {
   position: relative;
   display: grid;
-  gap: var(--s-4);
-  padding: var(--s-5) var(--s-3) var(--s-4);
+  gap: var(--s-3);
+  padding: var(--s-4) var(--s-3) var(--s-3);
   overflow: hidden;
   border: 3px solid var(--on-toy);
   border-radius: var(--r-lg);
   background:
-    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.45), transparent 40%),
-    radial-gradient(circle at 100% 100%, rgba(255, 210, 63, 0.45), transparent 45%),
-    var(--toy-green);
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.4), transparent 40%),
+    linear-gradient(120deg, var(--promise-sky) 0%, var(--promise-lilac) 55%, var(--promise-pink) 100%);
   color: var(--on-toy);
-  box-shadow: 8px 8px 0 rgba(94, 224, 138, 0.35);
+  box-shadow: 8px 8px 0 rgba(196, 166, 255, 0.35);
 }
 
 .promise__deco {
@@ -5065,10 +5093,10 @@ fieldset.field {
 .promise__deco .d-white { fill: #fff; stroke: var(--on-toy); stroke-width: 1.4; }
 
 .promise__deco--coin {
-  top: 14px;
+  top: 12px;
   right: 12px;
-  width: 52px;
-  height: 52px;
+  width: 44px;
+  height: 44px;
   transform: rotate(14deg);
 }
 
@@ -5081,7 +5109,7 @@ fieldset.field {
 
 .promise__head {
   display: grid;
-  gap: var(--s-2);
+  gap: 6px;
   justify-items: start;
   max-width: 780px;
   padding-right: 48px;
@@ -5103,7 +5131,7 @@ fieldset.field {
 html[data-mode="shop"] .promise__title,
 .promise__title {
   font-family: var(--font-fun);
-  font-size: clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem);
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
   font-weight: 700;
   line-height: 0.95;
   letter-spacing: 0.01em;
@@ -5113,14 +5141,14 @@ html[data-mode="shop"] .promise__title,
 
 .promise__lead {
   font-family: var(--font-fun);
-  font-size: clamp(1.125rem, 0.95rem + 0.9vw, 1.625rem);
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
   font-weight: 600;
   line-height: 1.25;
 }
 
 .promise__steps {
   display: grid;
-  gap: var(--s-25);
+  gap: var(--s-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -5134,7 +5162,7 @@ html[data-mode="shop"] .promise__title,
   grid-template-rows: auto auto;
   column-gap: var(--s-25);
   align-items: center;
-  padding: var(--s-25) var(--s-3);
+  padding: var(--s-2) var(--s-25);
   border: 2.5px solid var(--on-toy);
   border-radius: var(--r-md);
   background: rgba(255, 255, 255, 0.72);
@@ -5145,12 +5173,17 @@ html[data-mode="shop"] .promise__title,
   grid-row: 1 / 3;
   display: grid;
   place-items: center;
-  width: 52px;
-  height: 52px;
+  width: 40px;
+  height: 40px;
   border: 2.5px solid var(--on-toy);
   border-radius: 50%;
   background: var(--tone);
   color: var(--on-toy);
+}
+
+.promise__step-icon svg {
+  width: 22px;
+  height: 22px;
 }
 
 .promise__step:nth-child(2) .promise__step-icon { transform: rotate(-8deg); }
@@ -5167,25 +5200,25 @@ html[data-mode="shop"] .promise__title,
 .promise__step-text {
   align-self: start;
   font-family: var(--font-fun);
-  font-size: var(--fs-20);
+  font-size: var(--fs-16);
   font-weight: 700;
   line-height: 1.15;
 }
 
 .promise__foot {
   display: grid;
-  gap: var(--s-25);
+  gap: var(--s-2);
   justify-items: start;
 }
 
 .promise__care {
   font-family: var(--font-fun);
-  font-size: var(--fs-20);
+  font-size: var(--fs-16);
   font-weight: 600;
 }
 
 .promise__cta {
-  min-height: 52px;
+  min-height: 46px;
   padding-inline: var(--s-4);
   font-size: var(--fs-16);
   white-space: normal;
@@ -5209,11 +5242,11 @@ html[data-mode="shop"] .promise__title,
 
 @media (min-width: 768px) {
   .promise {
-    padding: var(--s-6) var(--s-5) var(--s-5);
+    padding: var(--s-4) var(--s-5);
   }
 
-  .promise__deco--coin { top: 24px; right: 28px; width: 72px; height: 72px; }
-  .promise__deco--spark { width: 40px; height: 40px; top: 112px; right: 44px; bottom: auto; }
+  .promise__deco--coin { top: 20px; right: 28px; width: 56px; height: 56px; }
+  .promise__deco--spark { width: 32px; height: 32px; top: 88px; right: 40px; bottom: auto; }
 
   .promise__steps {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -5221,14 +5254,12 @@ html[data-mode="shop"] .promise__title,
   }
 
   .promise__step {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    justify-items: start;
-    row-gap: 6px;
-    padding: var(--s-3);
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    padding: var(--s-25) var(--s-3);
   }
 
-  .promise__step-icon { grid-row: auto; margin-bottom: 4px; }
+  .promise__step-text { font-size: 1.125rem; }
 
   /* Arrow between steps */
   .promise__step:not(:last-child)::after {
@@ -5258,7 +5289,7 @@ html[data-mode="shop"] .promise__title,
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: var(--toy-green);
+  color: var(--promise-sky);
   font-size: var(--fs-12);
   font-weight: 700;
 }

@@ -48,10 +48,10 @@ Each was checked by eye: no brand logos, no licensed characters, no store-site p
 | skipping-rope.jpg | Long Group Skipping Rope | https://www.pexels.com/photo/a-group-of-kids-playing-jumping-rope-8034585/ | RDNE Stock project | Pexels |
 | foam-glider.jpg | Foam Glider Plane | https://www.pexels.com/photo/a-boy-playing-with-a-toy-plane-4971365/ | Gustavo Fring | Pexels |
 | hero-ball-pit.jpg | Shop hero (laughing child in a ball pit) | https://www.pexels.com/photo/boy-playing-with-plastic-balls-5393654/ | Bruno Bueno | Pexels |
-| segment-toys.jpg | "Little Wonders" segment card | https://www.pexels.com/photo/teddy-bears-sitting-on-a-white-surface-7946392/ | Karola G | Pexels |
-| segment-fmcg.jpg | "Daily Harvest" segment card (coming soon) | https://www.pexels.com/photo/whole-grain-on-bowls-7420512/ | Vie Studio | Pexels |
-| segment-accessories.jpg | "The Style Edit" segment card (coming soon) | https://www.pexels.com/photo/various-women-s-fashion-accessories-2986445/ | Harper Sunday | Pexels |
-| segment-apparel.jpg | "Everyday Wear" segment card (coming soon) | https://www.pexels.com/photo/assorted-colored-dresses-on-white-clothes-rack-3527572/ | Maryia Plashchynskaya | Pexels |
+| segment-toys.jpg | "Little Wonders" segment card — toy collection flat lay (replaced 2026-11-01) | https://www.pexels.com/photo/a-close-up-shot-of-colorful-educational-toys-12670795/ | Towfiqu barbhuiya | Pexels |
+| segment-fmcg.jpg | "Daily Harvest" segment card (coming soon) — grocery flat lay (replaced 2026-11-01) | https://www.pexels.com/photo/flat-lay-of-fruits-and-vegetables-3978392/ | Hana Brannigan | Pexels |
+| segment-accessories.jpg | "The Style Edit" segment card (coming soon) — jewellery flat lay (replaced 2026-11-01) | https://www.pexels.com/photo/flat-lay-of-accessories-4004225/ | Hana Brannigan | Pexels |
+| segment-apparel.jpg | "Everyday Wear" segment card (coming soon) — outfit flat lay, cropped so the coat's label is out of frame (replaced 2026-11-01) | https://www.pexels.com/photo/set-of-clothes-on-white-fabric-14577586/ | Pegah Sharifi | Pexels |
 
 Segment cards replaced 2026-10-31 (client mockup): bright, light-background photos, all cropped to 4:3 (800×600),
 no brand labels or logos.

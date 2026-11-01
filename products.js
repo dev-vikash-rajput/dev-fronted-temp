@@ -4,7 +4,8 @@
    ALL PRODUCT CONTENT IS DUMMY: names, prices, ages, descriptions, wholesale tiers, lead times,
    packaging and seller labels are invented for design review and must be replaced with real data.
    Prices are in £ only (Decisions 29 Oct): `price.GBP`. 31 Oct: retail lowered ~15–25% (UK-competitive, .99 endings);
-   wholesale tiers scaled by the same ratio so they stay below retail.
+   wholesale tiers scaled by the same ratio so they stay below retail. 1 Nov (client): everything 20% lower again —
+   retail rounded to the nearest .99, wholesale tiers to the nearest 5p (.99 would make the tiers equal).
    `category` is a slug from JIVORA_CATEGORIES; `added` (ISO date) drives "Newest" sorting and the "New" filter;
    `inStock: false` marks a sold-out toy (default: in stock). `ages` is the suitable age range in months (Gift Finder).
    Wholesale tiers are in £ too; `min` is a quantity in pieces. `lead.UK` = UK delivery lead time.
@@ -95,7 +96,7 @@
       images: ["wooden-train.jpg"],
       alt: ["A toddler pushing a red and black wooden toy train beside curved wooden track"],
       age: "3-5", ageLabel: "3+ yrs",
-      price: { GBP: 16.99 },
+      price: { GBP: 13.99 },
       badge: "Popular pick",
       seller: JIVORA,
       short: "Magnetic wooden carriages with curved and straight track to build a loop on the floor.",
@@ -104,7 +105,7 @@
       details: { "Material": "Beech wood, water-based paint", "Box size": "32 × 24 × 7 cm", "Pieces": "24" },
       wholesale: {
         moq: 12, carton: "12 sets per carton", packaging: "Printed gift box, 12 boxes per master carton (8.4 kg)",
-        tiers: { GBP: [{ min: 12, price: 10.55 }, { min: 48, price: 9.70 }, { min: 120, price: 9.00 }] },
+        tiers: { GBP: [{ min: 12, price: 8.45 }, { min: 48, price: 7.75 }, { min: 120, price: 7.20 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -115,7 +116,7 @@
       images: ["rainbow-xylophone.jpg"],
       alt: ["A rainbow-coloured toy xylophone with a wooden mallet on a white surface"],
       age: "0-2", ageLabel: "18m+",
-      price: { GBP: 7.99 },
+      price: { GBP: 5.99 },
       badge: "Popular pick",
       seller: JIVORA,
       short: "Eight tuned metal keys on a wooden base, with a rounded mallet sized for toddlers.",
@@ -124,7 +125,7 @@
       details: { "Material": "Pine base, aluminium keys", "Size": "24 × 10 × 4 cm", "Includes": "Mallet, song card" },
       wholesale: {
         moq: 24, carton: "24 pcs per carton", packaging: "Window box, 24 per master carton (7.2 kg)",
-        tiers: { GBP: [{ min: 24, price: 4.70 }, { min: 96, price: 4.30 }, { min: 240, price: 3.95 }] },
+        tiers: { GBP: [{ min: 24, price: 3.75 }, { min: 96, price: 3.45 }, { min: 240, price: 3.15 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -135,7 +136,7 @@
       images: ["teddy-bear.jpg"],
       alt: ["A soft brown teddy bear wearing a red checked scarf, sitting on a white table"],
       age: "0-2", ageLabel: "0m+",
-      price: { GBP: 10.99 },
+      price: { GBP: 8.99 },
       badge: "Popular pick",
       seller: JIVORA,
       short: "Super-soft brown teddy with embroidered eyes and a removable checked scarf.",
@@ -144,7 +145,7 @@
       details: { "Material": "Polyester plush, polyester fill", "Height": "35 cm", "Care": "Surface wash" },
       wholesale: {
         moq: 24, carton: "24 pcs per carton", packaging: "Poly bag + hang tag, 24 per carton (6.1 kg)",
-        tiers: { GBP: [{ min: 24, price: 6.45 }, { min: 96, price: 5.90 }, { min: 240, price: 5.40 }] },
+        tiers: { GBP: [{ min: 24, price: 5.15 }, { min: 96, price: 4.70 }, { min: 240, price: 4.30 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -155,7 +156,7 @@
       images: ["dinosaur-figures.jpg", "dinosaur-figures-2.jpg"],
       alt: ["Twelve plastic dinosaur figures spread out on a white background", "Dinosaur figures arranged in a circle on a white surface"],
       age: "3-5", ageLabel: "3+ yrs",
-      price: { GBP: 4.99 },
+      price: { GBP: 3.99 },
       badge: "Popular pick",
       seller: JIVORA,
       short: "Twelve detailed, hand-painted dinosaurs for small-world play and story time.",
@@ -164,7 +165,7 @@
       details: { "Material": "PVC-free vinyl", "Figure size": "6–9 cm", "Pieces": "12" },
       wholesale: {
         moq: 48, carton: "48 sets per carton", packaging: "Clear tub with label, 48 per carton (9.6 kg)",
-        tiers: { GBP: [{ min: 48, price: 2.75 }, { min: 192, price: 2.50 }, { min: 480, price: 2.30 }] },
+        tiers: { GBP: [{ min: 48, price: 2.20 }, { min: 192, price: 2.00 }, { min: 480, price: 1.85 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -175,7 +176,7 @@
       images: ["rc-off-road-truck.jpg"],
       alt: ["A yellow and black remote-control off-road truck next to its handheld controller"],
       age: "6+", ageLabel: "6+ yrs",
-      price: { GBP: 19.99 },
+      price: { GBP: 15.99 },
       badge: "New",
       seller: JIVORA,
       short: "Chunky-tyred RC truck with a simple two-stick controller and rechargeable battery.",
@@ -184,7 +185,7 @@
       details: { "Scale": "1:18", "Battery": "USB rechargeable (cable included)", "Range": "Up to 30 m" },
       wholesale: {
         moq: 12, carton: "12 pcs per carton", packaging: "Display box, 12 per master carton (9.0 kg)",
-        tiers: { GBP: [{ min: 12, price: 12.40 }, { min: 48, price: 11.35 }, { min: 120, price: 10.55 }] },
+        tiers: { GBP: [{ min: 12, price: 9.90 }, { min: 48, price: 9.10 }, { min: 120, price: 8.45 }] },
         lead: { UK: "18–25 days" }
       }
     },
@@ -195,7 +196,7 @@
       images: ["wooden-shape-stacker.jpg"],
       alt: ["A wooden board with red, orange, yellow, green and blue stacking shapes on pegs"],
       age: "0-2", ageLabel: "12m+",
-      price: { GBP: 5.99 },
+      price: { GBP: 4.99 },
       badge: "Popular pick",
       seller: JIVORA,
       short: "Five colours, five shapes, one peg each — a classic first sorting and counting toy.",
@@ -204,7 +205,7 @@
       details: { "Material": "Pine wood, water-based paint", "Size": "28 × 7 × 8 cm", "Pieces": "15 + base" },
       wholesale: {
         moq: 24, carton: "24 pcs per carton", packaging: "Shrink-wrapped with label, 24 per carton (6.8 kg)",
-        tiers: { GBP: [{ min: 24, price: 3.50 }, { min: 96, price: 3.20 }, { min: 240, price: 2.95 }] },
+        tiers: { GBP: [{ min: 24, price: 2.80 }, { min: 96, price: 2.55 }, { min: 240, price: 2.35 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -215,7 +216,7 @@
       images: ["wooden-number-blocks.jpg"],
       alt: ["Close-up of wooden alphabet and number blocks with bright printed numbers"],
       age: "0-2", ageLabel: "2+ yrs",
-      price: { GBP: 6.99 },
+      price: { GBP: 5.99 },
       seller: JIVORA,
       short: "Thirty solid blocks printed with numbers, letters and pictures on every side.",
       highlights: ["30 solid wood blocks, 4 cm", "Numbers, letters and pictures", "Comes in a cotton storage bag"],
@@ -223,7 +224,7 @@
       details: { "Material": "Solid wood, child-safe print", "Block size": "4 × 4 × 4 cm", "Pieces": "30" },
       wholesale: {
         moq: 24, carton: "24 bags per carton", packaging: "Cotton bag + header card, 24 per carton (10.2 kg)",
-        tiers: { GBP: [{ min: 24, price: 4.10 }, { min: 96, price: 3.75 }, { min: 240, price: 3.45 }] },
+        tiers: { GBP: [{ min: 24, price: 3.30 }, { min: 96, price: 3.00 }, { min: 240, price: 2.75 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -234,7 +235,7 @@
       images: ["wooden-sea-animals.jpg", "wooden-sea-animals-2.jpg"],
       alt: ["Hand-painted wooden whale, fish and octopus figures on a white background", "Wooden sea animal toys in soft window light"],
       age: "0-2", ageLabel: "2+ yrs",
-      price: { GBP: 6.99 },
+      price: { GBP: 5.99 },
       badge: "Gift pick",
       seller: PARTNER,
       short: "A whale, octopus, fish and friends — chunky, hand-painted wooden sea creatures.",
@@ -243,7 +244,7 @@
       details: { "Material": "Lime wood, water-based paint", "Figure size": "7–12 cm", "Pieces": "6" },
       wholesale: {
         moq: 24, carton: "24 sets per carton", packaging: "Kraft box, 24 per carton (5.9 kg)",
-        tiers: { GBP: [{ min: 24, price: 4.20 }, { min: 96, price: 3.85 }, { min: 240, price: 3.55 }] },
+        tiers: { GBP: [{ min: 24, price: 3.35 }, { min: 96, price: 3.10 }, { min: 240, price: 2.85 }] },
         lead: { UK: "18–25 days" }
       }
     },
@@ -254,7 +255,7 @@
       images: ["wind-up-robot.jpg"],
       alt: ["A blue wind-up toy robot with one big eye and a yellow dial on its chest"],
       age: "3-5", ageLabel: "3+ yrs",
-      price: { GBP: 3.99 },
+      price: { GBP: 2.99 },
       seller: JIVORA,
       short: "Twist the key and watch it march — a retro wind-up robot with no batteries needed.",
       highlights: ["Clockwork — no batteries", "Walks and swings its arms", "Pocket-sized party favour"],
@@ -262,7 +263,7 @@
       details: { "Material": "ABS plastic, metal clockwork", "Height": "11 cm", "Power": "Wind-up" },
       wholesale: {
         moq: 48, carton: "48 pcs per carton", packaging: "Window box, 48 per carton (6.5 kg)",
-        tiers: { GBP: [{ min: 48, price: 2.15 }, { min: 192, price: 1.95 }, { min: 480, price: 1.80 }] },
+        tiers: { GBP: [{ min: 48, price: 1.70 }, { min: 192, price: 1.55 }, { min: 480, price: 1.45 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -273,7 +274,7 @@
       images: ["wooden-robot.jpg"],
       alt: ["A colourful wooden robot toy with a smiling face on a black background"],
       age: "6+", ageLabel: "6+ yrs",
-      price: { GBP: 7.99 },
+      price: { GBP: 5.99 },
       seller: PARTNER,
       short: "A hand-painted wooden robot with bendy arms and legs — part toy, part room décor.",
       highlights: ["Poseable arms and legs", "Hand-painted face and dials", "Lovely shelf piece for kids' rooms"],
@@ -281,7 +282,7 @@
       details: { "Material": "Beech wood, elastic cord", "Height": "18 cm", "Finish": "Water-based paint" },
       wholesale: {
         moq: 24, carton: "24 pcs per carton", packaging: "Kraft box, 24 per carton (5.0 kg)",
-        tiers: { GBP: [{ min: 24, price: 4.80 }, { min: 96, price: 4.40 }, { min: 240, price: 4.05 }] },
+        tiers: { GBP: [{ min: 24, price: 3.85 }, { min: 96, price: 3.50 }, { min: 240, price: 3.25 }] },
         lead: { UK: "18–25 days" }
       }
     },
@@ -292,7 +293,7 @@
       images: ["wooden-rocket.jpg"],
       alt: ["A red and white wooden toy rocket with a round window on a white background"],
       age: "0-2", ageLabel: "18m+",
-      price: { GBP: 5.99 },
+      price: { GBP: 4.99 },
       badge: "New",
       seller: JIVORA,
       short: "Stack the rings to build a rocket, then blast off — with a little astronaut inside.",
@@ -301,7 +302,7 @@
       details: { "Material": "Beech wood, water-based paint", "Height": "22 cm", "Pieces": "6" },
       wholesale: {
         moq: 24, carton: "24 pcs per carton", packaging: "Gift box, 24 per carton (6.2 kg)",
-        tiers: { GBP: [{ min: 24, price: 3.60 }, { min: 96, price: 3.30 }, { min: 240, price: 3.05 }] },
+        tiers: { GBP: [{ min: 24, price: 2.90 }, { min: 96, price: 2.65 }, { min: 240, price: 2.45 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -312,7 +313,7 @@
       images: ["jigsaw-puzzle.jpg", "jigsaw-puzzle-2.jpg"],
       alt: ["A pile of colourful jigsaw puzzle pieces on a white table", "A jigsaw puzzle being put together, pieces spread across a table"],
       age: "6+", ageLabel: "8+ yrs",
-      price: { GBP: 5.99 },
+      price: { GBP: 4.99 },
       seller: JIVORA,
       short: "A bright 500-piece family puzzle on thick card, with a poster to work from.",
       highlights: ["500 thick, snug-fit pieces", "Reference poster included", "Finished size 48 × 34 cm"],
@@ -320,7 +321,7 @@
       details: { "Material": "Recycled board", "Finished size": "48 × 34 cm", "Pieces": "500" },
       wholesale: {
         moq: 36, carton: "36 boxes per carton", packaging: "Printed box, 36 per carton (11.0 kg)",
-        tiers: { GBP: [{ min: 36, price: 3.35 }, { min: 144, price: 3.05 }, { min: 360, price: 2.80 }] },
+        tiers: { GBP: [{ min: 36, price: 2.70 }, { min: 144, price: 2.45 }, { min: 360, price: 2.25 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -331,7 +332,7 @@
       images: ["panda-plush.jpg"],
       alt: ["A black and white panda soft toy sitting on a desk"],
       age: "0-2", ageLabel: "0m+",
-      price: { GBP: 9.99 },
+      price: { GBP: 7.99 },
       badge: "Gift pick",
       seller: JIVORA,
       short: "A floppy, huggable panda with extra-soft fur and embroidered features.",
@@ -340,7 +341,7 @@
       details: { "Material": "Polyester plush", "Height": "30 cm", "Care": "Surface wash" },
       wholesale: {
         moq: 24, carton: "24 pcs per carton", packaging: "Poly bag + hang tag, 24 per carton (5.4 kg)",
-        tiers: { GBP: [{ min: 24, price: 5.90 }, { min: 96, price: 5.40 }, { min: 240, price: 5.00 }] },
+        tiers: { GBP: [{ min: 24, price: 4.70 }, { min: 96, price: 4.30 }, { min: 240, price: 4.00 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -351,7 +352,7 @@
       images: ["crochet-cot-mobile.jpg"],
       alt: ["Hand-crocheted animal toys hanging from a cot mobile in soft light"],
       age: "0-2", ageLabel: "0m+",
-      price: { GBP: 13.99 },
+      price: { GBP: 10.99 },
       badge: "Gift pick",
       seller: PARTNER,
       short: "Hand-crocheted animals on a wooden ring — a gentle, colourful mobile for the nursery.",
@@ -360,7 +361,7 @@
       details: { "Material": "Cotton yarn, beech ring", "Drop length": "45 cm", "Use": "Decoration — not a toy to hold" },
       wholesale: {
         moq: 12, carton: "12 pcs per carton", packaging: "Gift box with tissue, 12 per carton (3.1 kg)",
-        tiers: { GBP: [{ min: 12, price: 8.55 }, { min: 48, price: 7.90 }, { min: 120, price: 7.35 }] },
+        tiers: { GBP: [{ min: 12, price: 6.85 }, { min: 48, price: 6.30 }, { min: 120, price: 5.90 }] },
         lead: { UK: "21–28 days" }
       }
     },
@@ -371,7 +372,7 @@
       images: ["wooden-counting-stacker.jpg"],
       alt: ["A child playing with wooden counting rings and stacking toys on a white floor"],
       age: "3-5", ageLabel: "2+ yrs",
-      price: { GBP: 6.99 },
+      price: { GBP: 5.99 },
       seller: JIVORA,
       short: "Number pegs and wooden rings that turn counting to ten into a game.",
       highlights: ["Pegs numbered 1–10", "55 wooden counting rings", "Early maths through play"],
@@ -379,7 +380,7 @@
       details: { "Material": "Pine wood, water-based paint", "Size": "30 × 10 × 12 cm", "Pieces": "55 rings + base" },
       wholesale: {
         moq: 24, carton: "24 pcs per carton", packaging: "Shrink-wrapped with label, 24 per carton (8.0 kg)",
-        tiers: { GBP: [{ min: 24, price: 4.20 }, { min: 96, price: 3.85 }, { min: 240, price: 3.55 }] },
+        tiers: { GBP: [{ min: 24, price: 3.35 }, { min: 96, price: 3.10 }, { min: 240, price: 2.85 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -390,7 +391,7 @@
       images: ["wooden-learning-set.jpg"],
       alt: ["A shelf of colourful wooden learning toys: abacus, bead maze and sorting boards"],
       age: "3-5", ageLabel: "3+ yrs",
-      price: { GBP: 14.99 },
+      price: { GBP: 11.99 },
       badge: "Gift pick",
       seller: PARTNER,
       short: "Abacus, bead maze, shape sorter, peg board and lacing beads in one value set.",
@@ -399,7 +400,7 @@
       details: { "Material": "Birch plywood and beech", "Tray size": "40 × 30 × 6 cm", "Activities": "5" },
       wholesale: {
         moq: 12, carton: "12 sets per carton", packaging: "Printed box, 12 per carton (12.5 kg)",
-        tiers: { GBP: [{ min: 12, price: 9.35 }, { min: 48, price: 8.60 }, { min: 120, price: 7.90 }] },
+        tiers: { GBP: [{ min: 12, price: 7.50 }, { min: 48, price: 6.90 }, { min: 120, price: 6.30 }] },
         lead: { UK: "18–25 days" }
       }
     },
@@ -410,7 +411,7 @@
       images: ["toy-soldiers.jpg"],
       alt: ["Rows of small green plastic toy soldier figures on a pale green background"],
       age: "3-5", ageLabel: "4+ yrs",
-      price: { GBP: 3.99 },
+      price: { GBP: 2.99 },
       badge: "New",
       seller: JIVORA,
       short: "Fifty unbranded green figures in classic poses — for forts, sandpits and tabletop battles.",
@@ -419,7 +420,7 @@
       details: { "Material": "PVC-free plastic", "Figure height": "5 cm", "Pieces": "50" },
       wholesale: {
         moq: 48, carton: "48 bags per carton", packaging: "Drawstring bag with header card, 48 per carton (6.2 kg)",
-        tiers: { GBP: [{ min: 48, price: 2.30 }, { min: 192, price: 2.10 }, { min: 480, price: 1.95 }] },
+        tiers: { GBP: [{ min: 48, price: 1.85 }, { min: 192, price: 1.70 }, { min: 480, price: 1.55 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -430,7 +431,7 @@
       images: ["pop-it-fidget.jpg", "pop-it-fidget-2.jpg"],
       alt: ["A rainbow-coloured silicone pop-it board on pastel paper", "Hands pressing the bubbles of a rainbow pop-it board"],
       age: "3-5", ageLabel: "3+ yrs",
-      price: { GBP: 2.99 },
+      price: { GBP: 1.99 },
       badge: "New",
       seller: JIVORA,
       short: "Press the bubbles, flip it over, press again — a calming fidget for busy hands.",
@@ -439,7 +440,7 @@
       details: { "Material": "Food-grade silicone", "Size": "13 × 13 cm", "Care": "Wipe or rinse clean" },
       wholesale: {
         moq: 48, carton: "48 pcs per carton", packaging: "Clear polybag with header, 48 per carton (3.0 kg)",
-        tiers: { GBP: [{ min: 48, price: 1.55 }, { min: 192, price: 1.40 }, { min: 480, price: 1.30 }] },
+        tiers: { GBP: [{ min: 48, price: 1.25 }, { min: 192, price: 1.10 }, { min: 480, price: 1.05 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -450,7 +451,7 @@
       images: ["board-game.jpg"],
       alt: ["Wooden pawns and dice on an illustrated board game"],
       age: "6+", ageLabel: "6+ yrs",
-      price: { GBP: 9.99 },
+      price: { GBP: 7.99 },
       badge: "Gift pick",
       seller: PARTNER,
       short: "A race-and-collect board game for 2–4 players with chunky wooden pawns and dice.",
@@ -459,7 +460,7 @@
       details: { "Players": "2–4", "Game time": "About 20 minutes", "Box size": "27 × 27 × 6 cm" },
       wholesale: {
         moq: 12, carton: "12 games per carton", packaging: "Printed box, 12 per carton (7.8 kg)",
-        tiers: { GBP: [{ min: 12, price: 6.00 }, { min: 48, price: 5.50 }, { min: 120, price: 5.10 }] },
+        tiers: { GBP: [{ min: 12, price: 4.80 }, { min: 48, price: 4.40 }, { min: 120, price: 4.10 }] },
         lead: { UK: "18–25 days" }
       }
     },
@@ -470,7 +471,7 @@
       images: ["wooden-building-pieces.jpg"],
       alt: ["A child building shapes from plain wooden planks on a rug"],
       age: "3-5", ageLabel: "3+ yrs",
-      price: { GBP: 12.99 },
+      price: { GBP: 9.99 },
       badge: "New",
       seller: JIVORA,
       short: "Identical natural-wood planks that stack into towers, bridges and houses — no glue, no clips.",
@@ -479,7 +480,7 @@
       details: { "Material": "Pine wood, unpainted", "Plank size": "11.7 × 2.3 × 0.8 cm", "Pieces": "120" },
       wholesale: {
         moq: 12, carton: "12 sets per carton", packaging: "Cotton bag in kraft box, 12 per carton (9.6 kg)",
-        tiers: { GBP: [{ min: 12, price: 7.95 }, { min: 48, price: 7.35 }, { min: 120, price: 6.85 }] },
+        tiers: { GBP: [{ min: 12, price: 6.35 }, { min: 48, price: 5.90 }, { min: 120, price: 5.50 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -490,7 +491,7 @@
       images: ["art-crayons.jpg"],
       alt: ["A small child drawing with chunky coloured crayons on paper"],
       age: "0-2", ageLabel: "2+ yrs",
-      price: { GBP: 2.99 },
+      price: { GBP: 1.99 },
       seller: JIVORA,
       short: "Chunky, easy-grip crayons that wash off hands, tables and most fabrics.",
       highlights: ["12 bright colours", "Thick, break-resistant sticks", "Washable, non-toxic wax"],
@@ -498,7 +499,7 @@
       details: { "Material": "Non-toxic washable wax", "Crayon size": "10 × 1.5 cm", "Colours": "12" },
       wholesale: {
         moq: 48, carton: "48 packs per carton", packaging: "Card tuck box, 48 per carton (6.0 kg)",
-        tiers: { GBP: [{ min: 48, price: 1.80 }, { min: 192, price: 1.65 }, { min: 480, price: 1.50 }] },
+        tiers: { GBP: [{ min: 48, price: 1.45 }, { min: 192, price: 1.30 }, { min: 480, price: 1.20 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -509,7 +510,7 @@
       images: ["art-watercolour-set.jpg"],
       alt: ["A girl colouring with pencils beside an open watercolour paint palette"],
       age: "6+", ageLabel: "5+ yrs",
-      price: { GBP: 6.99 },
+      price: { GBP: 5.99 },
       seller: PARTNER,
       short: "12 watercolour cakes, 12 colouring pencils and a brush in one flat tin.",
       highlights: ["12 watercolour cakes + brush", "12 pre-sharpened pencils", "Slim metal tin for school bags"],
@@ -517,7 +518,7 @@
       details: { "Includes": "12 paints, 12 pencils, 1 brush", "Tin size": "20 × 12 × 2 cm", "Material": "Metal tin" },
       wholesale: {
         moq: 24, carton: "24 sets per carton", packaging: "Shrink-wrapped tin, 24 per carton (5.4 kg)",
-        tiers: { GBP: [{ min: 24, price: 4.20 }, { min: 96, price: 3.85 }, { min: 240, price: 3.60 }] },
+        tiers: { GBP: [{ min: 24, price: 3.35 }, { min: 96, price: 3.10 }, { min: 240, price: 2.90 }] },
         lead: { UK: "18–25 days" }
       }
     },
@@ -528,7 +529,7 @@
       images: ["crochet-bunny.jpg"],
       alt: ["A cream hand-crocheted bunny toy on a soft pink background"],
       age: "0-2", ageLabel: "0m+",
-      price: { GBP: 10.99 },
+      price: { GBP: 8.99 },
       badge: "New",
       seller: PARTNER,
       short: "A cream cotton bunny, crocheted by hand with long ears and a tiny pink nose.",
@@ -537,7 +538,7 @@
       details: { "Material": "Cotton yarn, fibre fill", "Height": "28 cm", "Care": "Hand wash" },
       wholesale: {
         moq: 12, carton: "12 pcs per carton", packaging: "Gift bag with tag, 12 per carton (2.2 kg)",
-        tiers: { GBP: [{ min: 12, price: 6.85 }, { min: 48, price: 6.25 }, { min: 120, price: 5.85 }] },
+        tiers: { GBP: [{ min: 12, price: 5.50 }, { min: 48, price: 5.00 }, { min: 120, price: 4.70 }] },
         lead: { UK: "21–28 days" }
       }
     },
@@ -548,7 +549,7 @@
       images: ["crochet-bear.jpg"],
       alt: ["A brown crocheted bear toy sitting on a sunny window sill"],
       age: "0-2", ageLabel: "0m+",
-      price: { GBP: 10.99 },
+      price: { GBP: 8.99 },
       seller: PARTNER,
       short: "A chunky hand-crocheted bear with a round tummy and floppy arms.",
       highlights: ["Hand-crocheted cotton yarn", "Stitched eyes, no small parts", "Sits up on its own"],
@@ -556,7 +557,7 @@
       details: { "Material": "Cotton yarn, fibre fill", "Height": "30 cm", "Care": "Hand wash" },
       wholesale: {
         moq: 12, carton: "12 pcs per carton", packaging: "Gift bag with tag, 12 per carton (2.6 kg)",
-        tiers: { GBP: [{ min: 12, price: 6.85 }, { min: 48, price: 6.25 }, { min: 120, price: 5.85 }] },
+        tiers: { GBP: [{ min: 12, price: 5.50 }, { min: 48, price: 5.00 }, { min: 120, price: 4.70 }] },
         lead: { UK: "21–28 days" }
       }
     },
@@ -567,7 +568,7 @@
       images: ["felt-bunny.jpg"],
       alt: ["A soft felt bunny toy surrounded by pastel pom-poms"],
       age: "3-5", ageLabel: "3+ yrs",
-      price: { GBP: 7.99 },
+      price: { GBP: 5.99 },
       seller: JIVORA,
       short: "A soft felt bunny that comes with a bag of pastel pom-poms for play and craft.",
       highlights: ["Soft felt bunny, 22 cm", "40 pastel pom-poms", "Fabric storage pouch"],
@@ -575,7 +576,7 @@
       details: { "Material": "Felt, polyester fill", "Height": "22 cm", "Includes": "40 pom-poms, pouch" },
       wholesale: {
         moq: 24, carton: "24 sets per carton", packaging: "Printed pouch, 24 per carton (3.4 kg)",
-        tiers: { GBP: [{ min: 24, price: 5.00 }, { min: 96, price: 4.60 }, { min: 240, price: 4.25 }] },
+        tiers: { GBP: [{ min: 24, price: 4.00 }, { min: 96, price: 3.70 }, { min: 240, price: 3.40 }] },
         lead: { UK: "18–25 days" }
       }
     },
@@ -586,7 +587,7 @@
       images: ["wooden-cars.jpg"],
       alt: ["A yellow and a green wooden toy car with a wooden peg figure on a dark background"],
       age: "0-2", ageLabel: "12m+",
-      price: { GBP: 6.99 },
+      price: { GBP: 5.99 },
       badge: "New",
       seller: JIVORA,
       short: "Two chunky wooden cars with rubber-rim wheels and a peg-doll driver.",
@@ -595,7 +596,7 @@
       details: { "Material": "Beech wood, water-based paint", "Car length": "10 cm", "Pieces": "3" },
       wholesale: {
         moq: 24, carton: "24 sets per carton", packaging: "Kraft box, 24 per carton (6.0 kg)",
-        tiers: { GBP: [{ min: 24, price: 4.30 }, { min: 96, price: 3.95 }, { min: 240, price: 3.60 }] },
+        tiers: { GBP: [{ min: 24, price: 3.45 }, { min: 96, price: 3.15 }, { min: 240, price: 2.90 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -606,7 +607,7 @@
       images: ["modelling-clay.jpg", "modelling-clay-2.jpg"],
       alt: ["A child shaping soft, colourful modelling clay on a table", "Children's hands making shapes from colourful clay on a white table"],
       age: "3-5", ageLabel: "3+ yrs",
-      price: { GBP: 4.99 },
+      price: { GBP: 3.99 },
       badge: "Gift pick",
       seller: JIVORA,
       short: "Soft, non-sticky clay in 12 colours with 3 shaping tools — never dries out.",
@@ -615,7 +616,7 @@
       details: { "Material": "Non-toxic, non-drying clay", "Weight": "200 g", "Includes": "12 colours, 3 tools" },
       wholesale: {
         moq: 48, carton: "48 packs per carton", packaging: "Clear box, 48 per carton (11.0 kg)",
-        tiers: { GBP: [{ min: 48, price: 2.90 }, { min: 192, price: 2.65 }, { min: 480, price: 2.45 }] },
+        tiers: { GBP: [{ min: 48, price: 2.30 }, { min: 192, price: 2.10 }, { min: 480, price: 1.95 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -626,7 +627,7 @@
       images: ["kite.jpg", "kite-2.jpg"],
       alt: ["A girl in a green T-shirt flying a blue bird-shaped kite in a field", "A woman and a little girl running with a rainbow kite in a park"],
       age: "6+", ageLabel: "5+ yrs",
-      price: { GBP: 5.99 },
+      price: { GBP: 4.99 },
       badge: "New",
       seller: JIVORA,
       short: "Easy-launch kite with a long rainbow tail, 30 m line and a comfy handle.",
@@ -635,7 +636,7 @@
       details: { "Material": "Ripstop nylon, fibreglass", "Wingspan": "110 cm", "Line": "30 m" },
       wholesale: {
         moq: 24, carton: "24 kites per carton", packaging: "Flat sleeve, 24 per carton (4.2 kg)",
-        tiers: { GBP: [{ min: 24, price: 3.50 }, { min: 96, price: 3.25 }, { min: 240, price: 3.00 }] },
+        tiers: { GBP: [{ min: 24, price: 2.80 }, { min: 96, price: 2.60 }, { min: 240, price: 2.40 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -646,7 +647,7 @@
       images: ["skipping-rope.jpg"],
       alt: ["A group of children playing with a long skipping rope on the grass"],
       age: "6+", ageLabel: "5+ yrs",
-      price: { GBP: 3.99 },
+      price: { GBP: 2.99 },
       seller: JIVORA,
       short: "A 5-metre rope for playground games — two turners and a whole group jumping.",
       highlights: ["5 m soft braided rope", "Wooden handles", "Great for group games"],
@@ -654,7 +655,7 @@
       details: { "Material": "Braided cotton, beech handles", "Length": "5 m", "Players": "3+" },
       wholesale: {
         moq: 48, carton: "48 pcs per carton", packaging: "Header card, 48 per carton (7.0 kg)",
-        tiers: { GBP: [{ min: 48, price: 2.30 }, { min: 192, price: 2.15 }, { min: 480, price: 1.95 }] },
+        tiers: { GBP: [{ min: 48, price: 1.85 }, { min: 192, price: 1.70 }, { min: 480, price: 1.55 }] },
         lead: { UK: "14–21 days" }
       }
     },
@@ -665,7 +666,7 @@
       images: ["foam-glider.jpg"],
       alt: ["A boy holding up an orange foam glider plane in a park"],
       age: "3-5", ageLabel: "4+ yrs",
-      price: { GBP: 3.99 },
+      price: { GBP: 2.99 },
       seller: JIVORA,
       short: "Light foam glider that loops and swoops — throw it hard for stunts or gently for long glides.",
       highlights: ["Bendy EPP foam — survives crashes", "48 cm wingspan", "No batteries, no assembly"],
@@ -673,7 +674,7 @@
       details: { "Material": "EPP foam", "Wingspan": "48 cm", "Weight": "45 g" },
       wholesale: {
         moq: 48, carton: "48 pcs per carton", packaging: "Polybag, 48 per carton (3.8 kg)",
-        tiers: { GBP: [{ min: 48, price: 2.40 }, { min: 192, price: 2.20 }, { min: 480, price: 2.05 }] },
+        tiers: { GBP: [{ min: 48, price: 1.90 }, { min: 192, price: 1.75 }, { min: 480, price: 1.65 }] },
         lead: { UK: "14–21 days" }
       }
     }
