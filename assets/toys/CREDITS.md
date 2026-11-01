@@ -48,10 +48,10 @@ Each was checked by eye: no brand logos, no licensed characters, no store-site p
 | skipping-rope.jpg | Long Group Skipping Rope | https://www.pexels.com/photo/a-group-of-kids-playing-jumping-rope-8034585/ | RDNE Stock project | Pexels |
 | foam-glider.jpg | Foam Glider Plane | https://www.pexels.com/photo/a-boy-playing-with-a-toy-plane-4971365/ | Gustavo Fring | Pexels |
 | hero-ball-pit.jpg | Shop hero (laughing child in a ball pit) | https://www.pexels.com/photo/boy-playing-with-plastic-balls-5393654/ | Bruno Bueno | Pexels |
-| segment-toys.jpg | "Little Wonders" segment card — toy collection flat lay (replaced 2026-11-01) | https://www.pexels.com/photo/a-close-up-shot-of-colorful-educational-toys-12670795/ | Towfiqu barbhuiya | Pexels |
-| segment-fmcg.jpg | "Daily Harvest" segment card (coming soon) — grocery flat lay (replaced 2026-11-01) | https://www.pexels.com/photo/flat-lay-of-fruits-and-vegetables-3978392/ | Hana Brannigan | Pexels |
+| segment-toys.jpg | "Little Wonders" segment card — wooden rainbow, plush and shape sorter (replaced 2026-11-01, client mockup) | https://www.pexels.com/photo/colorful-wooden-rainbow-and-dinosaur-toy-in-playroom-38695466/ | Lee Hanson | Pexels |
+| segment-fmcg.jpg | "Daily Harvest" segment card (coming soon) — spices in bowls (replaced 2026-11-01, client mockup) | https://www.pexels.com/photo/assorted-spices-in-bowls-with-cinnamon-sticks-32281706/ | Joel Camelot | Pexels |
 | segment-accessories.jpg | "The Style Edit" segment card (coming soon) — jewellery flat lay (replaced 2026-11-01) | https://www.pexels.com/photo/flat-lay-of-accessories-4004225/ | Hana Brannigan | Pexels |
-| segment-apparel.jpg | "Everyday Wear" segment card (coming soon) — outfit flat lay, cropped so the coat's label is out of frame (replaced 2026-11-01) | https://www.pexels.com/photo/set-of-clothes-on-white-fabric-14577586/ | Pegah Sharifi | Pexels |
+| segment-apparel.jpg | "Everyday Wear" segment card (coming soon) — boutique clothes racks (replaced 2026-11-01, client mockup) | https://www.pexels.com/photo/clothes-hanged-on-clothes-rack-3965545/ | Ksenia Chernaya | Pexels |
 
 Segment cards replaced 2026-10-31 (client mockup): bright, light-background photos, all cropped to 4:3 (800×600),
 no brand labels or logos.

@@ -103,13 +103,43 @@
     return copy;
   }
 
+  // Client 1 Nov: the homepage grid shows 10 toys (two rows of 5 on desktop); "Show all toys" opens the rest in place.
+  // A new age / sort / search starts again at 10.
+  var GRID_FIRST = 10;
+  var gridAll = false;
+  var gridKey = "";
+  var gridMore = document.querySelector("[data-grid-more]");
+  var gridMoreBtn = document.querySelector("[data-grid-more-btn]");
+  var gridShown = document.querySelector("[data-grid-shown]");
+
   function renderGrid() {
     var items = sorted(J.products.filter(function (p) {
       return (filter.age === "all" || J.inAge(p, filter.age)) && matchesQuery(p);
     }));
-    lists.grid.innerHTML = items.map(J.shopCard).join("");
+    var key = filter.age + "|" + filter.sort + "|" + filter.query;
+    if (key !== gridKey) { gridKey = key; gridAll = false; }
+    var shown = gridAll ? items.length : Math.min(items.length, GRID_FIRST);
+    lists.grid.innerHTML = items.slice(0, shown).map(J.shopCard).join("");
     emptyEl.hidden = items.length > 0;
     countEl.textContent = "(" + items.length + ")";
+    if (gridMore) {
+      gridMore.hidden = items.length <= GRID_FIRST;
+      gridShown.textContent = "Showing " + shown + " of " + items.length + " toys";
+      gridMoreBtn.hidden = shown >= items.length;
+      gridMoreBtn.textContent = "Show all " + items.length + " toys";
+    }
+  }
+
+  if (gridMoreBtn) {
+    gridMoreBtn.addEventListener("click", function () {
+      gridAll = true;
+      renderGrid();
+      J.observe(lists.grid);
+      // Keyboard / screen-reader users land on the first newly shown toy
+      var next = lists.grid.children[GRID_FIRST];
+      var link = next && next.querySelector(".card__name a");
+      if (link) link.focus();
+    });
   }
 
   function renderShop() {

@@ -565,6 +565,12 @@
         </div>
         <p class="search-status" data-search-status hidden></p>
         <div class="grid" data-list="shop-grid"></div>
+        <!-- Client 1 Nov: 10 toys first (two rows of 5 on desktop); the rest open in place. Back to 10 when the age chip,
+             sort or search changes. "View all" above still opens toys.html. -->
+        <div class="listing__more" data-grid-more hidden>
+          <p class="listing__shown" data-grid-shown aria-live="polite"></p>
+          <button class="btn btn--primary listing__more-btn" type="button" data-grid-more-btn>Show all toys</button>
+        </div>
         <p class="empty" data-empty hidden>No toys match your search. <button class="link-btn" type="button" data-reset>Show all toys</button></p>
       </div>
     </section>
