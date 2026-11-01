@@ -24,7 +24,7 @@
       subtitle: "Toys & Play",
       live: true,
       image: "assets/toys/segment-toys.jpg",
-      alt: "A teddy bear, a plush monkey and wooden toys on a white shelf",
+      alt: "Teddy bears, a pastel wooden rainbow, stacking toys and a toy train",
       blurb: "Wooden, plush, puzzles, RC and more"
     },
     {
@@ -33,7 +33,7 @@
       subtitle: "Food & Groceries",
       live: false,
       image: "assets/toys/segment-fmcg.jpg",
-      alt: "Bowls of grains, seeds and pulses on a white table",
+      alt: "Masala packets surrounded by bowls of spices, chillies and coriander",
       blurb: "Grocery, spices, dal, atta, packaged food, cosmetics, toiletries"
     },
     {
