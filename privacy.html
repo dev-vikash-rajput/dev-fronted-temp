@@ -2,7 +2,7 @@
   Template — client/legal review required.
   Sample 2 — Privacy Policy (brief §14 "Decisions 27 Oct", E-4; §15 "Decisions 29 Oct": IFB Diwali Event Gift Coupon form,
   "I am attending the IFB Diwali Event" field): basic UK GDPR-friendly template — what data the
-  pre-launch registration form collects, why (lawful basis), where it is stored (Google Sheets via Apps Script), how long,
+  pre-launch registration form collects, why (lawful basis), where it is stored (JIVORA's own server, PostgreSQL, Hostinger, United Kingdom), how long,
   user rights (ICO), children, browser storage. Company details are [bracketed] placeholders (brief Open Question 24).
   Shared behaviour: site.js.
 -->
@@ -218,6 +218,7 @@
           <li>The toy categories you like</li>
           <li>Your confirmation that you are attending the IFB Diwali Event (the Gift Coupon is only for event participants)</li>
           <li>Whether you agreed to receive launch offers and news, the date and time you registered and the coupon code we create for you</li>
+          <li>If you arrived through one of our QR codes or campaign links: the campaign tag in that link (for example “qr”), so we know which posters and links work</li>
         </ul>
         <h3>“Suggest a product” box (homepage)</h3>
         <ul>
@@ -252,10 +253,11 @@
       <section class="legal__section" id="where" aria-labelledby="where-title">
         <h2 id="where-title">4. Where it's stored and who sees it</h2>
         <ul>
-          <li>Form entries are stored in a <strong>Google Sheet</strong> in a Google account owned by [Company name], received through a Google Apps Script web app. Google acts as our processor.</li>
-          <li>Google may process data outside the UK and India. Where it does, the transfer is protected by [UK adequacy regulations / the UK International Data Transfer Addendum — legal review].</li>
+          <li>Form entries (the registration form and the “Suggest a product” box) are sent over an encrypted connection (HTTPS) to <strong>JIVORA's own server</strong> and stored in a PostgreSQL database on that server.</li>
+          <li>The server is provided by our hosting provider, <strong>Hostinger</strong>, which acts as our processor. The server is located in the <strong>United Kingdom</strong>.</li>
+          <li>Our server keeps short technical logs, including IP addresses, to keep the forms secure and stop automated sign-ups.</li>
           <li>[Email service used to send launch emails, if any].</li>
-          <li>Only authorised [Company name] staff can open the sheet.</li>
+          <li>Only authorised [Company name] staff can access the database.</li>
           <li>This website is hosted on [Hosting provider], which may log technical data such as IP addresses for security. Fonts are loaded from Google Fonts, which receives your IP address when the page loads.</li>
         </ul>
       </section>
@@ -266,6 +268,7 @@
           <li>Registration details: until the Gift Coupon expires, then deleted within [__ days].</li>
           <li>Marketing consent: until you unsubscribe.</li>
           <li>“Suggest a product” ideas: [__ months], then deleted.</li>
+          <li>Server security logs: [__ days], then deleted.</li>
         </ul>
       </section>
 
@@ -294,6 +297,7 @@
           <li>Interface (Shop / For Business)</li>
           <li>Cart, wishlist and RFQ list</li>
         </ul>
+        <p>If you arrive through a QR code or campaign link, its campaign tag is kept in your browser's session storage until you close the tab. It is sent to us only if you submit the registration form (see section 2).</p>
         <p>You can delete them at any time by clearing your browser's site data.</p>
       </section>
 
